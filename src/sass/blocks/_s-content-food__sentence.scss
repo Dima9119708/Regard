@@ -1,0 +1,7 @@
+.s-content-food__sentence {
+  @include s-products-foods(49%);
+
+  & .content-product-block {
+    @include product-block(100%)
+  }
+}

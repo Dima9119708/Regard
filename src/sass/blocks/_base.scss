@@ -13,9 +13,35 @@ html,body {
 h1,h2,h3,h4,li,ul,p {
   margin: 0;
   padding: 0;
+  list-style-type: none;
 }
 
 .container {
   max-width: 1240px;
   margin: 0 auto;
+}
+
+.content {
+  margin-top: -20px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+}
+
+.content-wrap {
+  display: flex;
+}
+
+.content-center {
+  width: 100%;
+}
+
+.content-wrapper {
+  overflow: hidden;
+}
+
+.s-content-foods__wrap {
+  display: flex;
+  justify-content: space-between;
 }

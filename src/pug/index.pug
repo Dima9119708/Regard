@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Document
-  body
-     
-    include ./sections/_header.pug
-    
+extends ./layout/_base.pug
+include ./mixins/_content-top-header.pug
+include ./mixins/_s-content-food__sentence.pug
+
+block content
+  include ./sections/_slider.pug
+  .s-content-products
+      .s-content-foods
+            include ./sections/_s-content-hits.pug
+            .s-content-foods__wrap
+                +s-content-food__sentence('Предложение')
+                +s-content-food__sentence('Новинки')

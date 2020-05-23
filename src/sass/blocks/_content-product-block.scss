@@ -1,0 +1,47 @@
+.content-product-block {
+  @include product-block(49%)
+}
+
+.content-product-block-image {
+  margin-right: 10px;
+  text-align: center;
+
+  & span {
+    font-size: 12px;
+    color: rgb(145, 145, 145);
+  }
+}
+
+.content-product-block-img {
+  height: 100px;
+  width: 100px;
+  background-color: rgb(102, 98, 98);
+}
+
+.content-product-block-name {
+  margin-bottom: 7px;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    color : $red;
+  }
+}
+
+.content-product-block-dist {
+  color: rgb(145, 145, 145);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.content-product-block-price {
+  display: flex;
+  align-items: center;
+
+  & span {
+    display: inline-block;
+    height: 20px;
+    overflow: hidden;
+    margin-right: 5px;
+  }
+}

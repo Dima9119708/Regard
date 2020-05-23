@@ -1,4 +1,14 @@
 @import './blocks/vars';
+@import './blocks/mixins';
 @import './blocks/fonts.scss';
 @import './blocks/base';
 @import './blocks/header';
+@import './blocks/content-product';
+@import './blocks/s-input';
+@import './blocks/slider';
+@import './blocks/content-product-block';
+@import './blocks/s-content-hits';
+@import './blocks/s-content-food__sentence';
+
+@import '../../node_modules/@fortawesome/fontawesome-free/css/all.css';
+@import '../../node_modules/swiper/css/swiper.css'

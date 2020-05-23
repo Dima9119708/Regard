@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    html(lang="en")
+      head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+      body
+        
+        include ../sections/_header.pug
+
+        .container
+            .content
+                .content-wrap
+                    include ../sections/_content-product.pug
+                    main.content-center
+                      include ../sections/_s-content-input.pug
+                      .content-wrapper
+                          block content

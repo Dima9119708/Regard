@@ -7,11 +7,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
 
-const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
+const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`
 
 module.exports = {
   mode: 'development',
-  entry: './src/js/index.js',
+  entry: {
+    main : './src/js/index.js',
+    slider : './src/slider/slider.js'
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: filename('js')

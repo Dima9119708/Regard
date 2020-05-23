@@ -6,6 +6,7 @@
   padding: 10px 0;
   background-color: #F6F6F6;
   border-bottom: 2px solid rgb(160, 160, 160);
+
 }
 
 .header-wrap{
@@ -32,7 +33,7 @@
   }
 
   &:hover{
-    color: #ff000c;
+    color: $red;
   }
   
   &:hover::before {
@@ -44,12 +45,24 @@
 .header-content {
   display: flex;
   margin-top: 40px;
-  padding: 10px 0;
+  padding: 20px 0;
+  padding-bottom: 30px;
   background-color: $header-content;
 }
 
 .header-content__wrap {
   display: flex;
+  justify-content: space-between;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.header-content_item {
+  margin-right: 30px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .header-content__contants {
@@ -58,13 +71,19 @@
   overflow: hidden;
 }
 
-.header-content__phone {
+.header-content__phone-item {
   display: flex;
   justify-content: space-between;
   padding: 5px 20px;
   width: 350px;
+  margin-right: 30px;
   border: 1px solid #bcc;
+  border-radius: 5px;
   background-color: #E5F0F7;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .header-content__phones div {
@@ -98,9 +117,40 @@
 }
 
 .header-content__point {
-  border: 1px solid #bcc;
-  padding: 5px 20px;
   text-align: center;
-  width: 350px;
-  background-color: #E5F0F7;
+  flex-direction: column;
+  width: 250px;
+
+  & .point-1 {
+    color: #777;
+  }
+
+  & .closest-1 {
+    font-size: 14px;
+    padding-bottom: 10px;
+    color: #ff0000;
+  }
+}
+
+.header-content__basket {
+  position: relative;
+  padding: 10px 0;
+  padding-left: 65px;
+  background-color: #eed6d6;
+  border-radius: 10px;
+  width: 240px;
+  font-size: 12px;
+  cursor: pointer;
+
+  & .fa-cart-arrow-down {
+    position: absolute;
+    top: 12px;
+    left: 25px;
+    font-size: 25px;
+    color: #ff2f2f;
+  }
+
+  &:hover {
+    color: hsla(0, 100%, 58%, 0.781);
+  }
 }

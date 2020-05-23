@@ -1,3 +1,4 @@
+include ../mixins/_phones.pug
 header.header
         .header-wrap
             a(href="#").header__link О компании
@@ -6,25 +7,28 @@ header.header
             a(href="#").header__link Доставка
             a(href="#").header__link Самовывоз
             a(href="#").header__link Гарантия
-            a(href="#").header__link Контакты
+            a(href="#").header__link Контакты  
 .header-content
-      .container
-        .header-content__wrap
-            img(src="./images/logo.png", alt="")
-            .header-content__contants
-                .header-content__phone
-                    .header-content__phones
-                        div
-                          span 495 
-                          | 921-41-58
-                        div
-                          span 800
-                          | 250-41-58
-                    .header-content__consult
-                       div.consult-1 Наличие, заказ, консультации
-                       div ПН–ПТ: 9:30 – 20:00
-                       div СБ–ВС: 10:00 – 17:00
-                       div.consult-4 Не дозвонились? 
-                .header-content__point
-                      div Пункт выдачи заказов
-                      div Временно закрыт                   
+  .header-content__wrap
+      .header-content_item
+        img(src="./images/logo.png", alt="")
+      .header-content__contants.header-content_item
+          .header-content__phone.header-content__phone-item
+              .header-content__phones
+                  +phones('495', '921-41-58')
+                  +phones('800', '250-41-58')
+              .header-content__consult
+                div.consult-1 Наличие, заказ, консультации
+                div ПН–ПТ: 9:30 – 20:00
+                div СБ–ВС: 10:00 – 17:00
+                div.consult-4 Не дозвонились? 
+          .header-content__point.header-content__phone-item
+                div.point-1 Пункт выдачи заказов
+                div.closest-1 Временно закрыт
+      .header-content_item
+          .header-content__basket
+                  i.fas.fa-cart-arrow-down
+                  div В корзине 
+                    span 0 товаров
+                  | На сумму 
+                  span 0 р
