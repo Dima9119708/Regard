@@ -36,3 +36,12 @@ h1,h2,h3,h4,li,ul,p {
 .content-center {
   width: 100%;
 }
+
+.content-wrapper {
+  overflow: hidden;
+}
+
+.s-content-foods__wrap {
+  display: flex;
+  justify-content: space-between;
+}

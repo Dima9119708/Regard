@@ -1,0 +1,27 @@
+@mixin product-block($width) {
+  display: flex;
+  padding: 10px;
+  height: max-content;
+  width: $width;
+  background-color: #FFFFFF;
+  margin-bottom: 10px;
+  border: 1px solid #bdbcbc;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:nth-last-child() {
+    margin-bottom: 0;
+  }
+
+  &:last-child{
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    background-color: #E4EEF4;
+  }
+}
+
+@mixin s-products-foods($width) {
+  width: $width;
+}
