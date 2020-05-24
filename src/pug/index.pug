@@ -4,9 +4,9 @@ include ./mixins/_s-content-food__sentence.pug
 
 block content
   include ./sections/_slider.pug
-  .s-content-products
-      .s-content-foods
+  section.s-content-products
+      section.s-content-foods
             include ./sections/_s-content-hits.pug
-            .s-content-foods__wrap
+            section.s-content-foods__wrap
                 +s-content-food__sentence('Предложение')
                 +s-content-food__sentence('Новинки')
