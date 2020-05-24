@@ -1,0 +1,89 @@
+.basket {
+  display: block;
+}
+
+.basket-empty {
+  margin: 15px 0;
+  text-align: center;
+  width: 100%;
+  color: $red;
+}
+
+.basket-in-product {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #E4EEF4;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.basket-paramentrs {
+  display: flex;
+  justify-content: space-between;
+
+  & .basket-paramentrs__item {
+    font-size: 13px;
+    background: #eee;
+    text-align: center;
+    padding: 5px 20px;
+    border-radius: 5px;
+    color: #777;
+
+    &:nth-child(2) {
+      padding: 5px 140px;
+    }
+  }
+}
+
+.basket-product {
+  margin-top: 10px;
+  display: flex;
+  font-size: 13px;
+  text-align: center;
+  padding: 5px 0;
+  border-top: 2px solid rgb(182, 182, 182);
+  border-bottom: 2px solid rgb(165, 165, 165);
+
+  &:hover {
+    background: #ececec;
+  }
+
+  & .basket-product-item {
+    text-align: left;
+
+    &:nth-child(1) {
+      width: 55px;
+    }
+    &:nth-child(2) {
+      width: 350px;
+      margin-right: 45px;
+      cursor: pointer;
+
+      &:hover {
+        color: $red;
+      }
+    }
+    &:nth-child(3) {
+      width: 55px;
+      margin-right: 45px;
+    }
+    &:nth-child(4) {
+      margin-right: 45px;
+      & input {
+        width: 40px;
+        text-align: right;
+        outline: none;
+        border: 0;
+        border: 1px solid #000;
+        border-radius: 5px;
+      } 
+    }
+    &:nth-child(5) {
+      width: 55px;
+      margin-right: 50px;
+    }
+    &:nth-child(6) {
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+.content-blocks__sorting {
+  padding: 10px 15px;
+  width: 100%;
+  font-size: 14px;
+  background-color: #ECECEC;
+  margin-bottom: 10px;
+
+  & span {
+    display: inline-block;
+    margin: 0 10px;
+    border-bottom: 1px dashed #000;
+    cursor: pointer;
+  }
+}

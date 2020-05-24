@@ -1,0 +1,139 @@
+.goods{
+  padding: 10px;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+.goods-header {
+  padding: 10px;
+  display: flex;
+  background-color: #F5F5F5;
+  border-radius: 5px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  border: $border;
+
+  & .goods-header__id {
+    padding-right: 10px;
+    color: #7DB0CF;
+    border-right: $border;
+
+  }
+
+  & .goods-header__name {
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight: 400;
+  }
+}
+
+.goods__wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.goods-img {
+  padding: 10px;
+  background: #f6f6f6;
+  width: 44%;
+  border: $border;
+
+  & .goods-img-block {
+    height: 350px;
+    background: #ffffff;
+    border: $border;
+  }
+}
+
+.goods-block__dist {
+  width: 55%;
+}
+
+.goods__dist {
+  padding: 30px;
+  background: #f6f6f6;
+  border-radius: 5px;
+  font-size: 13px;
+  margin-bottom: 15px;
+  border: $border;
+}
+
+.goods__price-block {
+  padding: 10px;
+  background: #f6f6f6;
+  border-radius: 5px;
+  border: $border;
+}
+
+.goods__price-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+
+  & .goods__price-existence {
+    padding: 2px 20px;
+    background-color: #6dbb5b;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 13px;
+  }
+
+  & .goods__price-simile {
+    font-size: 13px;
+    border-bottom: 1px dashed #000;
+    cursor: pointer;
+  }
+}
+
+.goods__price-bl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  margin-bottom: 70px;
+
+  & .goods__price {
+    font-size: 40px;
+  }
+
+  & .goods-add-basket {
+    position: relative;
+    padding: 5px 10px;
+    height: max-content;
+    background-color: $red;
+    font-size: 13px;
+    color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+
+    & .goods-in-basket {
+      display: none;
+      position: absolute;
+      top: -30px;
+      left: -10px;
+      height: 25px;
+      width: 115%;
+      background: #DDDDDD;
+      padding: 0 10px;
+      color: #000;
+      border-radius: 5px;
+
+      & input {
+        width: 20px;
+        margin: 0 5px;
+        border: 0;
+        border: $border;
+        text-align: center;
+      }
+
+      & .plus {
+        font-size: 20px;
+        color: #008000;
+      }
+      & .minus {
+        font-size: 20px;
+        color: $red;
+      }
+    }
+  }
+}

@@ -22,11 +22,13 @@ h1,h2,h3,h4,li,ul,p {
 }
 
 .content {
+  position: relative;
   margin-top: -20px;
   padding: 10px;
   background-color: #fff;
   border: 1px solid #cfcfcf;
   border-radius: 10px;
+  z-index: 50;
 }
 
 .content-wrap {
@@ -44,4 +46,13 @@ h1,h2,h3,h4,li,ul,p {
 .s-content-foods__wrap {
   display: flex;
   justify-content: space-between;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
 }

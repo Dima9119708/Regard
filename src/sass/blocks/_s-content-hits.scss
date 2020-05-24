@@ -1,9 +1,10 @@
 .s-content-products {
   display: flex;
+  justify-content: space-between;
 }
 
 .s-content-foods {
-  @include s-products-foods(85%)
+  @include s-products-foods(82%)
 }
 
 .content-hits__top {
