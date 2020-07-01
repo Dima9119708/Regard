@@ -33,6 +33,11 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "font-awesome": "^4.7.0"
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
+    "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
+    "@babel/plugin-transform-arrow-functions": "^7.10.4",
+    "font-awesome": "^4.7.0",
+    "html-table-to-json": "^1.0.0"
   }
 }
