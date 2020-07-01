@@ -12,5 +12,6 @@ new Router('#app', {
 // <li class="content-product__menu-item" > ${ item } <span>+</span>
 //   <ul class="content-product__menu-internal" data-type="${item}">
 //     <li class="content-product__menu-internal-item">все товары раздела</li>
+//     <li class="content-product__menu-internal-item"> ${ elem } </>
 //   </ul>
-// <li class="content-product__menu-internal-item" > ${ elem }</li>
+// </li>

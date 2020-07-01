@@ -15,7 +15,8 @@ export class MainPage extends InterfacePages {
     const DATA = await base
 
     this.initComponent = new InitComponent(
-      [HeaderTop, Header, Content, Footer, LoginBar]
+      [HeaderTop, Header, Content, Footer, LoginBar],
+      DATA
     )
 
     return this.initComponent.getRoot()
