@@ -6,7 +6,6 @@ export class ParentComponent extends DomListener {
     super($root, options || {})
   }
 
-
   init() {
     super.listener()
   }
