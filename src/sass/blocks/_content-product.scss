@@ -19,7 +19,7 @@
     border-top-right-radius: 10px;
 
     &:nth-child(1) {
-      background-color: $red;
+
       margin-right: 25px;
       padding-left: 20px;
 
@@ -51,6 +51,11 @@
         background-color: inherit;
         clip-path: polygon(39% 0, 100% 0, 100% 100%, 0% 100%);
       }
+    }
+
+    &.tab--active {
+      background-color: $red;
+      z-index: 50;
     }
   }
 }
