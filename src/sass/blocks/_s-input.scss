@@ -8,18 +8,110 @@
 
 .s-content__search-rel {
   position: relative;
-  display: inline;
+  display: inline-block;
+  width: 88%;
+}
 
-  & .s-content__search-list {
-    display: none;
+.s-content__search-list {
+  display: none;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 50;
+  border-radius: 5px;
+  box-shadow: 0 3px 9px 1px rgba(0,0,0,.17);
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+.s-content__search-list-item {
+  overflow-x: auto;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:nth-child(1) {
+    width: 48%;
+  }
+
+  &:nth-child(2) {
+    width: 48%;
+  }
+}
+
+.s-content__search-list-item-children {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover .s-content__search-list-item-children-inner{
+    background-color: rgba(124, 213, 240, 0.3);
+  }
+}
+
+.s-content__search-list-item-children-image {
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+  width: 50px;
+  margin-right: 5px;
+
+  img {
     position: absolute;
-    top: 30px;
-    left: 0;
-    height: 50px;
-    width: 100%;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: rgb(185, 185, 185);
+    top: -50%;
+    left: -50%;
+    transform: scale(0.5);
+  }
+}
+
+.s-content__search-list-item-children-inner {
+  max-width: 300px;
+}
+
+.s-content__search-list-item-children-title {
+  color: #000000;
+  margin-bottom: 5px;
+}
+
+.s-content__search-list-item-children-price {
+  font-size: 12px;
+  color: #777;
+}
+
+.s-content__search-list-item-history {
+  font-size: 16px;
+  cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  margin-bottom: 7px;
+  transition: background-color .1s linear;
+
+  &:hover {
+    background-color: rgba(66, 152, 209, 0.5);
+    transition: background-color .1s linear;
+  }
+}
+
+.s-content__search-list-item-history-clear {
+  padding: 5px;
+  color: rgb(104, 103, 103);
+  cursor: pointer;
+  border: 0;
+  outline: none;
+  border-radius: 5px;
+  transition: background-color .3s linear;
+
+  &:hover {
+    background-color: rgb(206, 206, 206);
+    transition: background-color .1s linear;
   }
 }
 
@@ -28,7 +120,7 @@
   outline: none;
   padding: 5px 10px;
   border-radius: 5px;
-  width: 88%;
+  width: 100%;
   font-size: 16px;
   border: 2px solid rgba(133, 133, 133, 0.541);
   -webkit-box-shadow: 0px 0px 33px 0px rgba(0,0,0,0.75);

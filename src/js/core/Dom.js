@@ -19,6 +19,14 @@ class Dom {
     this.$elem.removeEventListener(event, fn)
   }
 
+  qSelector(selector) {
+    return this.$elem.querySelector(selector)
+  }
+
+  insertHTML(position,node) {
+    this.$elem.insertAdjacentHTML(position, node)
+  }
+
   clear() {
     this.$elem.innerHTML = ''
     return this
