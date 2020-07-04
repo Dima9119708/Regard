@@ -16,6 +16,10 @@ h1,h2,h3,h4,li,ul,p {
   list-style-type: none;
 }
 
+:focus {
+  outline: 2px solid rgba(247, 22, 22, 0.7);
+}
+
 .container {
   max-width: 1240px;
   margin: 0 auto;
