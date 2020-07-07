@@ -1,15 +1,24 @@
 import { $ } from "../../core/Dom";
+import { Store } from "../../core/redux/Store";
+import { reducer } from "../../core/redux/reducer";
+import { storage } from "../../core/storage";
+import { initialState } from "../../core/initialState";
+import { Emmiter } from "../../core/Emmiter";
 
 export class InitComponent {
   constructor(components, DATA) {
     this.components = components
+    this.store = new Store(reducer, storage('REGARD') || initialState)
+    this.emmiter = new Emmiter()
     this.DATA = DATA
   }
 
   getRoot() {
 
     const options = {
-      DATA: this.DATA
+      DATA: this.DATA,
+      store: this.store,
+      emmiter: this.emmiter
     }
 
     const main = $.create('div', 'main')
@@ -23,6 +32,10 @@ export class InitComponent {
 
       return component
     });
+
+    this.store.subscribe(data => {
+      storage('REGARD', data)
+    })
 
     return main
   }

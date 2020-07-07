@@ -51,6 +51,10 @@
     display: inline-block;
     height: 20px;
     overflow: hidden;
-    margin-right: 5px;
+    padding-right: 5px;
+
+    .fa-cart-plus {
+      color : rgba(226, 9, 9, 0.986);
+    }
   }
 }
