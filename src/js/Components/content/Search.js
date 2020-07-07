@@ -1,16 +1,17 @@
-import { storage } from "../../core/storage"
 import { $ } from "../../core/Dom"
+import { searchHistory } from "../../core/redux/actions"
 
 export class Search {
 
-  constructor($root, data) {
-    this.$root = $root
-    this.DATA = data
+  constructor(content) {
+    this.$root = content.$root
+    this.DATA = content.DATA
+    this.store = content.store
   }
 
   searchHistory() {
 
-    const stor = storage('search-History')
+    const stor = this.store.getState().history
 
     if (stor && stor.length > 0) {
 
@@ -36,25 +37,25 @@ export class Search {
     return ''
   }
 
+  searchButton() {
+    const searchList = this.$root.qSelector('[data-search-list-item]')
+    const { searchListItem } = searchList.dataset
+
+    if (JSON.parse(searchListItem)) {
+
+      const { value } = this.$root.qSelector('[data-search]')
+      this.store.dispath(searchHistory(value))
+
+    }
+  }
+
   eventClick(event) {
 
     const { searchbutton, historyclear, historyitem } = event.target.dataset
     const searchLIST = event.target.closest('[data-search-rel]')
 
     if (searchbutton) {
-
-      const searchList = this.$root.qSelector('[data-search-list-item]')
-      const { searchListItem } = searchList.dataset
-
-      if (JSON.parse(searchListItem)) {
-        const { value } = this.$root.qSelector('[data-search]')
-
-        const arrayHistory = storage('search-History') || []
-        arrayHistory.push(value)
-
-        storage('search-History', arrayHistory)
-      }
-
+      this.searchButton()
     }
     else if (historyitem) {
 
@@ -68,7 +69,7 @@ export class Search {
       const parent = event.target.closest('[data-historyLi]')
       parent.innerHTML = ''
       parent.innerHTML = 'История поиска'
-      storage('search-History', [])
+      this.store.dispath(searchHistory('clear'))
 
     }
     else if (searchLIST) {
@@ -87,13 +88,17 @@ export class Search {
     if (search) {
       this.$root.qSelector('[data-search-list]').style.display = 'flex'
     }
+
+    if (search && event.key === 'Enter') {
+      this.searchButton()
+    }
   }
 
   eventInput(event) {
 
     const { value } = event.target || event
 
-    const searchDATA = searchInput(this.DATA, value)
+    const searchDATA = baseSearch(this.DATA, value)
 
     const listItem = this.$root.qSelector('[data-search-list-item]')
 
@@ -114,20 +119,23 @@ export class Search {
 }
 
 
-function searchInput(DATA, value) {
+function baseSearch(DATA, value) {
+
   return DATA.reduce((acc, goods) => {
 
-    if (value.toLowerCase() === '') {
+    value = value.toLowerCase().trim()
+
+    if (value === '') {
       return []
     }
-    else if (goods.name.toLowerCase().includes(value.toLowerCase())) {
+    else if (goods.name.toLowerCase().includes(value)) {
 
       if (acc.length > 10) {
         acc.splice(10, acc.length)
       }
 
       const str = `
-        <a class="s-content__search-list-item-children" href="#">
+        <a class="s-content__search-list-item-children" data-id="${goods.id}" href="#">
           <div class="s-content__search-list-item-children-image">
             <img src="./images/235789_600.png" alt="альтернативный текст">
           </div>

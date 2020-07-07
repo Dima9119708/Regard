@@ -2,9 +2,9 @@ import { $ } from "../../core/Dom";
 
 export class Sidebar {
 
-  constructor($root, DATA) {
-    this.$root = $root
-    this.DATA = DATA
+  constructor(content) {
+    this.$root = content.$root
+    this.DATA = content.DATA
   }
 
   // Рендер SideBar по типам продукта
@@ -17,6 +17,17 @@ export class Sidebar {
     const reSort = reSorting(types, this.DATA) // пересортировали массив в объект
 
     return sideBarHTML(reSort).join('')
+  }
+
+  sideBarTAB(event, types) {
+    sideBarTAB(event)
+
+    sideBarRenderContent(
+      types,
+      this.$root,
+      this.renderSideBar.bind(this),
+      this.renderBrand.bind(this)
+    )
   }
 
   // Рендер всех брендов
@@ -44,14 +55,7 @@ export class Sidebar {
         accardion(parentProduct)
       }
       else if (tab) {
-        sideBarTAB(event)
-
-        sideBarRenderContent(
-          types,
-          this.$root,
-          this.renderSideBar.bind(this),
-          this.renderBrand.bind(this)
-        )
+        this.sideBarTAB(event,types)
       }
 
     }
@@ -65,14 +69,7 @@ export class Sidebar {
       accardion(parentProduct, 'Keydown')
     }
     else if (tab) {
-      sideBarTAB(event)
-
-      sideBarRenderContent(
-        types,
-        this.$root,
-        this.renderSideBar.bind(this),
-        this.renderBrand.bind(this)
-      )
+      this.sideBarTAB(event, types)
     }
   }
 }

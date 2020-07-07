@@ -1,0 +1,5 @@
+export const __INIT__ = '__INIT__'
+export const SEARCH_HISTORY = 'SEARCH_HISTORY'
+export const ADD_BASKET = 'ADD_BASKET'
+export const SUM_TOTAL = 'SUM_TOTAL'
+export const COUNTER = 'COUNTER'

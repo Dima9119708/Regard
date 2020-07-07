@@ -1,0 +1,106 @@
+import * as actions from '../../core/redux/actions'
+
+function formatNumber(number) {
+  return new Intl.NumberFormat('ru-RU').format(number)
+}
+
+export function renderRandomContent(number, content) {
+
+  const { DATA, store } = content
+
+  const randomElements = []
+
+  for (let i = 0; i < number; i++) {
+    const random = Math.floor(Math.random() * DATA.length)
+    randomElements.push(DATA[random])
+  }
+
+
+  return renderProductCards(randomElements, store)
+}
+
+export function renderProductCards(data, store) {
+  return data.reduce((arr, item) => {
+
+    let addBasket = true
+    let colorIcon = 'red'
+    let dataTitleButton = 'Добавить в корзину'
+    let goToBasket = 'data-goToBasket="false"'
+
+    const { basket } = store.getState()
+
+    basket.forEach(goods => {
+      if (goods.id === item.id) {
+        addBasket = false
+        colorIcon = 'green'
+        dataTitleButton = 'Перейти в корзину'
+        goToBasket = 'data-goToBasket="true"'
+      }
+    });
+
+    if (item.id && item.name) {
+
+      const elementSTR = `
+          <div class="content-product-block" data-id="${item.id}">
+            <div class="content-product-block-image">
+              <div class="content-product-block-img">
+                <img src="./images/235789_600.png" alt="альтернативный текст">&gt;
+              </div>
+              <span>ID: ${item.id}</span></div>
+
+            <div class="content-product-block-content">
+                <div class="content-product-block-name">${item.name}</div>
+                <div class="content-product-block-dist">Описание временно нет</div>
+                <div class="content-product-block-price">
+                  <span data-addBasket="${addBasket}" ${goToBasket} title="${dataTitleButton}">
+                      <i class="fas fa-cart-plus" data-iconCard style="color:${colorIcon}"></i>
+                  </span>
+                  <span>
+                      ${formatNumber(item.price)} руб
+                  </span>
+                </div>
+                </div>
+            </div>
+        `
+      arr.push(elementSTR)
+    }
+
+    return arr
+  }, []).join('')
+}
+
+export function addBasketProducts(event, content) {
+
+  const { DATA, store, emmiter } = content
+
+  const addBasket = event.target.closest('[data-addBasket]')
+
+  if ( addBasket ) {
+    const { addbasket } = addBasket.dataset
+
+    if (JSON.parse(addbasket)) {
+
+      const { id } = event.target.closest('[data-id]').dataset
+
+      addBasket
+        .querySelector('[data-iconCard]')
+        .style.color = 'green'
+
+      const goods = DATA.find(elem => elem.id === id)
+
+      const counter = 1
+      const { price } = goods
+
+      store.dispath(actions.addBasket(goods))
+      store.dispath(actions.sumTotal(+price))
+      store.dispath(actions.counter(counter))
+
+      addBasket.setAttribute('data-addBasket', false)
+      addBasket.setAttribute('data-goToBasket', true)
+      addBasket.title = 'Перейти в корзину'
+
+      emmiter.emit('LOGIN__BAR', true)
+      emmiter.emit('HEADER__TOP', true)
+    }
+  }
+}
