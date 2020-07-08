@@ -1,5 +1,7 @@
 import { $ } from "../../core/Dom"
 import { searchHistory } from "../../core/redux/actions"
+import { ActiveRout } from "../../Routing/ActiveRouter"
+import { calatogFN } from "../../core/urlHash.fn"
 
 export class Search {
 
@@ -9,29 +11,30 @@ export class Search {
     this.store = content.store
   }
 
-  searchHistory() {
+  getHistory() {
 
-    const stor = this.store.getState().history
+    const { history } = this.store.getState()
 
-    if (stor && stor.length > 0) {
+    if (history && history.length > 0) {
 
-      const history = stor.map(item => {
+      const story = history.map(item => {
         return `
           <div
             class="s-content__search-list-item-history"
-            data-historyItem="historyItem">
+            data-historyItem="historyItem"
+            >
             ${item}
           </div>
         `
       })
 
-      history.push(`<button
+      story.push(`<button
                       data-historyClear="Clear"
                       class="s-content__search-list-item-history-clear">
                       Очистить историю
                     </button>`)
 
-      return history.join('')
+      return story.join('')
     }
 
     return ''
@@ -39,20 +42,42 @@ export class Search {
 
   searchButton() {
     const searchList = this.$root.qSelector('[data-search-list-item]')
-    const { searchListItem } = searchList.dataset
 
-    if (JSON.parse(searchListItem)) {
+    if (searchList) {
 
-      const { value } = this.$root.qSelector('[data-search]')
-      this.store.dispath(searchHistory(value))
+      const { searchListItem } = searchList.dataset
 
+      if (JSON.parse(searchListItem)) {
+
+        const { value } = this.$root.qSelector('[data-search]')
+        this.store.dispath(searchHistory(value))
+
+        const hash = calatogFN(value, '')
+        ActiveRout.setHash(hash)
+      }
+    }
+  }
+
+  appendSearchList() {
+    const searchList = this.$root.qSelector('[data-search-list]')
+
+    if (!searchList) {
+      const parent = this.$root.qSelector('[data-search-rel]')
+      const node = createSearchList(this.getHistory.bind(this))
+      parent.append(node)
+
+      const search = this.$root.qSelector('[data-search]')
+
+      if (search.value) {
+        this.eventInput(search)
+      }
     }
   }
 
   eventClick(event) {
 
     const { searchbutton, historyclear, historyitem } = event.target.dataset
-    const searchLIST = event.target.closest('[data-search-rel]')
+    const searchInput = event.target.closest('[data-search-rel]')
 
     if (searchbutton) {
       this.searchButton()
@@ -72,13 +97,16 @@ export class Search {
       this.store.dispath(searchHistory('clear'))
 
     }
-    else if (searchLIST) {
-
-      this.$root.qSelector('[data-search-list]').style.display = 'flex'
-
+    else if (searchInput) {
+      this.appendSearchList()
     }
     else {
-      this.$root.qSelector('[data-search-list]').style.display = 'none'
+
+      const searchList = this.$root.qSelector('[data-search-list]')
+
+      if (searchList) {
+        searchList.remove()
+      }
     }
   }
 
@@ -86,7 +114,7 @@ export class Search {
     const { search } = event.target.dataset
 
     if (search) {
-      this.$root.qSelector('[data-search-list]').style.display = 'flex'
+      this.appendSearchList()
     }
 
     if (search && event.key === 'Enter') {
@@ -118,6 +146,20 @@ export class Search {
   }
 }
 
+function createSearchList(getHistory) {
+  const searchLi = $.create('div', 's-content__search-list')
+  searchLi.setAttribute('data-search-list','search-list')
+  searchLi.innerHTML = `
+    <div class="s-content__search-list-item" data-historyLi>
+        История поиска
+        ${getHistory()}
+      </div>
+      <div class="s-content__search-list-item" data-search-list-item="false">
+        Введите модель в поиск
+    </div>
+  `
+  return searchLi
+}
 
 function baseSearch(DATA, value) {
 

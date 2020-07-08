@@ -38,7 +38,7 @@ export class LoginBar extends ParentComponent {
 
   renderHTML() {
 
-    return `<span data-loginBar></span><span>Мне нужна консультация специалиста</span>`
+    return `<span data-loginBar></span>`
 
   }
 }

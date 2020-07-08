@@ -1,4 +1,6 @@
 import { $ } from "../../core/Dom";
+import { calatogFN } from "../../core/urlHash.fn";
+import { ActiveRout } from "../../Routing/ActiveRouter";
 
 export class Sidebar {
 
@@ -48,7 +50,7 @@ export class Sidebar {
 
     if (sidebar) {
 
-      const { tab, types } = event.target.dataset
+      const { tab, types,brand } = event.target.dataset
       const parentProduct = event.target.closest('[data-parentProduct]')
 
       if (parentProduct) {
@@ -58,10 +60,17 @@ export class Sidebar {
         this.sideBarTAB(event,types)
       }
 
+      if (brand) {
+        const { goods } = event.target.closest('[data-goods]').dataset
+        const urlSTR = calatogFN(goods, brand)
+
+        ActiveRout.setHash(urlSTR)
+      }
     }
   }
 
   eventKeyBoard(event) {
+
     const { tab, types } = event.target.dataset
     const parentProduct = event.target.closest('[data-parentProduct]')
 
@@ -107,7 +116,7 @@ function sideBarHTML(reSort) {
       if (item) {
         return `
           <li class="content-product__menu-internal-item" data-brand="${item}">
-            <a class="content-product__menu-internal-item-link" data-internal-item="internal" href="#">${item}</a>
+            <a class="content-product__menu-internal-item-link" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
           </li>
         `
       }
@@ -119,7 +128,7 @@ function sideBarHTML(reSort) {
       <span data-plus>+</span>
           <ul class="content-product__menu-internal" data-internal">
             <li class="content-product__menu-internal-item">
-            <a class="content-product__menu-internal-item-link" data-internal-item="internal" href="#">все товары раздела</a></li>
+            <a class="content-product__menu-internal-item-link" data-brand="all"  data-internal-item="internal" href="#">все товары раздела</a></li>
             ${brand.join('')}
           </ul>
       </li>
@@ -175,8 +184,11 @@ function brandsHTML(brand) {
           <li
             class="content-product__menu-item"
             data-brand="${item}"
+            data-goods="${item}"
             >
-            <a class="content-product__menu-internal-item-link" href="#">${item}</a>
+            <a class="content-product__menu-internal-item-link"
+             data-brand="${item}"
+             href="#">${item}</a>
           </li>
       `
 

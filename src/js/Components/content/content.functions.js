@@ -1,4 +1,5 @@
 import * as actions from '../../core/redux/actions'
+import { ActiveRout } from '../../Routing/ActiveRouter'
 
 function formatNumber(number) {
   return new Intl.NumberFormat('ru-RU').format(number)
@@ -103,4 +104,54 @@ export function addBasketProducts(event, content) {
       emmiter.emit('HEADER__TOP', true)
     }
   }
+}
+
+export function urlParse() {
+
+  const currentURL = decodeURI(ActiveRout.urLHash)
+
+  return currentURL
+          .split('/---/')
+          .slice(1, currentURL.length)
+          .filter(elem => elem !== '')
+}
+
+export function reSotingDATA__url(data) {
+
+  const formatURL__STR = urlParse()
+
+  return data.reduce((acc, item ) => {
+
+    const { type, producer, name } = item
+
+    const nameLowCase = name.toLowerCase()
+    const typeLowCase = type.toLowerCase()
+    const producerLowCase = producer.toLowerCase()
+    const paramURL1 = formatURL__STR[0].toLowerCase()
+    const paramURL2 = !formatURL__STR[1]
+                      ? ''
+                      : formatURL__STR[1].toLowerCase()
+
+    if (typeLowCase === paramURL1
+      && producerLowCase === paramURL2) {
+
+      acc.push(item)
+    }
+    else if (typeLowCase === paramURL1
+      && paramURL2 === 'all') {
+
+      acc.push(item)
+    }
+    else if (producerLowCase === paramURL1) {
+      acc.push(item)
+    }
+    else if (nameLowCase === paramURL1) {
+      acc.push(item)
+    }
+    else if (item.name.toLowerCase().includes(paramURL1)) {
+      acc.push(item)
+    }
+
+    return acc
+  }, [])
 }
