@@ -88,14 +88,17 @@ function reSorting(types, DATA) {
 
   return types.reduce((acc, type) => {
 
-    acc[type] = []
+    if (type !== '') {
 
-    DATA.forEach(elem => {
+      acc[type] = []
 
-      if (type === elem.type) {
-        acc[type].push(elem)
-      }
-    })
+      DATA.forEach(elem => {
+
+        if (type === elem.type) {
+          acc[type].push(elem)
+        }
+      })
+    }
 
     return acc
   }, {});
@@ -104,8 +107,6 @@ function reSorting(types, DATA) {
 function sideBarHTML(reSort) {
 
   return Object.keys(reSort).map(goods => {
-
-    if (goods === '') return
 
     let brand = reSort[goods].map(elem => elem.producer)
 
@@ -128,7 +129,7 @@ function sideBarHTML(reSort) {
       <span data-plus>+</span>
           <ul class="content-product__menu-internal" data-internal">
             <li class="content-product__menu-internal-item">
-            <a class="content-product__menu-internal-item-link" data-brand="all"  data-internal-item="internal" href="#">все товары раздела</a></li>
+            <a class="content-product__menu-internal-item-link" data-brand="Все"  data-internal-item="internal" href="#">все товары раздела</a></li>
             ${brand.join('')}
           </ul>
       </li>

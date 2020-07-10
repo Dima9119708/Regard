@@ -1,9 +1,9 @@
 export const catalog = 'catalog'
 
-export const calatogFN = (params, params2) => {
+export const calatogFN = (params, params2, pageActive = '') => {
 
-  const paramsBrand = params === params2 ? '' : `/---/${params2}`
+  const paramsBrand = params === params2 ? '' : `/+/${params2}`
 
-  return `${catalog}/---/${params}${paramsBrand}`
+  return `${catalog}/+/${params}${paramsBrand}/+/${pageActive}`
 
 }

@@ -1,14 +1,27 @@
 .content-blocks__pagination {
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
   padding: 10px 20px;
-  text-align: right;
   background-color: #ECECEC;
   font-size: 13px;
 
-  & span {
-    display: inline-block;
-    margin: 0 7px;
-    border-bottom: 1px dashed #000;
+  .content-blocks__pagination-item {
+    padding: 4px 8px;
+    margin-right: 5px;
+    color: #ffffff;
+    border-radius: 5px;
     cursor: pointer;
+    background-color: rgba(102, 102, 245, 0.644);
+    transition: background-color .1s linear;
+
+    &:hover {
+      background-color: rgba(36, 36, 255, 0.644);
+      transition: background-color .1s linear;
+    }
+
+    &.content-blocks__pagination-item--active {
+      background-color: rgb(102, 102, 245);
+    }
   }
 }

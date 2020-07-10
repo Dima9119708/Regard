@@ -5,6 +5,7 @@ import { addBasketProducts } from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import { renderMainContent, renderCatalogContent } from "./renderContent";
 import { catalog } from "../../core/urlHash.fn";
+import { paginationEvent } from '../../core/pagination'
 
 export class Content extends ParentComponent {
 
@@ -32,7 +33,6 @@ export class Content extends ParentComponent {
     else if (ActiveRout.urLHash.startsWith(catalog)) {
       return renderCatalogContent(this)
     }
-
   }
 
   init() {
@@ -69,11 +69,15 @@ export class Content extends ParentComponent {
   onClick(event) {
     this.sideBar.eventClick(event)
     this.search.eventClick(event)
+
     addBasketProducts(event, this)
+
+    paginationEvent(event, this)
   }
 
   onKeydown(event) {
     this.sideBar.eventKeyBoard(event)
+
     this.search.eventKeyBoard(event)
   }
 

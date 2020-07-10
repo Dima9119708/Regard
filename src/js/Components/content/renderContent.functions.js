@@ -8,20 +8,32 @@ export function titleSearch() {
   if (!URLParse.length) {
     titleSearch = ''
   }
-  else if (URLParse.length === 2) {
-    titleSearch = URLParse[0]
+  else {
+
+    const urtParam2 = URLParse[1] ? `- ${URLParse[1]}` : ''
+
+    titleSearch = `Результат поиска: ${URLParse[0]} ${urtParam2}`
   }
-  else if (URLParse.length === 1) {
-    titleSearch = `Результат поиска: ${URLParse[0]}`
-  }
+
+  document.title = `
+                    Поиск: ${URLParse[0]} - ${URLParse[1] || ''}.
+                    Регард - сеть компьютерных магазинов
+                  `
 
   return titleSearch
 }
 
-export function errorSRT(base) {
-  let errorSRT = !base.length
-    ? errorSRT = 'По вашему запросу ничего не найдено'
-    : ''
+export function errorSRT(base,showItems, renderCardsTEST) {
 
-  return errorSRT
+  if (!base.length) {
+    return 'По вашему запросу ничего не найдено'
+  }
+  else if (!showItems.length) {
+    return 'Страницы не существует'
+  }
+  else if (renderCardsTEST === '') {
+    return 'Товаров нет'
+  }
+
+  return ''
 }

@@ -45,7 +45,7 @@ export function renderProductCards(data, store) {
           <div class="content-product-block" data-id="${item.id}">
             <div class="content-product-block-image">
               <div class="content-product-block-img">
-                <img src="./images/235789_600.png" alt="альтернативный текст">&gt;
+                <img src="./images/235789_600.png" alt="альтернативный текст">
               </div>
               <span>ID: ${item.id}</span></div>
 
@@ -64,6 +64,9 @@ export function renderProductCards(data, store) {
             </div>
         `
       arr.push(elementSTR)
+    }
+    else {
+      return []
     }
 
     return arr
@@ -108,12 +111,18 @@ export function addBasketProducts(event, content) {
 
 export function urlParse() {
 
-  const currentURL = decodeURI(ActiveRout.urLHash)
+  try {
+    const currentURL = decodeURI(ActiveRout.urLHash)
 
-  return currentURL
-          .split('/---/')
-          .slice(1, currentURL.length)
-          .filter(elem => elem !== '')
+    return currentURL
+        .split('/+/')
+        .slice(1, currentURL.length)
+        .filter(elem => elem !== '')
+
+  } catch (e) {
+    alert('Ошибка URL')
+  }
+
 }
 
 export function reSotingDATA__url(data) {
@@ -138,7 +147,7 @@ export function reSotingDATA__url(data) {
       acc.push(item)
     }
     else if (typeLowCase === paramURL1
-      && paramURL2 === 'all') {
+      && paramURL2 === 'все') {
 
       acc.push(item)
     }
