@@ -4,6 +4,7 @@ import { renderRandomContent,
       } from "./content.functions"
 
 import { titleSearch, errorSRT } from "./renderContent.functions"
+import { paginationNumberRender, showItemsPagination, } from "../../core/pagination"
 
 
 export function renderMainContent(content) {
@@ -43,12 +44,28 @@ export function renderCatalogContent(content) {
     <section class="s-content-products">
         <section class="s-content-foods">
             <div class="content-hits__top">
-                <span>${titleSearch()} </span><span></span></div>
+                <span data-titleSearch>${titleSearch()} </span><span></span></div>
 
-            <div class="content-blocks">
+            <div class="content-blocks" data-cards>
             <div class="content-blocks__sorting">Сортировать по : <span>по цене</span></div>
-             ${renderProductCards(base, store) || errorSRT(base) }
-            </div><div class="content-blocks__pagination">Товаров на странице: <span>40 </span><span>100 </span><span>Все</span></div></></section><div class="content-products-filter"><div class="content-products-filter__header">Подбор по параметрам</div><div class="content-products-filter__reset">Сбросить фильтры</div><ul class="content-products-filter__list"><li class="content-products-filter__item"> <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.<div class="content-products-filter__price"><div class="input-price from">от<input type="number" value="2940"></div><div class="input-price before">до<input type="number" value="133550"></div></div></li></ul><div class="content-products-filter__reset">Применить фильтры<span>Найдено товаров 5</span></div></div></section>
+             ${
+              renderProductCards(showItemsPagination(base), store)
+              ||
+              errorSRT(
+                  base,
+                  showItemsPagination(base),
+                  renderProductCards(showItemsPagination(base), store)
+                )
+              }
+            </div>
+
+            <div class="content-blocks__pagination" data-pagination>
+
+            ${
+              paginationNumberRender(base)
+            }
+
+            </div></></section><div class="content-products-filter"><div class="content-products-filter__header">Подбор по параметрам</div><div class="content-products-filter__reset">Сбросить фильтры</div><ul class="content-products-filter__list"><li class="content-products-filter__item"> <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.<div class="content-products-filter__price"><div class="input-price from">от<input type="number" value="2940"></div><div class="input-price before">до<input type="number" value="133550"></div></div></li></ul><div class="content-products-filter__reset">Применить фильтры<span>Найдено товаров 5</span></div></div></section>
 
   `
 }

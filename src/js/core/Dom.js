@@ -23,6 +23,10 @@ class Dom {
     return this.$elem.querySelector(selector)
   }
 
+  qSelectorAll(selector) {
+    return this.$elem.querySelectorAll(selector)
+  }
+
   insertHTML(position,node) {
     this.$elem.insertAdjacentHTML(position, node)
   }

@@ -50,7 +50,12 @@ export class Search {
       if (JSON.parse(searchListItem)) {
 
         const { value } = this.$root.qSelector('[data-search]')
-        this.store.dispath(searchHistory(value))
+
+        const { history } = this.store.getState()
+
+        if (!history.includes(value)) {
+          this.store.dispath(searchHistory(value))
+        }
 
         const hash = calatogFN(value, '')
         ActiveRout.setHash(hash)
