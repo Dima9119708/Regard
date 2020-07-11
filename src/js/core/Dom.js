@@ -35,6 +35,10 @@ class Dom {
     this.$elem.innerHTML = ''
     return this
   }
+
+  returnNode() {
+    return this.$elem
+  }
 }
 
 export function $(element) {

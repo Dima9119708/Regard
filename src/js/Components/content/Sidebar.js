@@ -1,5 +1,5 @@
 import { $ } from "../../core/Dom";
-import { calatogFN } from "../../core/urlHash.fn";
+import { calatogFN, catalogHashPath } from "../../core/urlHash.fn";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 
 export class Sidebar {
@@ -61,9 +61,12 @@ export class Sidebar {
       }
 
       if (brand) {
-        const { goods } = event.target.closest('[data-goods]').dataset
-        const urlSTR = calatogFN(goods, brand)
 
+        const { goods } = event.target.closest('[data-goods]').dataset
+
+        const brands = brand === goods ? catalogHashPath.production : brand
+
+        const urlSTR = calatogFN(goods, brands)
         ActiveRout.setHash(urlSTR)
       }
     }
@@ -93,7 +96,6 @@ function reSorting(types, DATA) {
       acc[type] = []
 
       DATA.forEach(elem => {
-
         if (type === elem.type) {
           acc[type].push(elem)
         }

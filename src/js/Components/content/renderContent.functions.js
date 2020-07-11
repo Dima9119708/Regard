@@ -9,10 +9,7 @@ export function titleSearch() {
     titleSearch = ''
   }
   else {
-
-    const urtParam2 = URLParse[1] ? `- ${URLParse[1]}` : ''
-
-    titleSearch = `Результат поиска: ${URLParse[0]} ${urtParam2}`
+    titleSearch = `${URLParse[0]} - ${URLParse[1]}`
   }
 
   document.title = `

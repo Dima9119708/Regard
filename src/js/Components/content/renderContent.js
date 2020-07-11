@@ -4,7 +4,7 @@ import { renderRandomContent,
       } from "./content.functions"
 
 import { titleSearch, errorSRT } from "./renderContent.functions"
-import { paginationINIT, showItemsPagination, } from "../../core/pagination"
+import { pagination } from "../../core/pagination"
 
 
 export function renderMainContent(content) {
@@ -35,13 +35,13 @@ export function renderMainContent(content) {
 
 export function renderCatalogContent(content) {
 
-  const { DATA, store } = content
+  const { $root, DATA, store } = content
 
   const base = reSotingDATA__url(DATA)
 
+  pagination.eventClick($root,base, store)
 
   return `
-
     <section class="s-content-products">
         <section class="s-content-foods">
             <div class="content-hits__top">
@@ -50,20 +50,20 @@ export function renderCatalogContent(content) {
             <div class="content-blocks" data-cards>
             <div class="content-blocks__sorting">Сортировать по : <span>по цене</span></div>
              ${
-              renderProductCards(showItemsPagination(base), store)
+              renderProductCards(pagination.showItems(base), store)
               ||
-              errorSRT(
+                errorSRT(
                   base,
-                  showItemsPagination(base),
-                  renderProductCards(showItemsPagination(base), store)
-              )
+                  pagination.showItems(base),
+                  renderProductCards(pagination.showItems(base), store)
+                )
               }
             </div>
 
             <div class="content-blocks__pagination" data-pagination>
 
             ${
-              paginationINIT(base)
+              pagination.__INIT__(base)
             }
 
             </div></></section><div class="content-products-filter"><div class="content-products-filter__header">Подбор по параметрам</div><div class="content-products-filter__reset">Сбросить фильтры</div><ul class="content-products-filter__list"><li class="content-products-filter__item"> <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.<div class="content-products-filter__price"><div class="input-price from">от<input type="number" value="2940"></div><div class="input-price before">до<input type="number" value="133550"></div></div></li></ul><div class="content-products-filter__reset">Применить фильтры<span>Найдено товаров 5</span></div></div></section>
