@@ -65,9 +65,6 @@ export function renderProductCards(data, store) {
         `
       arr.push(elementSTR)
     }
-    else {
-      return []
-    }
 
     return arr
   }, []).join('')
@@ -143,12 +140,10 @@ export function reSotingDATA__url(data) {
 
     if (typeLowCase === paramURL1
       && producerLowCase === paramURL2) {
-
       acc.push(item)
     }
     else if (typeLowCase === paramURL1
       && paramURL2 === 'все') {
-
       acc.push(item)
     }
     else if (producerLowCase === paramURL1) {
@@ -157,8 +152,10 @@ export function reSotingDATA__url(data) {
     else if (nameLowCase === paramURL1) {
       acc.push(item)
     }
-    else if (item.name.toLowerCase().includes(paramURL1)) {
-      acc.push(item)
+    else if (paramURL2 === '') {
+      if (nameLowCase.includes(paramURL1)) {
+        acc.push(item)
+      }
     }
 
     return acc

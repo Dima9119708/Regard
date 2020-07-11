@@ -4,7 +4,7 @@ import { renderRandomContent,
       } from "./content.functions"
 
 import { titleSearch, errorSRT } from "./renderContent.functions"
-import { paginationNumberRender, showItemsPagination, } from "../../core/pagination"
+import { paginationINIT, showItemsPagination, } from "../../core/pagination"
 
 
 export function renderMainContent(content) {
@@ -39,6 +39,7 @@ export function renderCatalogContent(content) {
 
   const base = reSotingDATA__url(DATA)
 
+
   return `
 
     <section class="s-content-products">
@@ -55,14 +56,14 @@ export function renderCatalogContent(content) {
                   base,
                   showItemsPagination(base),
                   renderProductCards(showItemsPagination(base), store)
-                )
+              )
               }
             </div>
 
             <div class="content-blocks__pagination" data-pagination>
 
             ${
-              paginationNumberRender(base)
+              paginationINIT(base)
             }
 
             </div></></section><div class="content-products-filter"><div class="content-products-filter__header">Подбор по параметрам</div><div class="content-products-filter__reset">Сбросить фильтры</div><ul class="content-products-filter__list"><li class="content-products-filter__item"> <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.<div class="content-products-filter__price"><div class="input-price from">от<input type="number" value="2940"></div><div class="input-price before">до<input type="number" value="133550"></div></div></li></ul><div class="content-products-filter__reset">Применить фильтры<span>Найдено товаров 5</span></div></div></section>
