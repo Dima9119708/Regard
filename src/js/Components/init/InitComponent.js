@@ -33,7 +33,7 @@ export class InitComponent {
       return component
     });
 
-    this.store.subscribe(data => {
+    this.store.subscribe( data => {
       storage('REGARD', data)
     })
 

@@ -38,9 +38,9 @@ module.exports = {
       template : './src/pug/product.pug'
     }),
     new CopyPlugin([
-      { 
-        from: './src/images', 
-        to: 'images' 
+      {
+        from: './src/images',
+        to: 'images'
       },
     ]),
     new MiniCssExtractPlugin({
@@ -82,12 +82,12 @@ module.exports = {
             loader: 'file-loader',
           },
         ],
-      }, 
-      { 
-        test: /\.(woff|woff2|eot|ttf)$/, 
-        use: ['file-loader'] 
       },
-      
+      {
+        test: /\.(woff|woff2|eot|ttf)$/,
+        use: ['file-loader']
+      },
+
     ],
   },
 };

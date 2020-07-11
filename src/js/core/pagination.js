@@ -21,58 +21,42 @@ function pageActive() {
   return pageActive
 }
 
+function renderItemsPagination(pages) {
+
+  const counterPages = pages
+  let displayStyle = 'block'
+
+  return (_, idx) => {
+
+    const activePage = pageActive()
+    let active = ''
+
+    if (idx === activePage - 1) {
+      active = 'content-blocks__pagination-item--active'
+    }
+
+    return `
+      <div
+        class="content-blocks__pagination-item ${active}"
+        data-paginationNumber="${idx + 1}"
+        data-paginationItem="${idx * showItems}"
+        style="display: ${displayStyle}">
+        ${idx + 1}
+      </div>
+      `
+  }
+}
+
 export function paginationNumberRender(base) {
 
   const item = showItems
   const counterPages = Math.ceil(base.length / item)
-  const activePage = pageActive()
 
-  // if (counterPages > 20) {
+  const slicePagination = new Array(counterPages)
+                          .fill('')
+                          .map(renderItemsPagination(counterPages))
 
-  //   const slicePagination = new Array(counterPages)
-  //                           .fill('')
-  //                           .slice(0, 5)
-  //                           .map((_, idx) => {
-
-  //                             let active = ''
-  //                             if (idx === activePage - 1) {
-  //                               active = 'content-blocks__pagination-item--active'
-  //                             }
-
-  //                             return `
-  //                                       <div
-  //                                         class="content-blocks__pagination-item ${active}"
-  //                                         data-paginationNumber="${idx + 1}"
-  //                                         data-paginationItem="${idx * showItems}">
-  //                                         ${idx + 1}
-  //                                       </div>
-  //                                       `
-  //                           })
-  //                           .join('')
-
-  //   return
-  // }
-
-  return new Array(counterPages)
-            .fill('')
-            .map((_, idx) => {
-
-              let active = ''
-              if (idx === activePage - 1 ) {
-                active = 'content-blocks__pagination-item--active'
-              }
-
-              return `
-                  <div
-                    class="content-blocks__pagination-item ${active}"
-                    data-paginationNumber="${idx + 1}"
-                    data-paginationItem="${idx * showItems}">
-                    ${idx + 1}
-                  </div>
-                  `
-            })
-            .join('')
-
+  return slicePagination.join('')
 }
 
 export function showItemsPagination(base) {
@@ -86,16 +70,17 @@ export function paginationEvent(event, { DATA, store, $root }) {
 
   if (paginationItem) {
 
+    const { paginationnumber } = event.target.dataset
+
     DATA = reSotingDATA__url(DATA)
 
     paginationActiveInDOM($root)
     renderCardsPagination(event, $root, DATA, store)
-    changeURL(event)
+    changeURL(paginationnumber)
   }
 }
 
-function changeURL(event) {
-  const { paginationnumber } = event.target.dataset
+function changeURL(paginationnumber, DATA) {
 
   const currentURL = urlParse()
 
