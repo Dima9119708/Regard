@@ -3,9 +3,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 50;
   transform: translate(-50%,-50%);
   width: 100px;
   height: 100px;
+}
+.lds-roller-opacity {
+  opacity: 0;
+  transition: opacity 0.4s linear;
 }
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
