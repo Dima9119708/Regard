@@ -47,10 +47,11 @@ function renderItemsPagination(pages) {
   }
 }
 
-export function paginationNumberRender(base) {
+export function paginationINIT(base) {
 
   const item = showItems
   const counterPages = Math.ceil(base.length / item)
+
 
   const slicePagination = new Array(counterPages)
                           .fill('')
@@ -60,6 +61,7 @@ export function paginationNumberRender(base) {
 }
 
 export function showItemsPagination(base) {
+
   const start = (pageActive() - 1) * showItems
   return base.slice(start, start + showItems)
 }
