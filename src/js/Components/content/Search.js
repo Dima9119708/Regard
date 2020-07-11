@@ -1,7 +1,7 @@
 import { $ } from "../../core/Dom"
 import { searchHistory } from "../../core/redux/actions"
 import { ActiveRout } from "../../Routing/ActiveRouter"
-import { calatogFN } from "../../core/urlHash.fn"
+import { calatogFN, catalogHashPath } from "../../core/urlHash.fn"
 
 export class Search {
 
@@ -57,7 +57,7 @@ export class Search {
           this.store.dispath(searchHistory(value))
         }
 
-        const hash = calatogFN(value, '')
+        const hash = calatogFN(value, catalogHashPath.search)
         ActiveRout.setHash(hash)
       }
     }

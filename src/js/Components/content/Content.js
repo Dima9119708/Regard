@@ -55,7 +55,7 @@ export class Content extends ParentComponent {
       </div>
       <button class="s-content__find" data-searchButton="search" type="search">Найти</button></section>
 
-      <div class="content-wrapper">
+      <div class="content-wrapper" data-content-wrapper>
          ${this.renderContent()}
       </div>
       </main>
@@ -69,10 +69,7 @@ export class Content extends ParentComponent {
   onClick(event) {
     this.sideBar.eventClick(event)
     this.search.eventClick(event)
-
     addBasketProducts(event, this)
-
-    paginationEvent(event, this)
   }
 
   onKeydown(event) {

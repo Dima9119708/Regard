@@ -1,5 +1,6 @@
 import * as actions from '../../core/redux/actions'
 import { ActiveRout } from '../../Routing/ActiveRouter'
+import { catalogHashPath } from '../../core/urlHash.fn'
 
 function formatNumber(number) {
   return new Intl.NumberFormat('ru-RU').format(number)
@@ -134,9 +135,7 @@ export function reSotingDATA__url(data) {
     const typeLowCase = type.toLowerCase()
     const producerLowCase = producer.toLowerCase()
     const paramURL1 = formatURL__STR[0].toLowerCase()
-    const paramURL2 = !formatURL__STR[1]
-                      ? ''
-                      : formatURL__STR[1].toLowerCase()
+    const paramURL2 = formatURL__STR[1].toLowerCase()
 
     if (typeLowCase === paramURL1
       && producerLowCase === paramURL2) {
@@ -152,7 +151,10 @@ export function reSotingDATA__url(data) {
     else if (nameLowCase === paramURL1) {
       acc.push(item)
     }
-    else if (paramURL2 === '') {
+    else if (
+      paramURL2 === catalogHashPath.search.toLowerCase()
+      || paramURL2 === catalogHashPath.production.toLowerCase()) {
+
       if (nameLowCase.includes(paramURL1)) {
         acc.push(item)
       }

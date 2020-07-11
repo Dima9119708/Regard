@@ -46,5 +46,6 @@ export class InitComponent {
 
   destroy() {
     this.components.forEach(component => component.destroy());
+    document.onclick = null
   }
 }
