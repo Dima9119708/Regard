@@ -1,12 +1,48 @@
 import { $ } from "../../core/Dom";
 import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn";
 import { ActiveRout } from "../../Routing/ActiveRouter";
+import { urlParse } from "../../core/utils";
 
 export class Sidebar {
 
   constructor(content) {
     this.$root = content.$root
     this.DATA = content.DATA
+  }
+
+  render() {
+    const urlParams = urlParse()
+
+    if (urlParams[1] === catalogHashPath.production) {
+      return this.renderBrand()
+    }
+    else {
+      return this.renderSideBar()
+    }
+
+
+  }
+
+  activeClassDom() {
+
+    const urlParams = urlParse()
+
+    if (urlParams[1] === catalogHashPath.production) {
+      return {
+        type : '',
+        brand: 'tab--active'
+      }
+    }
+    else if (!urlParams.length || urlParams.length) {
+      return {
+        type: 'tab--active',
+        brand : ''
+      }
+    }
+    else {
+      return ''
+    }
+
   }
 
   // Рендер SideBar по типам продукта
@@ -21,9 +57,9 @@ export class Sidebar {
     return trainingSidebarHTML(reSort).join('')
   }
 
-  renderSidebarTAB(event, types) {
+  renderSidebarTAB(target, types) {
 
-    sidebarTABDOMActive(event)
+    sidebarTABDOMActive(target)
     sideBarRenderContent(
       types,
       this.$root,
@@ -60,7 +96,7 @@ export class Sidebar {
         accardion(parentProduct)
       }
       else if (tab) {
-        this.renderSidebarTAB(event,types)
+        this.renderSidebarTAB(target,types)
       }
 
       if (brand) {
@@ -86,7 +122,7 @@ export class Sidebar {
       accardion(parentProduct, 'Keydown')
     }
     else if (tab) {
-      this.renderSidebarTAB(event, types)
+      this.renderSidebarTAB(target, types)
     }
   }
 }
@@ -113,26 +149,49 @@ function reSorting(types, DATA) {
 
 function trainingSidebarHTML(reSort) {
 
+  const urlParams = urlParse()
+
   return Object.keys(reSort).map(goods => {
 
     let brand = reSort[goods].map(elem => elem.producer)
+    let active = ''
 
     brand = [...new Set(brand)]
 
     brand = brand.map(item => {
 
+      active = ''
+
+      if (urlParams[0] === goods && urlParams[1] === item ) {
+        active = 'content-product__menu-internal-item-link--active'
+      }
+
       if (item) {
         return `
           <li class="content-product__menu-internal-item" data-brand="${item}">
-            <a class="content-product__menu-internal-item-link" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
+            <a class="content-product__menu-internal-item-link ${active}" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
           </li>
         `
       }
     })
 
+    let accardionBoolean = false
+    let maxHeight = '26px'
+
+    if (urlParams[0] === goods) {
+      accardionBoolean = true,
+      maxHeight = '100%'
+    }
+
+    if (urlParams[0] === goods) {
+      active = 'content-product__menu-internal-item-link--active'
+    }
+
     return `
-      <li class="content-product__menu-item" data-parentProduct data-accardion="false" data-goods="${goods}">
-      <button class="content-product__menu-item-button" data-buttonMainProduct="MainProduct" type="button"> ${goods}</button>
+      <li class="content-product__menu-item " data-parentProduct data-accardion="${accardionBoolean}" data-goods="${goods}"
+      style="max-height:${maxHeight}"
+      >
+      <button class="content-product__menu-item-button ${active}" data-buttonMainProduct="MainProduct" type="button"> ${goods}</button>
       <span data-plus>+</span>
           <ul class="content-product__menu-internal" data-internal">
             <li class="content-product__menu-internal-item">
@@ -143,7 +202,6 @@ function trainingSidebarHTML(reSort) {
     `
   })
 }
-
 
 function accardion(event, frag) {
 
@@ -182,9 +240,18 @@ function filterBrands(DATA) {
 }
 
 function trainingBrandsHTML(brand) {
+
+  const urlParams = urlParse()
+
   return brand.reduce((acc, item) => {
 
     if (item) {
+
+
+      let active = ''
+      if (urlParams[0] === item) {
+        active = 'content-product__menu-internal-item-link--active'
+      }
 
       const str = `
           <li
@@ -192,7 +259,7 @@ function trainingBrandsHTML(brand) {
             data-brand="${item}"
             data-goods="${item}"
             >
-            <a class="content-product__menu-internal-item-link"
+            <a class="content-product__menu-internal-item-link ${active}"
              data-brand="${item}"
              href="#">${item}</a>
           </li>
@@ -205,9 +272,9 @@ function trainingBrandsHTML(brand) {
   }, []).join('')
 }
 
-function sidebarTABDOMActive(event) {
+function sidebarTABDOMActive(target) {
 
-  const $parent = event.target.closest('[data-type]')
+  const $parent = target.closest('[data-type]')
 
   for (let item of $parent.children) {
     item.classList.remove('tab--active')

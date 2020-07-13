@@ -36,6 +36,10 @@ class Dom {
     return this
   }
 
+  closest(node) {
+    return this.$elem.closest(node)
+  }
+
   returnNode() {
     return this.$elem
   }

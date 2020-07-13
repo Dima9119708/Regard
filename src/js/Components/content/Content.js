@@ -5,7 +5,6 @@ import { addBasketProducts } from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import { renderMainContent, renderCatalogContent } from "./renderContent";
 import { catalog } from "../../core/urlHash.fn";
-import { paginationEvent } from '../../core/pagination'
 
 export class Content extends ParentComponent {
 
@@ -44,9 +43,20 @@ export class Content extends ParentComponent {
         <div class="content">
           <div class="content-wrap">
               <div class="content-product" data-lsideBar>
-                    <div class="content-product-type" data-type>
-                          <button class="tab tab--active" type="button" data-tab="tab" data-types="types">По типам</button><button class="tab" type="button" data-tab="tab" data-types="brand" >По брендам</button></div>
-                          <ul class="content-product__menu" data-menuProduct>${this.sideBar.renderSideBar()}</ul>
+                    <div class="content-product-type" data-type id="data-type">
+                          <button
+                              class="tab ${this.sideBar.activeClassDom().type}"
+                              type="button"
+                              data-tab="tab"
+                              data-types="types">По типам
+                          </button><button
+                                    class="tab ${this.sideBar.activeClassDom().brand}"
+                                    type="button"
+                                    data-tab="tab"
+                                    data-types="brand"
+                                    >По брендам
+                                    </button></div>
+                          <ul class="content-product__menu" data-menuProduct>${this.sideBar.render()}</ul>
                           </div><main class="content-center">
       <section class="s-content__search">
       <div class="s-content__search-rel" data-search-rel>
