@@ -74,7 +74,7 @@ export class Search {
       const search = this.$root.qSelector('[data-search]')
 
       if (search.value) {
-        this.eventInput(search)
+        this.onInput(search)
       }
     }
   }
