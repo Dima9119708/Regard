@@ -1,9 +1,9 @@
 import { renderRandomContent,
-        reSotingDATA__url,
+        reSotingDATA,
         renderProductCards,
       } from "./content.functions"
 
-import { titleSearch, errorSRT } from "./renderContent.functions"
+import { renderTitle, lackOfGoods } from "./renderContent.functions"
 import { pagination } from "../../core/pagination"
 
 
@@ -37,22 +37,22 @@ export function renderCatalogContent(content) {
 
   const { $root, DATA, store } = content
 
-  const base = reSotingDATA__url(DATA)
+  const base = reSotingDATA(DATA)
 
-  pagination.eventClick($root,base, store)
+  pagination.onClick($root,base, store)
 
   return `
     <section class="s-content-products">
         <section class="s-content-foods">
             <div class="content-hits__top">
-                <span data-titleSearch>${titleSearch()} </span><span></span></div>
+                <span data-titleSearch>${renderTitle()} </span><span></span></div>
 
             <div class="content-blocks" data-cards>
             <div class="content-blocks__sorting">Сортировать по : <span>по цене</span></div>
              ${
               renderProductCards(pagination.showItems(base), store)
               ||
-                errorSRT(
+              lackOfGoods(
                   base,
                   pagination.showItems(base),
                   renderProductCards(pagination.showItems(base), store)

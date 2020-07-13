@@ -1,5 +1,5 @@
 import { $ } from "../../core/Dom";
-import { calatogFN, catalogHashPath } from "../../core/urlHash.fn";
+import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 
 export class Sidebar {
@@ -18,18 +18,19 @@ export class Sidebar {
 
     const reSort = reSorting(types, this.DATA) // пересортировали массив в объект
 
-    return sideBarHTML(reSort).join('')
+    return trainingSidebarHTML(reSort).join('')
   }
 
-  sideBarTAB(event, types) {
-    sideBarTAB(event)
+  renderSidebarTAB(event, types) {
 
+    sidebarTABDOMActive(event)
     sideBarRenderContent(
       types,
       this.$root,
       this.renderSideBar.bind(this),
       this.renderBrand.bind(this)
     )
+
   }
 
   // Рендер всех брендов
@@ -41,47 +42,51 @@ export class Sidebar {
 
     brands = [...new Set(brands)]
 
-    return brandsHTML(brands)
+    return trainingBrandsHTML(brands)
   }
 
-  eventClick(event) {
+  onClick(event) {
 
-    const sidebar = event.target.closest('[data-lsidebar]')
+    const { target } = event
+
+    const sidebar = target.closest('[data-lsidebar]')
 
     if (sidebar) {
 
-      const { tab, types,brand } = event.target.dataset
-      const parentProduct = event.target.closest('[data-parentProduct]')
+      const { tab, types,brand } = target.dataset
+      const parentProduct = target.closest('[data-parentProduct]')
 
       if (parentProduct) {
         accardion(parentProduct)
       }
       else if (tab) {
-        this.sideBarTAB(event,types)
+        this.renderSidebarTAB(event,types)
       }
 
       if (brand) {
 
-        const { goods } = event.target.closest('[data-goods]').dataset
+        const { goods } = target.closest('[data-goods]').dataset
 
         const brands = brand === goods ? catalogHashPath.production : brand
 
-        const urlSTR = calatogFN(goods, brands)
+        const urlSTR = changeURLCalatog(goods, brands)
         ActiveRout.setHash(urlSTR)
       }
     }
   }
 
-  eventKeyBoard(event) {
+  onKeyBoard(event) {
 
-    const { tab, types } = event.target.dataset
-    const parentProduct = event.target.closest('[data-parentProduct]')
+    const { target } = event
+
+    const { tab, types } = target.dataset
+    const parentProduct = target.closest('[data-parentProduct]')
 
     if (parentProduct) {
       accardion(parentProduct, 'Keydown')
     }
     else if (tab) {
-      this.sideBarTAB(event, types)
+      this.renderSidebarTAB(event, types)
     }
   }
 }
@@ -106,7 +111,7 @@ function reSorting(types, DATA) {
   }, {});
 }
 
-function sideBarHTML(reSort) {
+function trainingSidebarHTML(reSort) {
 
   return Object.keys(reSort).map(goods => {
 
@@ -139,16 +144,13 @@ function sideBarHTML(reSort) {
   })
 }
 
-const accardionScrollHeight = (event) => {
-  event.style.maxHeight = event.scrollHeight + 'px'
-  event.setAttribute('data-accardion', true)
-  $(event).qSelector('[data-plus]').innerHTML = '-'
-}
 
 function accardion(event, frag) {
 
   if (frag) {
-    accardionScrollHeight(event)
+    event.style.maxHeight = event.scrollHeight + 'px'
+    event.setAttribute('data-accardion', true)
+    $(event).qSelector('[data-plus]').innerHTML = '-'
     return
   }
 
@@ -160,9 +162,10 @@ function accardion(event, frag) {
     $(event).qSelector('[data-plus]').innerHTML = '+'
   }
   else {
-    accardionScrollHeight(event)
+    event.style.maxHeight = event.scrollHeight + 'px'
+    event.setAttribute('data-accardion', true)
+    $(event).qSelector('[data-plus]').innerHTML = '-'
   }
-
 }
 
 function filterBrands(DATA) {
@@ -178,7 +181,7 @@ function filterBrands(DATA) {
   })
 }
 
-function brandsHTML(brand) {
+function trainingBrandsHTML(brand) {
   return brand.reduce((acc, item) => {
 
     if (item) {
@@ -202,7 +205,7 @@ function brandsHTML(brand) {
   }, []).join('')
 }
 
-function sideBarTAB(event) {
+function sidebarTABDOMActive(event) {
 
   const $parent = event.target.closest('[data-type]')
 

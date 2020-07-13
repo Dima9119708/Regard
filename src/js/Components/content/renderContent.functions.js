@@ -1,6 +1,6 @@
-import { urlParse } from "./content.functions"
+import { urlParse } from "../../core/utils"
 
-export function titleSearch() {
+export function renderTitle() {
 
   const URLParse = urlParse()
   let titleSearch = ''
@@ -20,7 +20,7 @@ export function titleSearch() {
   return titleSearch
 }
 
-export function errorSRT(base,showItems, renderCardsTEST) {
+export function lackOfGoods(base,showItems, renderCardsTEST) {
 
   if (!base.length) {
     return 'По вашему запросу ничего не найдено'

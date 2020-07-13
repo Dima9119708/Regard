@@ -1,9 +1,9 @@
 import { $ } from "../../core/Dom";
 import { Store } from "../../core/redux/Store";
 import { reducer } from "../../core/redux/reducer";
-import { storage } from "../../core/storage";
 import { initialState } from "../../core/initialState";
 import { Emmiter } from "../../core/Emmiter";
+import { storage } from "../../core/utils";
 
 export class InitComponent {
   constructor(components, DATA) {
@@ -32,6 +32,7 @@ export class InitComponent {
 
       return component
     });
+
 
     this.store.subscribe( data => {
       storage('REGARD', data)
