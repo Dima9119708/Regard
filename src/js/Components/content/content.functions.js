@@ -1,6 +1,6 @@
 import * as actions from '../../core/redux/actions'
-import { ActiveRout } from '../../Routing/ActiveRouter'
 import { catalogHashPath } from '../../core/urlHash.fn'
+import { urlParse } from '../../core/utils'
 
 function formatNumber(number) {
   return new Intl.NumberFormat('ru-RU').format(number)
@@ -107,25 +107,9 @@ export function addBasketProducts(event, content) {
   }
 }
 
-export function urlParse() {
+export function reSotingDATA(data) {
 
-  try {
-    const currentURL = decodeURI(ActiveRout.urLHash)
-
-    return currentURL
-        .split('/+/')
-        .slice(1, currentURL.length)
-        .filter(elem => elem !== '')
-
-  } catch (e) {
-    alert('Ошибка URL')
-  }
-
-}
-
-export function reSotingDATA__url(data) {
-
-  const formatURL__STR = urlParse()
+  const urlParams = urlParse()
 
   return data.reduce((acc, item ) => {
 
@@ -134,8 +118,8 @@ export function reSotingDATA__url(data) {
     const nameLowCase = name.toLowerCase()
     const typeLowCase = type.toLowerCase()
     const producerLowCase = producer.toLowerCase()
-    const paramURL1 = formatURL__STR[0].toLowerCase()
-    const paramURL2 = formatURL__STR[1].toLowerCase()
+    const paramURL1 = urlParams[0].toLowerCase()
+    const paramURL2 = urlParams[1].toLowerCase()
 
     if (typeLowCase === paramURL1
       && producerLowCase === paramURL2) {

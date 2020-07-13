@@ -1,12 +1,15 @@
-import { renderProductCards, urlParse } from "../Components/content/content.functions"
+import { renderProductCards } from "../Components/content/content.functions"
 import { $ } from "./Dom"
 import { catalog } from "./urlHash.fn";
 import { ActiveRout } from "../Routing/ActiveRouter";
+import { urlParse } from "./utils";
 
 export const showItems = 10
 const pageTransitionAnimationSpeed = 300
 
 export const pagination = {
+
+  step : 2,
 
   __INIT__: function (base) {
 
@@ -36,10 +39,7 @@ export const pagination = {
     return pageActive
   },
 
-  renderItems: function (pages) {
-
-    const counterPages = pages
-    let displayStyle = 'block'
+  renderItems: function () {
 
     return (_, idx) => {
 
@@ -54,8 +54,7 @@ export const pagination = {
       <div
         class="content-blocks__pagination-item ${active}"
         data-paginationNumber="${idx + 1}"
-        data-paginationItem="${idx * showItems}"
-        style="display: ${displayStyle}">
+        data-paginationItem="${idx * showItems}">
         ${idx + 1}
       </div>
       `
@@ -67,7 +66,7 @@ export const pagination = {
     return base.slice(start, start + showItems)
   },
 
-  eventClick: function ($root, base, store) {
+  onClick: function ($root, base, store) {
 
     $root = $root.returnNode()
 

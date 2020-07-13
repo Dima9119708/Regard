@@ -1,7 +1,7 @@
 import { $ } from "../../core/Dom"
 import { searchHistory } from "../../core/redux/actions"
 import { ActiveRout } from "../../Routing/ActiveRouter"
-import { calatogFN, catalogHashPath } from "../../core/urlHash.fn"
+import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn"
 
 export class Search {
 
@@ -11,7 +11,7 @@ export class Search {
     this.store = content.store
   }
 
-  getHistory() {
+  getHistorySearch() {
 
     const { history } = this.store.getState()
 
@@ -40,7 +40,7 @@ export class Search {
     return ''
   }
 
-  searchButton() {
+  productSearchButton() {
     const searchList = this.$root.qSelector('[data-search-list-item]')
 
     if (searchList) {
@@ -57,18 +57,18 @@ export class Search {
           this.store.dispath(searchHistory(value))
         }
 
-        const hash = calatogFN(value, catalogHashPath.search)
+        const hash = changeURLCalatog(value, catalogHashPath.search)
         ActiveRout.setHash(hash)
       }
     }
   }
 
-  appendSearchList() {
+  createAndAppendSearchList() {
     const searchList = this.$root.qSelector('[data-search-list]')
 
     if (!searchList) {
       const parent = this.$root.qSelector('[data-search-rel]')
-      const node = createSearchList(this.getHistory.bind(this))
+      const node = createSearchList(this.getHistorySearch.bind(this))
       parent.append(node)
 
       const search = this.$root.qSelector('[data-search]')
@@ -79,19 +79,19 @@ export class Search {
     }
   }
 
-  eventClick(event) {
+  onClick(event) {
 
     const { searchbutton, historyclear, historyitem } = event.target.dataset
     const searchInput = event.target.closest('[data-search-rel]')
 
     if (searchbutton) {
-      this.searchButton()
+      this.productSearchButton()
     }
     else if (historyitem) {
 
       const searchInput = this.$root.qSelector('[data-search]')
       searchInput.value = event.target.innerHTML.trim()
-      this.eventInput(searchInput)
+      this.onInput(searchInput)
 
     }
     else if (historyclear) {
@@ -103,7 +103,7 @@ export class Search {
 
     }
     else if (searchInput) {
-      this.appendSearchList()
+      this.createAndAppendSearchList()
     }
     else {
 
@@ -115,19 +115,19 @@ export class Search {
     }
   }
 
-  eventKeyBoard(event) {
+  onKeyBoard(event) {
     const { search } = event.target.dataset
 
     if (search) {
-      this.appendSearchList()
+      this.createAndAppendSearchList()
     }
 
     if (search && event.key === 'Enter') {
-      this.searchButton()
+      this.productSearchButton()
     }
   }
 
-  eventInput(event) {
+  onInput(event) {
 
     const { value } = event.target || event
 
@@ -151,13 +151,13 @@ export class Search {
   }
 }
 
-function createSearchList(getHistory) {
+function createSearchList(getHistorySearch) {
   const searchLi = $.create('div', 's-content__search-list')
   searchLi.setAttribute('data-search-list','search-list')
   searchLi.innerHTML = `
     <div class="s-content__search-list-item" data-historyLi>
         История поиска
-        ${getHistory()}
+        ${getHistorySearch()}
       </div>
       <div class="s-content__search-list-item" data-search-list-item="false">
         Введите модель в поиск

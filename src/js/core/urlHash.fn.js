@@ -4,6 +4,6 @@ export const catalogHashPath = {
   production : 'Продукция'
 }
 
-export const calatogFN = (params, params2, pageActive = '') => {
+export const changeURLCalatog = (params, params2, pageActive = '') => {
   return `${catalog}/+/${params}/+/${params2}/+/${pageActive}`
 }

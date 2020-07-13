@@ -67,18 +67,18 @@ export class Content extends ParentComponent {
   }
 
   onClick(event) {
-    this.sideBar.eventClick(event)
-    this.search.eventClick(event)
+    this.sideBar.onClick(event)
+    this.search.onClick(event)
     addBasketProducts(event, this)
   }
 
   onKeydown(event) {
-    this.sideBar.eventKeyBoard(event)
+    this.sideBar.onKeyBoard(event)
 
-    this.search.eventKeyBoard(event)
+    this.search.onKeyBoard(event)
   }
 
   onInput(event) {
-    this.search.eventInput(event)
+    this.search.onInput(event)
   }
 }
