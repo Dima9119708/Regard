@@ -162,7 +162,7 @@ function trainingSidebarHTML(reSort) {
 
       active = ''
 
-      if (urlParams[0] === goods && urlParams[1] === item ) {
+      if (urlParams[0] === goods && urlParams[1] === item) {
         active = 'content-product__menu-internal-item-link--active'
       }
 

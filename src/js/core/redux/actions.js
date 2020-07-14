@@ -8,23 +8,11 @@ export function searchHistory(data) {
   }
 }
 
-export function addBasket(data) {
+export function addBasket(goods, price, counter) {
   return {
     type : ADD_BASKET,
-    data
-  }
-}
-
-export function sumTotal(data) {
-  return {
-    type : SUM_TOTAL,
-    data
-  }
-}
-
-export function counter(data) {
-  return {
-    type: COUNTER,
-    data
+    goods,
+    price,
+    counter
   }
 }

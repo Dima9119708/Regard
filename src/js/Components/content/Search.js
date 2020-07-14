@@ -170,12 +170,16 @@ function baseSearch(DATA, value) {
 
   return DATA.reduce((acc, goods) => {
 
-    value = value.toLowerCase().trim()
+    const val = new RegExp(value, 'gi')
 
     if (value === '') {
       return []
     }
-    else if (goods.name.toLowerCase().includes(value)) {
+    else if (
+        goods.name.match(val)
+        ||
+        goods.name.includes(value)
+      ) {
 
       if (acc.length > 10) {
         acc.splice(10, acc.length)

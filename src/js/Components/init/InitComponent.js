@@ -35,6 +35,18 @@ export class InitComponent {
 
 
     this.store.subscribe( data => {
+
+      // const auth = {
+      //   email : 'vlad@main',
+      //   password : 'sdddd'
+      // }
+
+      // fetch('https://client-base-regard.firebaseio.com/client.json', {
+      //   method : 'POST',
+      //   body: JSON.stringify(auth)
+      // })
+      // .then(data => console.log(data))
+
       storage('REGARD', data)
     })
 

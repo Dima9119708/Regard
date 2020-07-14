@@ -69,7 +69,7 @@ export const pagination = {
   start(countPages, paginationNumber) {
     const activePage = paginationNumber ? +paginationNumber : this.pageActive()
 
-    if (countPages > 20) {
+    if (countPages > 10) {
 
       // Если мы приближаемся к концу
       if ((activePage + 5) > countPages) {
