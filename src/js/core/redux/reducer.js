@@ -26,34 +26,19 @@ export function reducer(state, action) {
 
     case ADD_BASKET :
 
+      const sumTotal = state.sumTotal || 0
+      const counter = state.counter || 0
       const addBasket = state.basket || []
 
-      addBasket.push({...action.data, counter : 1})
-
-
-    return {
-      ...state,
-      basket: addBasket
-    }
-
-    case SUM_TOTAL :
-
-      const sumTotal = state.sumTotal || 0
-      const result = sumTotal + action.data
+      const sumResult = sumTotal + action.price
+      const counterResult = counter + action.counter
+      addBasket.push({...action.goods, counter : 1})
 
     return {
       ...state,
-      sumTotal: result
-    }
-
-    case COUNTER :
-
-      const counter = state.counter || 0
-      const countResult = counter + action.data
-
-    return {
-      ...state,
-      counter: countResult
+      basket: addBasket,
+      sumTotal: sumResult,
+      counter: counterResult
     }
   }
 

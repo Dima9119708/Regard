@@ -93,9 +93,7 @@ export function addBasketProducts(event, content) {
       const counter = 1
       const { price } = goods
 
-      store.dispath(actions.addBasket(goods))
-      store.dispath(actions.sumTotal(+price))
-      store.dispath(actions.counter(counter))
+      store.dispath(actions.addBasket(goods, +price, counter))
 
       addBasket.setAttribute('data-addBasket', false)
       addBasket.setAttribute('data-goToBasket', true)

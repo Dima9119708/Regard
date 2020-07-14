@@ -13,7 +13,6 @@ module.exports = {
   mode: 'development',
   entry: {
     main : './src/js/index.js',
-    slider : './src/slider/slider.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

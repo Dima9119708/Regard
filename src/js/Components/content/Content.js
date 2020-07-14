@@ -5,6 +5,7 @@ import { addBasketProducts } from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import { renderMainContent, renderCatalogContent } from "./renderContent";
 import { catalog } from "../../core/urlHash.fn";
+import Swiper from 'swiper'
 
 export class Content extends ParentComponent {
 
@@ -32,10 +33,13 @@ export class Content extends ParentComponent {
     else if (ActiveRout.urLHash.startsWith(catalog)) {
       return renderCatalogContent(this)
     }
+
   }
 
   init() {
     super.init()
+
+    this.slider__INIT__()
   }
 
   renderHTML() {
@@ -90,5 +94,26 @@ export class Content extends ParentComponent {
 
   onInput(event) {
     this.search.onInput(event)
+  }
+
+  slider__INIT__() {
+
+    const mySwiper = new Swiper('.swiper-1', {
+      direction: "horizontal",
+      loop: true,
+
+      pagination: {
+        el: '.swiper-pag-1',
+        clickable: true,
+      },
+
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-next-1',
+        prevEl: '.swiper-prev-1',
+      },
+    })
+
   }
 }
