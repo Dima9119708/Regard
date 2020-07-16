@@ -13,4 +13,8 @@ export class ActiveRout {
     location.hash = hash
     location.reload()
   }
+
+  static reloadPage() {
+    location.reload()
+  }
 }

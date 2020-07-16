@@ -6,11 +6,12 @@ import { Emmiter } from "../../core/Emmiter";
 import { storage } from "../../core/utils";
 
 export class InitComponent {
-  constructor(components, DATA) {
+  constructor(components, DATA, user) {
     this.components = components
     this.store = new Store(reducer, storage('REGARD') || initialState)
     this.emmiter = new Emmiter()
     this.DATA = DATA
+    this.user = user
   }
 
   getRoot() {
@@ -18,7 +19,8 @@ export class InitComponent {
     const options = {
       DATA: this.DATA,
       store: this.store,
-      emmiter: this.emmiter
+      emmiter: this.emmiter,
+      user : this.user
     }
 
     const main = $.create('div', 'main')
@@ -27,26 +29,14 @@ export class InitComponent {
 
       const componentDOM = $.create(Component.tagName, Component.className)
       const component = new Component(componentDOM, options)
-      componentDOM.insertAdjacentHTML('beforeend', component.renderHTML())
+      const html = component.renderHTML()
+      componentDOM.insertAdjacentHTML('beforeend', html)
       main.append(componentDOM)
 
       return component
     });
 
-
     this.store.subscribe( data => {
-
-      // const auth = {
-      //   email : 'vlad@main',
-      //   password : 'sdddd'
-      // }
-
-      // fetch('https://client-base-regard.firebaseio.com/client.json', {
-      //   method : 'POST',
-      //   body: JSON.stringify(auth)
-      // })
-      // .then(data => console.log(data))
-
       storage('REGARD', data)
     })
 
