@@ -4,9 +4,11 @@ export function renderLoginHTML() {
   `
 }
 
-export function renderUserInterface({email}) {
+export function renderUserInterface({name}) {
+
+
   return `
-    <button class="header__auth-button" type="button">${email}</button>
+    <button class="header__auth-button" type="button">Привет, ${name}</button>
       <div class="header__auth-user-interface">
 
         <a class="header__auth-user-interface-link" href="#">Моя корзина</a>

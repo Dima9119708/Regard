@@ -1,17 +1,18 @@
 import { $ } from "../../core/Dom";
 import { Store } from "../../core/redux/Store";
 import { reducer } from "../../core/redux/reducer";
-import { initialState } from "../../core/initialState";
 import { Emmiter } from "../../core/Emmiter";
+import firebase from 'firebase/app'
 import { storage } from "../../core/utils";
 
 export class InitComponent {
-  constructor(components, DATA, user) {
+  constructor(components, DATA, userDATAState, userID) {
     this.components = components
-    this.store = new Store(reducer, storage('REGARD') || initialState)
+    this.store = new Store(reducer, userDATAState.userDATA || userDATAState)
     this.emmiter = new Emmiter()
     this.DATA = DATA
-    this.user = user
+    this.user = userDATAState
+    this.userID = userID
   }
 
   getRoot() {
@@ -20,7 +21,7 @@ export class InitComponent {
       DATA: this.DATA,
       store: this.store,
       emmiter: this.emmiter,
-      user : this.user
+      user : this.user,
     }
 
     const main = $.create('div', 'main')
@@ -36,9 +37,7 @@ export class InitComponent {
       return component
     });
 
-    this.store.subscribe( data => {
-      storage('REGARD', data)
-    })
+    this.storeSubscribe()
 
     return main
   }
@@ -50,5 +49,22 @@ export class InitComponent {
   destroy() {
     this.components.forEach(component => component.destroy());
     document.onclick = null
+  }
+
+  storeSubscribe() {
+    this.store.subscribe( data => {
+
+      if (!this.user) {
+        storage('REGARD', data)
+      }
+      else {
+        setTimeout(async () =>
+                          await firebase
+                          .database()
+                          .ref(`users/${this.userID.uid}/userDATA/`)
+                          .set(data),
+                        500)
+      }
+    })
   }
 }

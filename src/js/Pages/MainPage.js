@@ -6,6 +6,8 @@ import { Footer } from '../Components/footer/Footer'
 import { LoginBar } from '../Components/loginBar/LoginBar'
 import { InterfacePages } from './InterfacePage'
 import firebase from 'firebase/app'
+import { initialState } from '../core/initialState'
+import { storage } from '../core/utils'
 
 function whetherTheUserIsSaved() {
 
@@ -21,26 +23,50 @@ function whetherTheUserIsSaved() {
   });
 }
 
+function retrievingSpecificUserData(user) {
+  return new Promise(resolve => {
+    firebase
+      .database()
+      .ref(`users/${user.uid}/`)
+      .on('value', function (dataSnapshot) {
+        resolve(dataSnapshot.val())
+      })
+  })
+}
+
 export class MainPage extends InterfacePages {
 
   async render() {
 
-    this.userLogin = null
+    this.user = null
 
     const GET__DATA = await fetch('https://regard-ab2be.firebaseio.com/base.json')
     const DATA = await GET__DATA.json()
     const user = await whetherTheUserIsSaved()
 
     if (user) {
-      this.userLogin = user
+      this.user = user
+      this.userState = await retrievingSpecificUserData(this.user)
+
+      if (this.userState) {
+        if (!this.userState.userDATA) {
+          this.userState.userDATA = storage('REGARD') || initialState
+        }
+      }
+      else {
+        this.userState = storage('REGARD') || initialState
+      }
+    }
+    else {
+      this.userState = storage('REGARD') || initialState
     }
 
     this.initComponent = new InitComponent(
       [HeaderTop, Header, Content, Footer, LoginBar],
       DATA,
-      this.userLogin
+      this.userState,
+      this.user
     )
-
 
     return this.initComponent.getRoot()
   }

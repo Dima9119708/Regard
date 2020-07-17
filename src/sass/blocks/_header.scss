@@ -18,6 +18,12 @@
 
 .header__auth {
   position: relative;
+
+  &:hover .header__auth-user-interface {
+    opacity: 1;
+    z-index: 100;
+    transition:opacity .2s linear, z-index .2s linear;
+  }
 }
 
 .header__auth-button {
@@ -42,11 +48,13 @@
   padding: 10px;
   left: 0;
   right: 0;
-  z-index: 100;
+  opacity: 0;
+  z-index: -100;
   height: max-content;
   border-radius: 5px;
   background-color: #8a8a8a;
   font-size: 14px;
+  transition:opacity .2s linear, z-index .2s linear;
 }
 
 .header__auth-user-interface-link {

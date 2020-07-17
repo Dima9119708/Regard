@@ -153,6 +153,7 @@
 .modal-auth__button {
   border: 0;
   padding: 5px 10px;
+  font-size: 14px;
   cursor: pointer;
   outline: none;
   display: inline-block;
@@ -161,4 +162,13 @@
 .modal-auth__button--active {
   background-color: #cacaca;
   color: rgb(97, 97, 97);
+}
+
+.resetPassword {
+  font-size: 14px;
+  color: #000;
+
+  &:hover {
+    color: rgb(173, 27, 27);
+  }
 }

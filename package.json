@@ -38,9 +38,12 @@
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
     "@babel/plugin-transform-arrow-functions": "^7.10.4",
     "aos": "^2.3.4",
+    "autoprefixer": "^9.8.5",
     "firebase": "^7.16.0",
     "font-awesome": "^4.7.0",
     "html-table-to-json": "^1.0.0",
-    "micromodal": "^0.4.6"
+    "micromodal": "^0.4.6",
+    "normalize.css": "^8.0.1",
+    "postcss-loader": "^3.0.0"
   }
 }

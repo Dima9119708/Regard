@@ -17,7 +17,7 @@ export function createModal() {
             <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
           </header>
           <main class="modal__content" id="modal-1-content">
-             ${renderModalContent(true)}
+             ${renderModalContent('login')}
           </main>
           <footer class="modal__footer"></footer>
       </div>
@@ -31,7 +31,9 @@ export function createModal() {
 export function modalINITOnClick(node) {
   node.onclick = e => {
 
-    const { customClose, close, login, reg } = e.target.dataset
+    e.preventDefault()
+
+    const { customClose, close, login, reg, reset } = e.target.dataset
     const loginNode = node.querySelector('#modal-1-content')
     const $parent = e.target.closest('#modal-1-title')
 
@@ -42,7 +44,10 @@ export function modalINITOnClick(node) {
       loginNode.innerHTML = renderModalContent(login)
     }
     else if (reg) {
-      loginNode.innerHTML = renderModalContent()
+      loginNode.innerHTML = renderModalContent(reg)
+    }
+    else if (reset) {
+      loginNode.innerHTML = renderModalContent(reset)
     }
 
     if ($parent) {
@@ -62,9 +67,9 @@ export function modalINITOnInput(node) {
   node.oninput = e => { auth(e) }
 }
 
-function renderModalContent(login) {
+function renderModalContent(content) {
 
-  if (login) {
+  if (content === 'login') {
     return `
       <div class="fieldset-body" id="login_form">
         <p class="field">
@@ -78,11 +83,12 @@ function renderModalContent(login) {
               <span id="valida" class="i i-close"></span>
           </p>
           <div class="checkbox" data-error></div>
+          <a href="#" class="resetPassword" data-reset="reset">Востановить пароль</a>
           <input type="submit" id="sign" value="Вход" title="Get Started">
       </div>
     `
   }
-  else {
+  else if (content === 'reg'){
     return `
 
     <div class="fieldset-body" id="login_form">
@@ -92,13 +98,39 @@ function renderModalContent(login) {
         <input type="text" id="user" name="user" title="Username">
         <span id="valida" class="i i-warning"></span>
       </p>
-        <p class="field">
-            <label for="pass">Пароль</label>
-            <input type="password" id="pass" name="pass" title="Password">
-            <span id="valida" class="i i-close"></span>
-        </p>
+      <p class="field">
+          <label for="pass">Пароль</label>
+          <input type="password" id="pass" name="pass" title="Password">
+          <span id="valida" class="i i-close"></span>
+      </p>
+      <p class="field">
+          <label for="phone">Телефон</label>
+          <input type="text" id="phone" name="phone" title="phone">
+          <span id="valida" class="i i-close"></span>
+      </p>
+      <p class="field">
+          <label for="nickName">Ваше Имя</label>
+          <input type="text" id="nickName" name="nickName" title="nickName">
+          <span id="valida" class="i i-close"></span>
+      </p>
+
       <label class="checkbox" data-error></label>
-     <input type="submit" id="reg" value="Регистрация" title="Get Started">
+      <input type="submit" id="reg" value="Регистрация" title="Get Started">
+    `
+  }
+  else if (content === 'reset') {
+    return `
+
+      <div class="fieldset-body" id="login_form">
+
+      <p class="field">
+        <label for="user">Email</label>
+        <input type="text" id="user" name="user" title="Username">
+        <span id="valida" class="i i-warning"></span>
+      </p>
+
+      <label class="checkbox" data-error></label>
+      <input type="submit" id="resetEmail" value="Востановить пароль" title="Get Started">
     `
   }
 }

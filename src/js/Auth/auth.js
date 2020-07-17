@@ -1,63 +1,92 @@
 import firebase from 'firebase/app'
 import MicroModal from 'micromodal';
 import { ActiveRout } from '../Routing/ActiveRouter';
+import { validateForm, isValidEmail } from './auth.function';
 
 const form = {
   email: null,
-  password: null
+  password: null,
+  phone : null,
+  name : null
 }
 
-export async function auth(e) {
+export function auth(e) {
 
   validateForm(e, form)
 
   const { target } = e
 
-  if (target.id === 'reg' && form.email !== null && form.password !== null ) {
+  registration(target)
+  login(target)
+  resetEmail(target)
+}
+
+async function registration(target)  {
+
+  if (target.id === 'reg'
+    && form.email !== null
+    && form.password !== null
+    && form.phone !== null
+    && form.name !== null
+  ) {
+
+    const $parent = target.closest('#login_form')
+    const message = $parent.querySelector('[data-error]')
 
     target.disabled = true
     target.style.opacity = '.5'
 
-    const $parent = target.closest('#login_form')
-    const errorDIV = $parent.querySelector('[data-error]')
-
     try {
-      await firebase
-            .auth()
-            .createUserWithEmailAndPassword(form.email, form.password)
+      const { user } = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(form.email, form.password)
 
-      errorDIV.innerHTML = 'Регистрация прошла успешно ! Теперь вы можете войти в свою учетную запись'
+      await firebase
+        .database()
+        .ref(`users/${user.uid}/personalData/`)
+        .set(form)
+
+      message.innerHTML = 'Регистрация прошла успешно! Теперь вы можете войти в свою учетную запись'
     }
     catch (e) {
-      errorDIV.innerHTML = e
+      message.innerHTML = e
+      firebase.auth().signOut()
     }
 
     target.disabled = false
     target.style.opacity = '1'
   }
-  else if (target.id === 'sign' && form.email !== null && form.password !== null ) {
+}
+
+async function login(target) {
+
+  if (target.id === 'sign'
+    && form.email !== null
+    && form.password !== null
+  ) {
+
+    const $parent = target.closest('#login_form')
+    const message = $parent.querySelector('[data-error]')
 
     target.disabled = true
     target.style.opacity = '.5'
 
-    const $parent = target.closest('#login_form')
-    const errorDIV = $parent.querySelector('[data-error]')
-
     try {
       await firebase
-              .auth()
-              .signInWithEmailAndPassword(form.email, form.password)
+        .auth()
+        .signInWithEmailAndPassword(form.email, form.password)
 
-      errorDIV.innerHTML = 'Вы вошли успешно!'
+      message.innerHTML = 'Вы вошли успешно!'
       MicroModal.close('modal-1')
 
-      const modalDelete = e.target.closest('#modal-1')
+      const modalDelete = target.closest('#modal-1')
       setTimeout(() => modalDelete.remove(), 300)
 
       setTimeout(() => ActiveRout.reloadPage(), 400)
     }
     catch (e) {
-      errorDIV.innerHTML = e
+      message.innerHTML = e
+      firebase.auth().signOut()
     }
 
     target.disabled = false
@@ -65,39 +94,24 @@ export async function auth(e) {
   }
 }
 
-function isValidEmail(email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
+async function resetEmail(target) {
+  if (target.id === 'resetEmail' && form.email !== null) {
 
-function validateForm(e, form) {
+    const $parent = target.closest('#login_form')
+    const message = $parent.querySelector('[data-error]')
 
-  if (e.target.id === 'user') {
+    target.disabled = true
+    target.style.opacity = '.5'
 
-    const { value } = e.target
+    try {
+      await firebase.auth().sendPasswordResetEmail(form.email)
+      message.innerHTML = 'Информация отправлена вам на почту'
 
-    if (isValidEmail(value)) {
-      e.target.style.border = 'none'
-      form.email = value
+    } catch (e) {
+      message.innerHTML = e
     }
-    else {
-      e.target.style.border = '2px solid red'
-      form.email = null
-    }
+
+    target.disabled = false
+    target.style.opacity = '1'
   }
-  else if (e.target.id === 'pass') {
-
-    const { value } = e.target
-
-    if (value.length > 8) {
-      e.target.style.border = 'none'
-      form.password = value
-    }
-    else {
-      e.target.style.border = '2px solid red'
-      form.password = null
-    }
-  }
-
-  return form
 }

@@ -4,6 +4,7 @@ import MicroModal from 'micromodal';
 import { renderUserInterface, renderLoginHTML } from "./header-top.content";
 import firebase from 'firebase/app'
 import { ActiveRout } from "../../Routing/ActiveRouter";
+import { COUNTER } from "../../core/redux/constans";
 
 export class HeaderTop extends ParentComponent {
 
@@ -34,8 +35,10 @@ export class HeaderTop extends ParentComponent {
 
   renderContent() {
 
-    if (this.user) {
-      return renderUserInterface(this.user)
+    const { personalData } = this.user || {}
+
+    if (personalData) {
+      return renderUserInterface(personalData)
     }
     else {
       return renderLoginHTML()
