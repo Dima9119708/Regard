@@ -1,7 +1,14 @@
 include ../mixins/_phones.pug
 header.header
         .header-wrap
+          .header__links
             a(href="#").header__link Конфигуратор ПК
+          .header__auth
+            button(type="button").header__auth-button Войти
+            .header__auth-user-interface
+                a(href='#').header__auth-user-interface-link Моя корзина
+                button(type="button").header__auth-user-interface-button Выйти
+
 .header-content
   .header-content__wrap
       .header-content_item
@@ -15,14 +22,14 @@ header.header
                 div.consult-1 Наличие, заказ, консультации
                 div ПН–ПТ: 9:30 – 20:00
                 div СБ–ВС: 10:00 – 17:00
-                div.consult-4 Не дозвонились? 
+                div.consult-4 Не дозвонились?
           .header-content__point.header-content__phone-item
                 div.point-1 Пункт выдачи заказов
                 div.closest-1 Временно закрыт
       .header-content_item
           .header-content__basket
                   i.fas.fa-cart-arrow-down
-                  div В корзине 
+                  div В корзине
                     span 0 товаров
-                  | На сумму 
+                  | На сумму
                   span 0 р

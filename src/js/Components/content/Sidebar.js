@@ -83,6 +83,8 @@ export class Sidebar {
 
   onClick(event) {
 
+    event.preventDefault()
+
     const { target } = event
 
     const sidebar = target.closest('[data-lsidebar]')

@@ -1,16 +1,18 @@
 import { $ } from "../../core/Dom";
 import { Store } from "../../core/redux/Store";
 import { reducer } from "../../core/redux/reducer";
-import { initialState } from "../../core/initialState";
 import { Emmiter } from "../../core/Emmiter";
+import firebase from 'firebase/app'
 import { storage } from "../../core/utils";
 
 export class InitComponent {
-  constructor(components, DATA) {
+  constructor(components, DATA, userDATAState, userID) {
     this.components = components
-    this.store = new Store(reducer, storage('REGARD') || initialState)
+    this.store = new Store(reducer, userDATAState.userDATA || userDATAState)
     this.emmiter = new Emmiter()
     this.DATA = DATA
+    this.user = userDATAState
+    this.userID = userID
   }
 
   getRoot() {
@@ -18,7 +20,8 @@ export class InitComponent {
     const options = {
       DATA: this.DATA,
       store: this.store,
-      emmiter: this.emmiter
+      emmiter: this.emmiter,
+      user : this.user,
     }
 
     const main = $.create('div', 'main')
@@ -27,28 +30,14 @@ export class InitComponent {
 
       const componentDOM = $.create(Component.tagName, Component.className)
       const component = new Component(componentDOM, options)
-      componentDOM.insertAdjacentHTML('beforeend', component.renderHTML())
+      const html = component.renderHTML()
+      componentDOM.insertAdjacentHTML('beforeend', html)
       main.append(componentDOM)
 
       return component
     });
 
-
-    this.store.subscribe( data => {
-
-      // const auth = {
-      //   email : 'vlad@main',
-      //   password : 'sdddd'
-      // }
-
-      // fetch('https://client-base-regard.firebaseio.com/client.json', {
-      //   method : 'POST',
-      //   body: JSON.stringify(auth)
-      // })
-      // .then(data => console.log(data))
-
-      storage('REGARD', data)
-    })
+    this.storeSubscribe()
 
     return main
   }
@@ -60,5 +49,22 @@ export class InitComponent {
   destroy() {
     this.components.forEach(component => component.destroy());
     document.onclick = null
+  }
+
+  storeSubscribe() {
+    this.store.subscribe( data => {
+
+      if (!this.user) {
+        storage('REGARD', data)
+      }
+      else {
+        setTimeout(async () =>
+                          await firebase
+                          .database()
+                          .ref(`users/${this.userID.uid}/userDATA/`)
+                          .set(data),
+                        500)
+      }
+    })
   }
 }

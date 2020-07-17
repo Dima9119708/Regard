@@ -13,7 +13,7 @@ export class Search {
 
   getHistorySearch() {
 
-    const { history } = this.store.getState()
+    const history = this.store.getState().history || []
 
     if (history && history.length > 0) {
 
@@ -51,7 +51,7 @@ export class Search {
 
         const { value } = this.$root.qSelector('[data-search]')
 
-        const { history } = this.store.getState()
+        const history = this.store.getState().history || []
 
         if (!history.includes(value)) {
           this.store.dispath(searchHistory(value))

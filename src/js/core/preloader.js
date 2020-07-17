@@ -14,7 +14,8 @@ export function preloader() {
          <div class="header-content__contants header-content_item">
             <div class="header-content__phone header-content__phone-item">
                <div class="header-content__phones">
-
+                  <div><span>800 </span>444-42-44</div>
+                  <div><span>999</span>333-60-58</div>
                </div>
                <div class="header-content__consult">
                   <div class="consult-1">Наличие, заказ, консультации</div>
@@ -30,8 +31,8 @@ export function preloader() {
          <div class="header-content_item">
             <div class="header-content__basket">
                <i class="fas fa-cart-arrow-down"></i>
-               <div>В корзине <span>0 товаров</span></div>
-               На сумму <span>0 р</span>
+               <div>В корзине <span> Ожидание...</span></div>
+               На сумму<span> Ожидание...</span>
             </div>
          </div>
       </div>
@@ -55,7 +56,7 @@ export function preloader() {
 
    <footer class="footer"></footer>
    <div class="loginbar">
-      <span>Перейти в корзину (0 товаров, 0 руб.)</span>
+      <span>Перейти в корзину ( Ожидание... )</span>
     </div>
   `
 

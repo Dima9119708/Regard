@@ -29,7 +29,7 @@ export function renderProductCards(data, store) {
     let dataTitleButton = 'Добавить в корзину'
     let goToBasket = 'data-goToBasket="false"'
 
-    const { basket } = store.getState()
+    const basket = store.getState().basket || []
 
     basket.forEach(goods => {
       if (goods.id === item.id) {

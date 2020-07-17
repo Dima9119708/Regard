@@ -8,6 +8,7 @@ export class ParentComponent extends DomListener {
     this.store = options.store
     this.DATA = options.DATA
     this.emmiter = options.emmiter
+    this.user = options.user
 
     this.prepare()
   }
