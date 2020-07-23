@@ -1,11 +1,9 @@
-import { renderProductCards } from "../Components/content/content.functions"
 import { $ } from "./Dom"
-import { catalog } from "./urlHash.fn";
-import { ActiveRout } from "../Routing/ActiveRouter";
-import { urlParse } from "./utils";
+import { urlParse, changeURL } from "./utils";
+import { renderCards } from "../Components/content/renderContent";
 
 export const showItems = 10
-const pageTransitionAnimationSpeed = 300
+export const pageTransitionAnimationSpeed = 300
 
 export const pagination = {
 
@@ -59,7 +57,6 @@ export const pagination = {
   },
 
   __INIT__: function (base) {
-
     const item = showItems
     this.counterPages = Math.ceil(base.length / item)
 
@@ -140,68 +137,20 @@ export const pagination = {
     return base.slice(start, start + showItems)
   },
 
-  onClick: function ($root, base, store) {
+  onClick: function (event, base, store, $root) {
 
-    $root = $root.returnNode()
+    const paginationItem = event.target.closest('[data-paginationnumber]')
 
-    $root.onclick = event => {
+    if (paginationItem) {
 
-      const paginationItem = event.target.closest('[data-paginationnumber]')
+      const { paginationnumber } = event.target.dataset
 
-      if (paginationItem) {
+      const pagitanionParent = event.target.closest('[data-pagination]') || document.querySelector('[data-pagination]')
+      const htmlDATA = this.start(this.counterPages, paginationnumber)
+      $(pagitanionParent).clear().insertHTML('beforeend', htmlDATA)
 
-        const { paginationnumber } = event.target.dataset
-
-        const pagitanionParent = event.target.closest('[data-pagination]')
-        const htmlDATA = this.start(this.counterPages, paginationnumber)
-        $(pagitanionParent).clear().insertHTML('beforeend', htmlDATA)
-
-        renderCards(event, $($root), base, store)
-        changeURL(paginationnumber)
-      }
+      renderCards(event, $root, base, store)
+      changeURL(paginationnumber)
     }
   },
-}
-
-function changeURL (paginationnumber) {
-  const currentURL = urlParse()
-
-  currentURL.forEach((item, index) => {
-    if (Number.isInteger(+item)) {
-      currentURL.splice(index, 1)
-    }
-  })
-
-  currentURL.push(paginationnumber)
-
-  const newURL = `${catalog}/+/${currentURL.join('/+/')}`
-  ActiveRout.paginationHash(newURL)
-}
-
-function renderCards(event, $root, DATA, store) {
-
-  const { paginationitem } = event.target.dataset
-
-  const finish = +paginationitem + (showItems)
-
-  const newBase = DATA.slice(+paginationitem, finish)
-
-  const nodeElem = `
-      <div class="content-blocks__sorting">Сортировать по : <span>по цене</span></div>
-          ${renderProductCards(newBase, store)}
-      </div>
-    `
-
-  const $element = $root.qSelector('[data-cards]')
-
-  $element.style.opacity = '.40'
-  $element.style.transition = 'opacity .2s linear'
-
-  setTimeout(() => {
-
-    $element.style.opacity = '1'
-    $element.style.transition = 'opacity .2s linear'
-    $($element).clear().insertHTML('beforeend', nodeElem)
-
-  }, pageTransitionAnimationSpeed)
 }

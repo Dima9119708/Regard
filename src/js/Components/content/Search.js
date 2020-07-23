@@ -129,25 +129,30 @@ export class Search {
 
   onInput(event) {
 
-    const { value } = event.target || event
+    const search = event.target.dataset.search
 
-    const searchDATA = baseSearch(this.DATA, value)
+    if (search) {
 
-    const listItem = this.$root.qSelector('[data-search-list-item]')
+      const { value } = event.target || event
 
-    if (!searchDATA.length) {
-      listItem.setAttribute('data-search-list-item', false)
+      const searchDATA = baseSearch(this.DATA, value)
 
-      return $(listItem)
-                    .clear()
-                    .insertHTML(
-                      'beforeend',
-                      'По вашему запросу ничего не найдено. Уточните свой запрос'
-                    )
+      const listItem = this.$root.qSelector('[data-search-list-item]')
+
+      if (!searchDATA.length) {
+        listItem.setAttribute('data-search-list-item', false)
+
+        return $(listItem)
+          .clear()
+          .insertHTML(
+            'beforeend',
+            'По вашему запросу ничего не найдено. Уточните свой запрос'
+          )
+      }
+
+      listItem.setAttribute('data-search-list-item', true)
+      $(listItem).clear().insertHTML('beforeend', searchDATA.join(''))
     }
-
-    listItem.setAttribute('data-search-list-item', true)
-    $(listItem).clear().insertHTML('beforeend', searchDATA.join(''))
   }
 }
 

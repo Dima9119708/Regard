@@ -1,13 +1,14 @@
 import firebase from 'firebase/app'
 import MicroModal from 'micromodal';
 import { ActiveRout } from '../Routing/ActiveRouter';
-import { validateForm, isValidEmail } from './auth.function';
+import { validateForm, collectionOfAllInputs } from './auth.function';
 
 const form = {
   email: null,
   password: null,
-  phone : null,
-  name : null
+  phone: null,
+  name: null,
+  resetEmail : null
 }
 
 export function auth(e) {
@@ -55,6 +56,8 @@ async function registration(target)  {
 
     target.disabled = false
     target.style.opacity = '1'
+  } else if (target.id === 'reg') {
+    collectionOfAllInputs('#modal-1-content', 'input')
   }
 }
 
@@ -91,11 +94,14 @@ async function login(target) {
 
     target.disabled = false
     target.style.opacity = '1'
+  } else if (target.id === 'sign') {
+    collectionOfAllInputs('#modal-1-content', 'input')
   }
 }
 
 async function resetEmail(target) {
-  if (target.id === 'resetEmail' && form.email !== null) {
+
+  if (target.id === 'resetEmail' && form.resetEmail !== null) {
 
     const $parent = target.closest('#login_form')
     const message = $parent.querySelector('[data-error]')
@@ -114,4 +120,8 @@ async function resetEmail(target) {
     target.disabled = false
     target.style.opacity = '1'
   }
+  else if (target.id === 'resetEmail'){
+    collectionOfAllInputs('#modal-1-content', 'input')
+  }
+  
 }

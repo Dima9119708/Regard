@@ -1,3 +1,5 @@
+import { $ } from "../core/Dom";
+
 export function isValidEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
@@ -11,7 +13,7 @@ export function validateForm(e, form) {
     return
   }
 
-  if (e.target.id === 'user') {
+  if (e.target.id === 'email') {
 
     if (isValidEmail(value)) {
       e.target.style.border = 'none'
@@ -56,6 +58,29 @@ export function validateForm(e, form) {
       e.target.style.border = '2px solid red'
     }
   }
+  else if (e.target.id === 'reset') {
+    if (isValidEmail(value)) {
+      e.target.style.border = 'none'
+      form.resetEmail = value
+    }
+    else {
+      e.target.style.border = '2px solid red'
+      form.resetEmail = null
+    }
+  }
 
   return form
+}
+
+export function collectionOfAllInputs(parent, selector) {
+  const $parent = $(parent)
+  const inputs = $parent.qSelectorAll(selector)
+
+  inputs.forEach(elem => {
+    elem.value.trim()
+
+    if (elem.value === '') {
+      elem.style.border = '2px solid red'
+    }
+  });
 }

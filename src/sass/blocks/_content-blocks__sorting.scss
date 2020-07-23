@@ -5,10 +5,19 @@
   background-color: #ECECEC;
   margin-bottom: 10px;
 
-  & span {
+  & .price {
+    border: 0;
+    padding: 0;
+    outline: none;
     display: inline-block;
     margin: 0 10px;
     border-bottom: 1px dashed #000;
     cursor: pointer;
+
+    &.price--active {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 3px 5px;
+    }
   }
 }

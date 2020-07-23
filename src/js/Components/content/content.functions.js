@@ -22,6 +22,7 @@ export function renderRandomContent(number, content) {
 }
 
 export function renderProductCards(data, store) {
+
   return data.reduce((arr, item) => {
 
     let addBasket = true
@@ -111,34 +112,37 @@ export function reSotingDATA(data) {
 
   return data.reduce((acc, item ) => {
 
-    const { type, producer, name } = item
+    if (item.name && item.price) {
 
-    const nameLowCase = name.toLowerCase()
-    const typeLowCase = type.toLowerCase()
-    const producerLowCase = producer.toLowerCase()
-    const paramURL1 = urlParams[0].toLowerCase()
-    const paramURL2 = urlParams[1].toLowerCase()
+      const { type, producer, name } = item
 
-    if (typeLowCase === paramURL1
-      && producerLowCase === paramURL2) {
-      acc.push(item)
-    }
-    else if (typeLowCase === paramURL1
-      && paramURL2 === 'все') {
-      acc.push(item)
-    }
-    else if (producerLowCase === paramURL1) {
-      acc.push(item)
-    }
-    else if (nameLowCase === paramURL1) {
-      acc.push(item)
-    }
-    else if (
-      paramURL2 === catalogHashPath.search.toLowerCase()
-      || paramURL2 === catalogHashPath.production.toLowerCase()) {
+      const nameLowCase = name.toLowerCase()
+      const typeLowCase = type.toLowerCase()
+      const producerLowCase = producer.toLowerCase()
+      const paramURL1 = urlParams[0].toLowerCase()
+      const paramURL2 = urlParams[1].toLowerCase()
 
-      if (nameLowCase.includes(paramURL1)) {
+      if (typeLowCase === paramURL1
+        && producerLowCase === paramURL2) {
         acc.push(item)
+      }
+      else if (typeLowCase === paramURL1
+        && paramURL2 === 'все') {
+        acc.push(item)
+      }
+      else if (producerLowCase === paramURL1) {
+        acc.push(item)
+      }
+      else if (nameLowCase === paramURL1) {
+        acc.push(item)
+      }
+      else if (
+        paramURL2 === catalogHashPath.search.toLowerCase()
+        || paramURL2 === catalogHashPath.production.toLowerCase()) {
+
+        if (nameLowCase.includes(paramURL1)) {
+          acc.push(item)
+        }
       }
     }
 

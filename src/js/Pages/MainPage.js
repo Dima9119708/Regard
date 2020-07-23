@@ -9,6 +9,8 @@ import firebase from 'firebase/app'
 import { initialState } from '../core/initialState'
 import { storage } from '../core/utils'
 
+import base from './../base.json'
+
 function whetherTheUserIsSaved() {
 
   return new Promise(resolve => {
@@ -40,9 +42,11 @@ export class MainPage extends InterfacePages {
 
     this.user = null
 
-    const GET__DATA = await fetch('https://regard-ab2be.firebaseio.com/base.json')
-    const DATA = await GET__DATA.json()
-    const user = await whetherTheUserIsSaved()
+    // const GET__DATA = await fetch('https://regard-ab2be.firebaseio.com/base.json')
+    // const DATA = await GET__DATA.json()
+    //const user = await whetherTheUserIsSaved()
+    const DATA = await base
+    const user = false
 
     if (user) {
       this.user = user
@@ -63,7 +67,7 @@ export class MainPage extends InterfacePages {
 
     this.initComponent = new InitComponent(
       [HeaderTop, Header, Content, Footer, LoginBar],
-      DATA,
+      DATA.base,
       this.userState,
       this.user
     )

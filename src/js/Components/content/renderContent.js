@@ -4,7 +4,9 @@ import { renderRandomContent,
       } from "./content.functions"
 
 import { renderTitle, lackOfGoods } from "./renderContent.functions"
-import { pagination } from "../../core/pagination"
+import { pagination, showItems, pageTransitionAnimationSpeed } from "../../core/pagination"
+import { searchMaxAndMinNumber } from "../../core/utils"
+import { $ } from "../../core/Dom"
 
 
 export function renderMainContent(content) {
@@ -40,19 +42,33 @@ export function renderMainContent(content) {
 
     <section class="s-content-products">
     <section class="s-content-foods">
-    <div class="content-hits__top"><span>Хиты продаж </span><span>ТОП 40 продаж </span></div>
+    <div class="content-hits__top">
+      <span>Хиты продаж </span>
+    </div>
 
-    <div class="content-blocks"> ${renderRandomContent(10, content)}</div>
+    <div class="content-blocks">
+      <div class="content-blocks__inner" data-cards>
+        ${renderRandomContent(10, content)}
+      </div>
+    </div>
 
     <section class="s-content-foods__wrap">
     <section class="s-content-food__sentence">
       <div class="content-hits__top"><span>Предложение </span><span> </span></div>
-      <div class="content-blocks"> ${renderRandomContent(5, content)}</div>
+      <div class="content-blocks">
+        <div class="content-blocks__inner" data-cards>
+          ${renderRandomContent(5, content)}
+        </div>
+      </div>
     </section>
     <section class="s-content-food__sentence">
-    <div class="content-hits__top"><span>Новинки </span><span> </span></div>
+    <div class="content-hits__top">
+      <span>Новинки</span>
+    </div>
     <div class="content-blocks">
-      ${renderRandomContent(5, content)}
+      <div class="content-blocks__inner" data-cards>
+        ${renderRandomContent(5, content)}
+      </div>
     </section>
     </section>
     </section>
@@ -63,38 +79,102 @@ export function renderMainContent(content) {
 
 export function renderCatalogContent(content) {
 
-  const { $root, DATA, store } = content
+  const { $root,DATA, store } = content
+  let base = reSotingDATA(DATA)
 
-  const base = reSotingDATA(DATA)
-
-  pagination.onClick($root,base, store)
-
-  return `
-    <section class="s-content-products">
+  return {
+    base: base,
+    content: `
+      <section class= "s-content-products" >
         <section class="s-content-foods">
-            <div class="content-hits__top">
-                <span data-titleSearch>${renderTitle()} </span><span></span></div>
+          <div class="content-hits__top">
+            <h2 data-titleSearch>${renderTitle()}</h2>
+          </div>
 
-            <div class="content-blocks" data-cards>
-            <div class="content-blocks__sorting">Сортировать по : <span>по цене</span></div>
-             ${
-              renderProductCards(pagination.showItems(base), store)
-              ||
-              lackOfGoods(
+          <div class="content-blocks">
+            <div class="content-blocks__sorting" data-sort>
+              Сортировать по :
+              <button class="price price--active" data-price="price" data-value="" data-paginationitem="0" data-paginationnumber="1"> по умолчанию</button>
+              <button class="price" data-price="price" data-value="a-b" data-paginationitem="0" data-paginationnumber="1"> по возрастанию</button>
+              <button class="price" data-price="price" data-value="b-a" data-paginationitem="0" data-paginationnumber="1"> по убыванию</button>
+            </div>
+            <div class="content-blocks__inner" data-cards>
+              ${
+                renderProductCards(pagination.showItems(base), store)
+                ||
+                lackOfGoods(
                   base,
                   pagination.showItems(base),
                   renderProductCards(pagination.showItems(base), store)
                 )
               }
             </div>
+          </div>
 
-            <div class="content-blocks__pagination" data-pagination>
+          <div class="content-blocks__pagination" data-pagination>
 
             ${
               pagination.__INIT__(base)
             }
+          </div>
+        </section>
+        <div class="content-products-filter">
+          <div class="content-products-filter__header">Подбор по параметрам</div>
+          <div class="content-products-filter__reset">Сбросить фильтры</div>
+          <ul class="content-products-filter__list">
+            <li class="content-products-filter__item">
+              <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.
+                <div class="content-products-filter__price" data-inputFilterParent>
+                <div class="input-price from">
+                  от
+                    <input type="number" data-minInput value="${searchMaxAndMinNumber(false, base)}" min="${searchMaxAndMinNumber(false, base)}">
+                    </div>
+                  <div class="input-price before">
+                    до
+                    <input type="number" data-maxInput value="${searchMaxAndMinNumber(true, base)}" max="${searchMaxAndMinNumber(true, base)}">
+                    </div>
+                  </div>
 
-            </div></></section><div class="content-products-filter"><div class="content-products-filter__header">Подбор по параметрам</div><div class="content-products-filter__reset">Сбросить фильтры</div><ul class="content-products-filter__list"><li class="content-products-filter__item"> <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.<div class="content-products-filter__price"><div class="input-price from">от<input type="number" value="2940"></div><div class="input-price before">до<input type="number" value="133550"></div></div></li></ul><div class="content-products-filter__reset">Применить фильтры<span>Найдено товаров 5</span></div></div></section>
+                  <div class="content__range-slider" data-rangeParent>
+                  
+                    <button class="content__range-button" data-range="left"></button>
+                    <button class="content__range-button" data-range="right"></button>
+                    <div class="content__range-slider-line" data-rangeLine></div>
 
+                  </div>
+                </li>
+              </ul>
+              <div class="content-products-filter__reset">
+                Применить фильтры
+                <span>Найдено товаров 5</span>
+              </div>
+            </div>
+    </section>
   `
+  }
+}
+
+export function renderCards(event, $root, DATA, store) {
+
+  const { paginationitem } = event.target.dataset
+
+  const start = +paginationitem
+  const finish = start + (showItems)
+
+  const newBase = DATA.slice(start, finish)
+
+  const $element = $root.qSelector('[data-cards]')
+
+  $element.style.opacity = '.40'
+  $element.style.transition = 'opacity .2s linear'
+
+  setTimeout(() => {
+
+    $element.style.opacity = '1'
+    $element.style.transition = 'opacity .2s linear'
+    $($element)
+      .clear()
+      .insertHTML('beforeend', renderProductCards(newBase, store))
+
+  }, pageTransitionAnimationSpeed)
 }
