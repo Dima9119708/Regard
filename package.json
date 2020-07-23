@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "s": "cross-env NODE_ENV=development webpack-dev-server --open",
+    "s": "cross-env NODE_ENV=development webpack-dev-server --open --inline --host 192.168.31.103",
     "b": "cross-env NODE_ENV=production webpack --mode production"
   },
   "author": "",

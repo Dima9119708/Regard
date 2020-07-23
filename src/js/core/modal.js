@@ -73,8 +73,8 @@ function renderModalContent(content) {
     return `
       <div class="fieldset-body" id="login_form">
         <p class="field">
-            <label for="user">Email</label>
-            <input type="text" id="user" name="user" title="Username">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" title="Username">
             <span id="valida" class="i i-warning"></span>
           </p>
           <p class="field">
@@ -124,8 +124,8 @@ function renderModalContent(content) {
       <div class="fieldset-body" id="login_form">
 
       <p class="field">
-        <label for="user">Email</label>
-        <input type="text" id="user" name="user" title="Username">
+        <label for="reset">Email</label>
+        <input type="text" id="reset" name="resetEmail" title="resetEmail">
         <span id="valida" class="i i-warning"></span>
       </p>
 
