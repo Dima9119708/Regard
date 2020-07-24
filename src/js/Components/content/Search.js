@@ -92,7 +92,6 @@ export class Search {
       const searchInput = this.$root.qSelector('[data-search]')
       searchInput.value = event.target.innerHTML.trim()
       this.onInput(searchInput)
-
     }
     else if (historyclear) {
 
@@ -129,7 +128,8 @@ export class Search {
 
   onInput(event) {
 
-    const search = event.target.dataset.search
+    const target = event.target || event
+    const { search } = target.dataset
 
     if (search) {
 

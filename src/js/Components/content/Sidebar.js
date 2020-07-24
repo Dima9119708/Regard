@@ -2,6 +2,7 @@ import { $ } from "../../core/Dom";
 import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import { urlParse } from "../../core/utils";
+import { accardion } from "./renderContent.functions";
 
 export class Sidebar {
 
@@ -11,6 +12,7 @@ export class Sidebar {
   }
 
   render() {
+
     const urlParams = urlParse()
 
     if (urlParams[1] === catalogHashPath.production) {
@@ -203,29 +205,6 @@ function trainingSidebarHTML(reSort) {
       </li>
     `
   })
-}
-
-function accardion(event, frag) {
-
-  if (frag) {
-    event.style.maxHeight = event.scrollHeight + 'px'
-    event.setAttribute('data-accardion', true)
-    $(event).qSelector('[data-plus]').innerHTML = '-'
-    return
-  }
-
-  const { scrollHeight, style, dataset } = event
-
-  if (JSON.parse(dataset.accardion)) {
-    style.maxHeight = 26 + 'px'
-    event.setAttribute('data-accardion', false)
-    $(event).qSelector('[data-plus]').innerHTML = '+'
-  }
-  else {
-    event.style.maxHeight = event.scrollHeight + 'px'
-    event.setAttribute('data-accardion', true)
-    $(event).qSelector('[data-plus]').innerHTML = '-'
-  }
 }
 
 function filterBrands(DATA) {

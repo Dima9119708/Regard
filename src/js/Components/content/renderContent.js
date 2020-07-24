@@ -7,6 +7,7 @@ import { renderTitle, lackOfGoods } from "./renderContent.functions"
 import { pagination, showItems, pageTransitionAnimationSpeed } from "../../core/pagination"
 import { searchMaxAndMinNumber } from "../../core/utils"
 import { $ } from "../../core/Dom"
+import { Filter } from "./filter"
 
 
 export function renderMainContent(content) {
@@ -118,12 +119,15 @@ export function renderCatalogContent(content) {
             }
           </div>
         </section>
-        <div class="content-products-filter">
+        <div class="content-products-filter unselectable">
           <div class="content-products-filter__header">Подбор по параметрам</div>
           <div class="content-products-filter__reset">Сбросить фильтры</div>
           <ul class="content-products-filter__list">
-            <li class="content-products-filter__item">
-              <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.
+
+            <li class="content-products-filter__item" data-accardion="true">
+              <div class="content-products-filter__item-title" data-filterTittle="filterTittle">
+                <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.
+              </div>
                 <div class="content-products-filter__price" data-inputFilterParent>
                 <div class="input-price from">
                   от
@@ -136,19 +140,21 @@ export function renderCatalogContent(content) {
                   </div>
 
                   <div class="content__range-slider" data-rangeParent>
-                  
+
                     <button class="content__range-button" data-range="left"></button>
                     <button class="content__range-button" data-range="right"></button>
                     <div class="content__range-slider-line" data-rangeLine></div>
 
                   </div>
-                </li>
-              </ul>
-              <div class="content-products-filter__reset">
-                Применить фильтры
-                <span>Найдено товаров 5</span>
-              </div>
-            </div>
+            </li>
+
+            ${Filter.renderFilterContent(base)}
+
+          </ul>
+          <div class="content-products-filter__reset">
+            Применить фильтры <span>Найдено товаров 5</span>
+          </div>
+       </div>
     </section>
   `
   }

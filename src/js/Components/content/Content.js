@@ -8,6 +8,7 @@ import { catalog } from "../../core/urlHash.fn";
 import Swiper from 'swiper'
 import { pagination } from "../../core/pagination";
 import { Filter } from "./filter";
+import { $ } from "../../core/Dom";
 
 export class Content extends ParentComponent {
 
@@ -33,7 +34,7 @@ export class Content extends ParentComponent {
       return renderMainContent(this)
     }
     else if (ActiveRout.urLHash.startsWith(catalog)) {
-      this.DATA = renderCatalogContent(this).base
+      this.catalogCards = renderCatalogContent(this).base
       return renderCatalogContent(this).content
     }
 
@@ -43,7 +44,9 @@ export class Content extends ParentComponent {
     super.init()
     this.slider__INIT__()
 
-    Filter.rangeSliderINIT(this.$root)
+    if(ActiveRout.urLHash.startsWith(catalog)) {
+      Filter.rangeSliderINIT(this.$root)
+    }
   }
 
   renderHTML() {
@@ -74,7 +77,7 @@ export class Content extends ParentComponent {
       <button class="s-content__find" data-searchButton="search" type="search">Найти</button></section>
 
       <div class="content-wrapper" data-content-wrapper>
-         ${this.renderContent()}
+        ${this.renderContent()}
       </div>
       </main>
       </div>
@@ -89,8 +92,8 @@ export class Content extends ParentComponent {
     this.search.onClick(event)
     addBasketProducts(event, this)
 
-    pagination.onClick(event, this.DATA, this.store, this.$root)
-    Filter.onClick(event, this.DATA, this.store, this.$root)
+    pagination.onClick(event, this.catalogCards, this.store, this.$root)
+    Filter.onClick(event, this.catalogCards, this.store, this.$root)
   }
 
   onKeydown(event) {

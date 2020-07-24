@@ -1,4 +1,5 @@
 import { urlParse } from "../../core/utils"
+import { $ } from "../../core/Dom"
 
 export function renderTitle() {
 
@@ -33,4 +34,34 @@ export function lackOfGoods(base,showItems, renderCardsTEST) {
   }
 
   return ''
+}
+
+export function accardion(event, frag) {
+
+  if (frag) {
+    event.style.maxHeight = event.scrollHeight + 'px'
+    event.setAttribute('data-accardion', true)
+    $(event).qSelector('[data-plus]').innerHTML = '-'
+    return
+  }
+
+  const { scrollHeight, style, dataset } = event
+  const plus = $(event).qSelector('[data-plus]')
+
+  if (JSON.parse(dataset.accardion)) {
+    style.maxHeight = 26 + 'px'
+    event.setAttribute('data-accardion', false)
+    style.transition = 'max-height .2s easy'
+    if (plus) {
+      plus.innerHTML = '+'
+    }
+  }
+  else {
+    style.maxHeight = scrollHeight + 'px'
+    event.setAttribute('data-accardion', true)
+
+    if (plus) {
+      plus.innerHTML = '-'
+    }
+  }
 }
