@@ -1,6 +1,6 @@
 import { $ } from "./Dom"
 import { urlParse, changeURL } from "./utils";
-import { renderCards } from "../Components/content/renderContent";
+import { renderProductCards } from "../Components/content/renderContent.functions";
 
 export const showItems = 10
 export const pageTransitionAnimationSpeed = 300
@@ -149,8 +149,33 @@ export const pagination = {
       const htmlDATA = this.start(this.counterPages, paginationnumber)
       $(pagitanionParent).clear().insertHTML('beforeend', htmlDATA)
 
-      renderCards(event, $root, base, store)
+      cardRerender(event, $root, base, store)
       changeURL(paginationnumber)
     }
   },
+}
+
+export function cardRerender(event, $root, DATA, store) {
+
+  const { paginationitem } = event.target.dataset
+
+  const start = +paginationitem
+  const finish = start + (showItems)
+
+  const newBase = DATA.slice(start, finish)
+
+  const $element = $root.qSelector('[data-cards]')
+
+  $element.style.opacity = '.40'
+  $element.style.transition = 'opacity .2s linear'
+
+  setTimeout(() => {
+
+    $element.style.opacity = '1'
+    $element.style.transition = 'opacity .2s linear'
+    $($element)
+      .clear()
+      .insertHTML('beforeend', renderProductCards(newBase, store))
+
+  }, pageTransitionAnimationSpeed)
 }

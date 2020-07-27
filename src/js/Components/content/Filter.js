@@ -1,6 +1,5 @@
-import { changeURL, urlParse } from "../../core/utils"
-import { pagination } from "../../core/pagination"
-import { renderCards } from "./renderContent"
+import { changeURL } from "../../core/utils"
+import { pagination, cardRerender } from "../../core/pagination"
 import { accardion } from "./renderContent.functions"
 
 export class Filter {
@@ -19,24 +18,22 @@ export class Filter {
 
       const value = e.target.dataset.value
 
-      renderCards(e, $root, filterSortPrice(value, base), store)
-      changeURL(1)
-      pagination.onClick(e, base, store, $root)
+      
     }
 
-    const { checkbox } = e.target.dataset
+    const checkbox = e.target.closest('[data-checkbox]')
 
     if (checkbox) {
 
-      const { checked } = e.target.dataset
+      const { checked } = checkbox.dataset
 
       if (JSON.parse(checked)) {
-        e.target.children[0].style.display = "none"
-        e.target.setAttribute('data-checked', false)
+        checkbox.children[0].style.display = "none"
+        checkbox.setAttribute('data-checked', false)
       }
       else {
-        e.target.children[0].style.display = "block"
-        e.target.setAttribute('data-checked', true)
+        checkbox.children[0].style.display = "block"
+        checkbox.setAttribute('data-checked', true)
       }
 
     }
@@ -169,8 +166,12 @@ export class Filter {
               return
             }
 
-            inputMin.value = (parseInt(min) + Math.round((max - min) * per_min / 100));
-            inputMax.value = (parseInt(min) + Math.round((max - min) * per_max / 100));
+            if (range === 'left') {
+              inputMin.value = (parseInt(min) + Math.round((max - min) * per_min / 100));
+            }
+            else {
+              inputMax.value = (parseInt(min) + Math.round((max - min) * per_max / 100));
+            }
           }
         }
 
@@ -278,25 +279,12 @@ export class Filter {
 
       if (arrayTypes.length > 1) {
 
-        const typeHTML = arrayTypes.map( item => {
+        const typeHTML = arrayTypes.map(trainingHTMLList)
 
-          return `
-            <div class="filter-checkbox">
-              <div class="checkbox-fake " data-checkbox="checkbox" data-checked="false" >${item}
-                <div class="checkbox-fake--active">&#10003;</div>
-              </div>
-            </div>
-          `
-        })
-
-        return `
-          <li class="content-products-filter__item" data-accardion="true" >
-            <div class="content-products-filter__item-title" data-filterTittle="filterTittle">
-              <i class="fas fa-long-arrow-alt-right"></i>Тип продукта
-            </div>
-            ${typeHTML.join('')}
-          </li>
-        `
+        return renderHTMLFilter(
+          ['Тип продукта'],
+          typeHTML
+        )
       }
 
       if (type === 'Блоки питания') {
@@ -497,6 +485,7 @@ export class Filter {
       }
 
       if (type === 'Жесткие диски (HDD)') {
+
         const formFactor = [
           "2.5",
           "3.5"
@@ -771,6 +760,7 @@ function rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, 
 function searchForMatches(base, data) {
 
   return base.reduce( (acc,elem) => {
+
     data.forEach(item => {
 
       const val = new RegExp(item, 'gi')
@@ -806,6 +796,7 @@ function trainingHTMLList(item) {
   `
 }
 
+// Выводим отфильрованные и подготовленые HTML фильтры
 function renderHTMLFilter(title, ...content) {
 
   const htmlStrings = []
@@ -815,8 +806,8 @@ function renderHTMLFilter(title, ...content) {
     if (content[i].length) {
 
       htmlStrings.push(`
-        <li class="content-products-filter__item" data-accardion="true">
-          <div class="content-products-filter__item-title" data-filterTittle="filterTittle">
+        <li class="content-block__filter-item" data-accardion="true">
+          <div class="content-block__filter-title" data-filterTittle="filterTittle">
             <i class="fas fa-long-arrow-alt-right"></i>${title[i]}
            </div>
             ${content[i].join('')}

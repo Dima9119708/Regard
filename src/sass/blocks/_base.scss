@@ -85,3 +85,7 @@ input[type="number"] {
   -ms-user-select: none;
   user-select: none;
 }
+
+.simplebar-scrollbar::before {
+  background-color: rgb(116, 116, 116);
+}

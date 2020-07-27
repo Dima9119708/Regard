@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.10.4",
+    "@babel/core": "^7.10.5",
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
-    "@fortawesome/fontawesome-free": "^5.13.1",
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.1.1",
@@ -39,11 +39,12 @@
     "@babel/plugin-transform-arrow-functions": "^7.10.4",
     "aos": "^2.3.4",
     "autoprefixer": "^9.8.5",
-    "firebase": "^7.16.0",
+    "firebase": "^7.17.1",
     "font-awesome": "^4.7.0",
     "html-table-to-json": "^1.0.0",
     "micromodal": "^0.4.6",
     "normalize.css": "^8.0.1",
-    "postcss-loader": "^3.0.0"
+    "postcss-loader": "^3.0.0",
+    "simplebar": "^5.2.1"
   }
 }

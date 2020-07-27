@@ -1,8 +1,8 @@
-.content-product-block {
+.content-block__card {
   @include product-block(49%)
 }
 
-.content-product-block-image {
+.content-block__card-image-block {
   margin-right: 10px;
   text-align: center;
 
@@ -12,13 +12,13 @@
   }
 }
 
-.content-product-block-img {
+.content-block__card-img {
   height: 100px;
   width: 100px;
   overflow: hidden;
 }
 
-.content-product-block-name {
+.content-block__card-content-name {
   margin-bottom: 7px;
   font-size: 14px;
   cursor: pointer;
@@ -28,13 +28,13 @@
   }
 }
 
-.content-product-block-dist {
+.content-block__card-content-dist {
   color: rgb(145, 145, 145);
   font-size: 13px;
   margin-bottom: 20px;
 }
 
-.content-product-block-price {
+.content-block__card-content-price {
   display: flex;
   align-items: center;
 

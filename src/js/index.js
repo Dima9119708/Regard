@@ -8,7 +8,6 @@ import "firebase/database";
 import { Router } from './Routing/Router'
 import { MainPage } from './Pages/MainPage'
 
-
 new Router('#app', {
   main: MainPage
 })
@@ -22,13 +21,3 @@ firebase.initializeApp({
   messagingSenderId: "725206410086",
   appId: "1:725206410086:web:6a66e94c39e5b6ea7d1ea7"
 });
-
-
-// firebase.auth().onAuthStateChanged(function (user) {
-//   if (user) {
-//     console.log(user)
-//   }
-//   else {
-//     console.log(user)
-//   }
-// });

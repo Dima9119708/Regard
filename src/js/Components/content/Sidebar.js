@@ -25,19 +25,19 @@ export class Sidebar {
 
   }
 
-  activeClassDom() {
+  activeClassDomINIT() {
 
     const urlParams = urlParse()
 
     if (urlParams[1] === catalogHashPath.production) {
       return {
         type : '',
-        brand: 'tab--active'
+        brand: 'content-product__tab--active'
       }
     }
     else if (!urlParams.length || urlParams.length) {
       return {
-        type: 'tab--active',
+        type: 'content-product__tab--active',
         brand : ''
       }
     }
@@ -167,13 +167,13 @@ function trainingSidebarHTML(reSort) {
       active = ''
 
       if (urlParams[0] === goods && urlParams[1] === item) {
-        active = 'content-product__menu-internal-item-link--active'
+        active = 'content-product__menu-inside-item-link--active'
       }
 
       if (item) {
         return `
-          <li class="content-product__menu-internal-item" data-brand="${item}">
-            <a class="content-product__menu-internal-item-link ${active}" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
+          <li class="content-product__menu-inside-item" data-brand="${item}">
+            <a class="content-product__menu-inside-item-link ${active}" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
           </li>
         `
       }
@@ -188,7 +188,7 @@ function trainingSidebarHTML(reSort) {
     }
 
     if (urlParams[0] === goods) {
-      active = 'content-product__menu-internal-item-link--active'
+      active = 'content-product__menu-inside-item-link--active'
     }
 
     return `
@@ -197,9 +197,9 @@ function trainingSidebarHTML(reSort) {
       >
       <button class="content-product__menu-item-button ${active}" data-buttonMainProduct="MainProduct" type="button"> ${goods}</button>
       <span data-plus>+</span>
-          <ul class="content-product__menu-internal" data-internal">
-            <li class="content-product__menu-internal-item">
-            <a class="content-product__menu-internal-item-link" data-brand="Все"  data-internal-item="internal" href="#">все товары раздела</a></li>
+          <ul class="content-product__menu-inside" data-internal">
+            <li class="content-product__menu-inside-item">
+            <a class="content-product__menu-inside-item-link" data-brand="Все"  data-internal-item="internal" href="#">все товары раздела</a></li>
             ${brand.join('')}
           </ul>
       </li>
@@ -227,7 +227,6 @@ function trainingBrandsHTML(brand) {
   return brand.reduce((acc, item) => {
 
     if (item) {
-
 
       let active = ''
       if (urlParams[0] === item) {
@@ -258,10 +257,10 @@ function sidebarTABDOMActive(target) {
   const $parent = target.closest('[data-type]')
 
   for (let item of $parent.children) {
-    item.classList.remove('tab--active')
+    item.classList.remove('content-product__tab--active')
   }
 
-  event.target.classList.add('tab--active')
+  event.target.classList.add('content-product__tab--active')
 }
 
 function sideBarRenderContent(types, $root, renderSideBar, renderBrand) {

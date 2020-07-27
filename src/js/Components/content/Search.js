@@ -20,7 +20,7 @@ export class Search {
       const story = history.map(item => {
         return `
           <div
-            class="s-content__search-list-item-history"
+            class="s-content__search-block-item-history"
             data-historyItem="historyItem"
             >
             ${item}
@@ -30,7 +30,7 @@ export class Search {
 
       story.push(`<button
                       data-historyClear="Clear"
-                      class="s-content__search-list-item-history-clear">
+                      class="s-content__search-block-item-history-clear">
                       Очистить историю
                     </button>`)
 
@@ -157,14 +157,14 @@ export class Search {
 }
 
 function createSearchList(getHistorySearch) {
-  const searchLi = $.create('div', 's-content__search-list')
+  const searchLi = $.create('div', 's-content__search-block')
   searchLi.setAttribute('data-search-list','search-list')
   searchLi.innerHTML = `
-    <div class="s-content__search-list-item" data-historyLi>
+    <div class="s-content__search-block-item" data-historyLi>
         История поиска
         ${getHistorySearch()}
       </div>
-      <div class="s-content__search-list-item" data-search-list-item="false">
+      <div class="s-content__search-block-item" data-search-list-item="false">
         Введите модель в поиск
     </div>
   `
@@ -191,14 +191,14 @@ function baseSearch(DATA, value) {
       }
 
       const str = `
-        <a class="s-content__search-list-item-children" data-id="${goods.id}" href="#">
-          <div class="s-content__search-list-item-children-image">
+        <a class="s-content__search-block-item-list" data-id="${goods.id}" href="#">
+          <div class="s-content__search-block-item-list-image">
             <img src="./images/235789_600.png" alt="альтернативный текст">
           </div>
 
-          <div class="s-content__search-list-item-children-inner">
-            <div class="s-content__search-list-item-children-title">${goods.name}</div>
-            <div class="s-content__search-list-item-children-price">${goods.price} руб.</div>
+          <div class="s-content__search-block-item-list-inner">
+            <div class="s-content__search-block-item-list-title">${goods.name}</div>
+            <div class="s-content__search-block-item-list-price">${goods.price} руб.</div>
           </div>
 
         </a>
