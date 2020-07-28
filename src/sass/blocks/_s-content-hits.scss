@@ -1,10 +1,10 @@
-.s-content-products {
+.content__blocks {
   display: flex;
   justify-content: space-between;
 }
 
-.s-content-foods {
-  @include s-products-foods(82%)
+.content__foods {
+  @include s-products__foods-Width(80%)
 }
 
 .content-hits__top {
@@ -22,15 +22,21 @@
   }
 }
 
-.content-blocks {
+.content-block__cards {
   padding: 10px;
   background-color: #f6f6f6;
   border: 1px solid #bdbcbc;
   margin-bottom: 20px;
 }
 
-.content-blocks__inner {
+.content-block__cards-inner {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+}
+
+.content-block__cards-noProducts {
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
 }

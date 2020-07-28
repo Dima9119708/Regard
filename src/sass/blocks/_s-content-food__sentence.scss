@@ -1,7 +1,7 @@
 .s-content-food__sentence {
-  @include s-products-foods(49%);
+  @include s-products__foods-Width(49%);
 
-  & .content-product-block {
-    @include product-block(100%)
+  & .content-block__card{
+   @include product-block(100%)
   }
 }

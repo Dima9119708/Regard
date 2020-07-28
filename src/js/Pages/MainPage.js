@@ -8,12 +8,12 @@ import { InterfacePages } from './InterfacePage'
 import firebase from 'firebase/app'
 import { initialState } from '../core/initialState'
 import { storage } from '../core/utils'
-
 import base from './../base.json'
 
 function whetherTheUserIsSaved() {
 
   return new Promise(resolve => {
+
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         resolve(user)
@@ -22,6 +22,7 @@ function whetherTheUserIsSaved() {
         resolve(user)
       }
     })
+
   });
 }
 
