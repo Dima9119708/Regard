@@ -53,18 +53,18 @@ export class InitComponent {
 
   storeSubscribe() {
     this.store.subscribe( data => {
-
-      if (!this.user) {
-        storage('REGARD', data)
-      }
-      else {
-        setTimeout(async () =>
-                          await firebase
-                          .database()
-                          .ref(`users/${this.userID.uid}/userDATA/`)
-                          .set(data),
-                        500)
-      }
+      storage('REGARD', data)
+      // if (!this.user) {
+      //   storage('REGARD', data)
+      // }
+      // else {
+      //   setTimeout(async () =>
+      //                     await firebase
+      //                     .database()
+      //                     .ref(`users/${this.userID.uid}/userDATA/`)
+      //                     .set(data),
+      //                   500)
+      // }
     })
   }
 }

@@ -230,7 +230,7 @@ function trainingBrandsHTML(brand) {
 
       let active = ''
       if (urlParams[0] === item) {
-        active = 'content-product__menu-internal-item-link--active'
+        active = 'content-product__menu-inside-item-link--active'
       }
 
       const str = `
@@ -239,7 +239,7 @@ function trainingBrandsHTML(brand) {
             data-brand="${item}"
             data-goods="${item}"
             >
-            <a class="content-product__menu-internal-item-link ${active}"
+            <a class="content-product__menu-inside-item-link ${active}"
              data-brand="${item}"
              href="#">${item}</a>
           </li>

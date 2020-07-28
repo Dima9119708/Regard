@@ -92,9 +92,9 @@ export function renderCatalogContent(content) {
           <div class="content-block__cards">
             <div class="content-block__cards-sorting" data-sort>
               Сортировать по :
-              <button class="price price--active" data-price="price" data-value="" data-paginationitem="0" data-paginationnumber="1"> по умолчанию</button>
-              <button class="price" data-price="price" data-value="a-b" data-paginationitem="0" data-paginationnumber="1"> по возрастанию</button>
-              <button class="price" data-price="price" data-value="b-a" data-paginationitem="0" data-paginationnumber="1"> по убыванию</button>
+              <button class="price" data-price="true" data-value="default"> по умолчанию</button>
+              <button class="price" data-price="price" data-value="a--b"> по возрастанию</button>
+              <button class="price" data-price="price" data-value="b--a"> по убыванию</button>
             </div>
             <div class="content-block__cards-inner" data-cards>
               ${
@@ -119,10 +119,7 @@ export function renderCatalogContent(content) {
         <div class="content-block__filter unselectable">
 
             <div class="content-block__filter-header">Подбор по параметрам</div>
-            <div class="content-block__filter-reset">Сбросить фильтры</div>
-            <div class="content-block__filter-reset">
-              Применить фильтры <span>Найдено товаров 5</span>
-            </div>
+            <div class="content-block__filter-reset" data-reset="reset">Сбросить фильтры</div>
             <ul class="content-block__filter-list" data-simplebar>
 
               <li class="content-block__filter-item" data-accardion="true">
@@ -151,7 +148,7 @@ export function renderCatalogContent(content) {
 
               ${Filter.renderFilterContent(base)}
 
-              <li></li>
+
             </ul>
           </div>
     </div>

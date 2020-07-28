@@ -175,16 +175,13 @@ function baseSearch(DATA, value) {
 
   return DATA.reduce((acc, goods) => {
 
-    const val = new RegExp(value, 'gi')
+    const searchItem = value.split(' ').join('').toLowerCase()
+    const itemWithoutSpaces = goods.name.split(' ').join('').toLowerCase()
 
     if (value === '') {
       return []
     }
-    else if (
-        goods.name.match(val)
-        ||
-        goods.name.includes(value)
-      ) {
+    else if ( itemWithoutSpaces.includes(searchItem) ) {
 
       if (acc.length > 10) {
         acc.splice(10, acc.length)

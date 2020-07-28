@@ -45,7 +45,11 @@ export class Content extends ParentComponent {
     this.slider__INIT__()
 
     if(ActiveRout.urLHash.startsWith(catalog)) {
-      Filter.rangeSliderINIT(this.$root)
+
+      Filter.rangeSliderINIT(this)
+      Filter.displayСardsBasedOnTheFilter(this)
+      Filter.viewUpdateDom(this)
+
     }
   }
 
@@ -99,8 +103,8 @@ export class Content extends ParentComponent {
     this.search.onClick(event)
     addBasketProducts(event, this)
 
-    pagination.onClick(event, this.catalogCards, this.store, this.$root)
-    Filter.onClick(event, this.catalogCards, this.store, this.$root)
+    pagination.onClick(event, this)
+    Filter.onClick(event, this)
   }
 
   onKeydown(event) {

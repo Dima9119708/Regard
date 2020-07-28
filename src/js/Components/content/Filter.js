@@ -1,10 +1,15 @@
-import { changeURL } from "../../core/utils"
-import { pagination, cardRerender } from "../../core/pagination"
-import { accardion } from "./renderContent.functions"
+import { accardion, renderProductCards } from "./renderContent.functions"
+import { ActiveRout } from "../../Routing/ActiveRouter"
+import { urlParse } from '../../core/utils'
+import { catalog } from "../../core/urlHash.fn"
+import { $ } from "../../core/Dom"
+import { pagination } from "../../core/pagination"
 
 export class Filter {
 
-  static onClick(e, base, store, $root) {
+  static onClick(e, content) {
+
+    const { $root } = content
 
     const buttonSort = e.target.closest('[data-price]')
 
@@ -13,12 +18,13 @@ export class Filter {
 
       for (const item of $parent.children) {
         item.classList.remove('price--active')
+        item.setAttribute('data-price', false)
       }
       e.target.classList.add('price--active')
+      e.target.setAttribute('data-price', true)
 
-      const value = e.target.dataset.value
-
-      
+      Filter.changeURL = $root
+      Filter.displayСardsBasedOnTheFilter(content)
     }
 
     const checkbox = e.target.closest('[data-checkbox]')
@@ -36,6 +42,8 @@ export class Filter {
         checkbox.setAttribute('data-checked', true)
       }
 
+      Filter.changeURL = $root
+      Filter.displayСardsBasedOnTheFilter(content)
     }
 
     const filterTitle = e.target.dataset.filtertittle
@@ -45,9 +53,18 @@ export class Filter {
       accardion($parent)
     }
 
+    const reset = e.target.dataset.reset
+
+    if (reset) {
+      const currentURL = urlParse()
+      const changeURL = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${currentURL[2]}`
+      ActiveRout.setHash(changeURL)
+    }
   }
 
-  static rangeSliderINIT($elem) {
+  static rangeSliderINIT(content) {
+
+    const { catalogCards: base, $root: $elem, store } = content
 
     // Возращаем из инстенса класса DOM, DOM - элемент'
     const $root = $elem.returnNode()
@@ -88,6 +105,9 @@ export class Filter {
 
         // Снова вызываем ф-н делает все тоже самое
         rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, $line)
+
+        Filter.changeURL = $($root)
+        Filter.displayСardsBasedOnTheFilter(base, $($root), store)
       }
     }
 
@@ -122,9 +142,12 @@ export class Filter {
 
             // Условия чтобы кнопки не выходили за пределы
             if (value < 0) {
+              inputMin.value = min
               return
             }
             else if (value > $slider.offsetWidth - targetButton.offsetWidth) {
+
+              inputMax.value = max
               return
             }
 
@@ -178,6 +201,9 @@ export class Filter {
         $root.onmouseup = e => {
           $root.onmousemove = null
           $root.onmouseup = null
+
+          Filter.changeURL = $($root)
+          Filter.displayСardsBasedOnTheFilter(content)
         }
       }
     }
@@ -192,7 +218,6 @@ export class Filter {
 
         // Получаем текущую кнопку
         let targetButton = e.target
-
 
         $root.ontouchmove = e => {
 
@@ -264,6 +289,9 @@ export class Filter {
         $root.ontouchend = e => {
           $root.onmousemove = null
           $root.onmouseup = null
+
+          Filter.changeURL = $($root)
+          Filter.displayСardsBasedOnTheFilter(content)
         }
       }
     }
@@ -311,7 +339,7 @@ export class Filter {
         const wattsHTML = selectionWatts.map(trainingHTMLList)
 
         return renderHTMLFilter(
-          ['Мощность'],
+          ['Мощность, W'],
           wattsHTML,
         )
       }
@@ -321,29 +349,28 @@ export class Filter {
         const seria = [
           "FirePro 2270",
           "FirePro 2460",
-          "FirePro S400",
+          "FirePro 400",
           "FirePro 9150",
           "FirePro 9170",
           "GeForce 210",
           "GeForce GT 1030",
           "GeForce GT 710",
           "GeForce GT 730",
-          "GeForce GTX 1050 Ti",
-          "GeForce GTX 1060",
-          "GeForce GTX 1070 Ti",
-          "GeForce GTX 1650",
-          "GeForce GTX 1650 Super",
-          "GeForce GTX 1660",
-          "GeForce GTX 1660 Super",
-          "GeForce GTX 1660 Ti",
-          "GeForce RTX 2060",
-          "GeForce RTX 2060 Super",
-          "GeForce RTX 2070",
-          "GeForce RTX 2070 Super",
-          "GeForce RTX 2080",
-          "GeForce RTX 2080 Super",
-          "GeForce RTX 2080 Ti",
-          "GeForce Titan V",
+          "GTX 1050 Ti",
+          "GTX 1060",
+          "GTX 1070 Ti",
+          "GTX 1650",
+          "GTX 1650 Super",
+          "GTX 1660",
+          "GTX 1660 Super",
+          "GTX 1660 Ti",
+          "RTX 2060",
+          "RTX 2060 Super",
+          "RTX 2070",
+          "RTX 2070 Super",
+          "RTX 2080 Super",
+          "RTX 2080 Ti",
+          "Titan V",
           "Quadro 5000",
           "Quadro GP100",
           "Quadro K620",
@@ -355,25 +382,28 @@ export class Filter {
           "Quadro P400",
           "Quadro P5000",
           "Quadro P6000",
-          "Quadro 620",
+          "Quadro P620",
           "Quadro RTX 4000",
           "Quadro RTX 5000",
           "Quadro RTX 6000",
           "Quadro RTX 8000",
+          "Radeon Instinct MI50",
           "Radeon Pro WX 2100",
           "Radeon Pro WX 3100",
+          "Radeon Pro WX 4100",
           "Radeon Pro WX 5100",
-          "Radeon R5 230",
+          "Radeon Pro WX 9100",
+          "Radeon R7 240",
           "Radeon R7 250",
           "Radeon RX 550",
           "Radeon RX 5500 XT",
-          "Radeon RX 560",
           "Radeon RX 5600 XT",
           "Radeon RX 570",
           "Radeon RX 5700",
           "Radeon RX 5700 XT",
           "Radeon RX 580",
-          "Radeon RX 590"
+          "Radeon RX 590",
+          "Titan RTX"
         ]
         const typeMemory = ['DDR3', 'DDR4', 'GDDR5', 'GDDR5X', 'GDDR6']
         let memory = [
@@ -700,27 +730,157 @@ export class Filter {
 
     return ''
   }
+
+  static displayСardsBasedOnTheFilter(content) {
+
+    const { catalogCards : BASE, $root, store } = content
+
+    const currentURL = urlParse()[3] || []
+
+    if (currentURL.length > 0) {
+
+      const dataCardsWrapDiv = $root.qSelector('[data-cards]')
+      const paginationWrap = $root.qSelector('[data-pagination]')
+
+      const urlParse = currentURL.split(';')
+      const sliderPriceINITNumber = urlParse[1].split('--')
+
+      let sort = filterSortPrice(urlParse[0], BASE)
+      sort = filteringByPrice(sort, sliderPriceINITNumber)
+      const goods = filterChecked(urlParse, sort)
+
+      if (!goods.length) {
+        dataCardsWrapDiv.innerHTML = '<div class="content-block__cards-noProducts">Товаров по выбраному фильтру не найдено</div>'
+        paginationWrap.innerHTML = ''
+        return
+      }
+
+      dataCardsWrapDiv.innerHTML = renderProductCards(pagination.showItems(goods), store)
+      pagination.changingURLBasedOnActivePage(1)
+      paginationWrap.innerHTML = pagination.__INIT__(goods)
+
+      return goods
+    }
+  }
+
+  static viewUpdateDom(content) {
+
+    const { $root } = content
+
+    const currentURL = urlParse()[3] || []
+
+    if (currentURL.length > 0) {
+
+      const urlPARSE = currentURL.split(';')
+
+      const sortDiv = $root.qSelector(`[data-value="${urlPARSE[0]}"]`)
+      sortDiv.classList.add('price--active')
+
+      if (urlPARSE.length > 2 && urlPARSE[2] !== '') {
+        for (let i = 2; i <= urlPARSE.length - 1; i++) {
+          const $elem = $root.qSelector(`[data-value="${urlPARSE[i]}"]`)
+          $elem.setAttribute('data-checked', true)
+          $elem.children[0].style.display = 'block'
+        }
+      }
+    }
+
+  }
+
+  static set changeURL($root) {
+
+    const sortPrice = $root.qSelectorAll('[data-price]')
+    let sortPriceActive = ''
+
+    sortPrice.forEach(elem => {
+      if (elem.dataset.price === 'true') {
+        sortPriceActive = elem.dataset.value
+      }
+    })
+
+    const minPrice = $root.qSelector('[data-mininput]').value
+    const maxPrice = $root.qSelector('[data-maxinput]').value
+
+    const checkeds = []
+    const checked = $root.qSelectorAll('[data-checked]')
+
+    checked.forEach(elem => {
+      if (elem.dataset.checked === 'true') {
+        checkeds.push(elem.dataset.value)
+      }
+    })
+
+    const currentURL = urlParse()
+
+    const changeURL = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${currentURL[2]}/+/${sortPriceActive};${minPrice}--${maxPrice};${checkeds.join(';')}`
+    ActiveRout.hash(changeURL)
+  }
 }
 
-// Фильтрация товаров по цене
-export function filterSortPrice(value,base) {
-  let sortDATA = []
+// Фильрация выбранных элементов
+function filterChecked(urlString, sort) {
 
-  if (!value) {
-    sortDATA = base
+  let checkboxCheckeds = []
+
+  if (urlString[2] !== '') {
+
+    for (let i = 1; i < urlString.length; i++) {
+      sort.forEach(item => {
+
+        const searchItem = urlString[i].split(' ').join('').toLowerCase()
+        const itemWithoutSpaces = item.name.split(' ').join('').toLowerCase()
+
+        if (itemWithoutSpaces.includes(searchItem) || item.type === urlString[i]) {
+          checkboxCheckeds.push(item)
+        }
+      })
+
+    }
   }
-  else if (value === 'a-b') {
-    sortDATA = base.sort((a, b) => a.price - b.price)
-  }
-  else if (value === 'b-a') {
-    sortDATA = base.sort((a, b) => b.price - a.price)
+  else {
+    checkboxCheckeds = sort
   }
 
-  return sortDATA
+  return checkboxCheckeds
+}
+
+// Фильтрация range слайдера от и до
+function filteringByPrice(sort, priceSplit) {
+
+  return sort.reduce((acc, item) => {
+    if (+item.price >= +priceSplit[0] && +priceSplit[1] >= +item.price) {
+      acc.push(item)
+    }
+
+    return acc
+  }, [])
+}
+
+// Фильтрация товаров по цене (по убыванию...)
+function filterSortPrice(value,base) {
+
+  if (value === 'default') {
+    return base.sort()
+  }
+  else if (value === 'a--b') {
+    return base.sort((a, b) => a.price - b.price)
+  }
+  else if (value === 'b--a') {
+    return base.sort((a, b) => b.price - a.price)
+  }
+
 }
 
 // Изменение состояние инпут range Slider
 function rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, $line) {
+
+  const currentURL = urlParse()[3] || []
+
+  if (currentURL.length > 0) {
+    const urlString = currentURL.split(';')[1].split('--')
+    inputMin.value = urlString[0]
+    inputMax.value = urlString[1]
+  }
 
   const min = +inputMin.min
   const max = +inputMax.max
@@ -763,12 +923,10 @@ function searchForMatches(base, data) {
 
     data.forEach(item => {
 
-      const val = new RegExp(item, 'gi')
+      const searchItem = item.split(' ').join('').toLowerCase()
+      const itemWithoutSpaces = elem.name.split(' ').join('').toLowerCase()
 
-      if (
-        elem.name.match(val)
-        ||
-        elem.name.toLowerCase().includes(item.toLowerCase())) {
+      if ( itemWithoutSpaces.includes(searchItem)) {
 
         if (acc.indexOf(item) === -1) {
           acc.push(item)
@@ -788,7 +946,8 @@ function trainingHTMLList(item) {
     <div class="filter-checkbox">
       <div class="checkbox-fake"
           data-checkbox="checkbox"
-          data-checked="false">
+          data-checked="false"
+          data-value="${item}">
           ${item}
         <div class="checkbox-fake--active">&#10003;</div>
       </div>

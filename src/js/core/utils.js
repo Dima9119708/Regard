@@ -30,21 +30,6 @@ export function storage(key, value) {
   return JSON.parse(localStorage.getItem(key))
 }
 
-export function changeURL(paginationnumber) {
-  const currentURL = urlParse()
-
-  currentURL.forEach((item, index) => {
-    if (Number.isInteger(+item)) {
-      currentURL.splice(index, 1)
-    }
-  })
-
-  currentURL.push(paginationnumber)
-
-  const newURL = `${catalog}/+/${currentURL.join('/+/')}`
-  ActiveRout.paginationHash(newURL)
-}
-
 export function searchMaxAndMinNumber(flag, array) {
 
   if (flag) {

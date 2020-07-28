@@ -1,6 +1,9 @@
 import { $ } from "./Dom"
-import { urlParse, changeURL } from "./utils";
+import { urlParse } from "./utils";
 import { renderProductCards } from "../Components/content/renderContent.functions";
+import { catalog } from "./urlHash.fn";
+import { ActiveRout } from "../Routing/ActiveRouter";
+import { Filter } from "../Components/content/Filter";
 
 export const showItems = 10
 export const pageTransitionAnimationSpeed = 300
@@ -137,45 +140,60 @@ export const pagination = {
     return base.slice(start, start + showItems)
   },
 
-  onClick: function (event, base, store, $root) {
+  onClick: function (event, content) {
+
+    let { catalogCards: DATA, store, $root } = content
 
     const paginationItem = event.target.closest('[data-paginationnumber]')
 
     if (paginationItem) {
 
+      const filteredСards = Filter.displayСardsBasedOnTheFilter(content)
+
+      if (filteredСards) {
+        DATA = filteredСards
+      }
+
       const { paginationnumber } = event.target.dataset
 
-      const pagitanionParent = event.target.closest('[data-pagination]') || document.querySelector('[data-pagination]')
-      const htmlDATA = this.start(this.counterPages, paginationnumber)
-      $(pagitanionParent).clear().insertHTML('beforeend', htmlDATA)
+      const pagitanionParent = event.target.closest('[data-pagination]') || $root.qSelector('[data-pagination]')
+      const htmlPagination = this.start(this.counterPages, paginationnumber)
+      $(pagitanionParent).clear().insertHTML('beforeend', htmlPagination)
 
-      cardRerender(event, $root, base, store)
-      changeURL(paginationnumber)
+      this.cardRerender(event, $root, DATA, store)
+      this.changingURLBasedOnActivePage(paginationnumber)
     }
   },
-}
 
-export function cardRerender(event, $root, DATA, store) {
+  changingURLBasedOnActivePage(paginationnumber) {
 
-  const { paginationitem } = event.target.dataset
+    const currentURL = urlParse()
+    let hash = ''
 
-  const start = +paginationitem
-  const finish = start + (showItems)
+    if (currentURL.length <= 3) {
+      hash = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${paginationnumber}`
+    }
+    else {
+      hash = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${paginationnumber}/+/${currentURL[3]}`
+    }
 
-  const newBase = DATA.slice(start, finish)
+    ActiveRout.hash(hash)
+  },
 
-  const $element = $root.qSelector('[data-cards]')
+  cardRerender(event, $root, DATA, store) {
 
-  $element.style.opacity = '.40'
-  $element.style.transition = 'opacity .2s linear'
+    const { paginationitem } = event.target.dataset
 
-  setTimeout(() => {
+    const start = +paginationitem
+    const finish = start + (showItems)
 
-    $element.style.opacity = '1'
-    $element.style.transition = 'opacity .2s linear'
+    const newBase = DATA.slice(start, finish)
+
+    const $element = $root.qSelector('[data-cards]')
+
     $($element)
       .clear()
       .insertHTML('beforeend', renderProductCards(newBase, store))
+  }
 
-  }, pageTransitionAnimationSpeed)
 }
