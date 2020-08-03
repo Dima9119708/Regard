@@ -38,7 +38,7 @@ export function modalINITOnClick(node) {
     const $parent = e.target.closest('#modal-1-title')
 
     if (customClose || close) {
-      setTimeout( () => node.remove(), 300)
+      setTimeout(() => node.remove(), 100)
     }
     else if (login) {
       loginNode.innerHTML = renderModalContent(login)
@@ -55,7 +55,6 @@ export function modalINITOnClick(node) {
       for (const item of $parent.children) {
         item.classList.remove('modal-auth__button--active')
       }
-
       e.target.classList.add('modal-auth__button--active')
     }
 

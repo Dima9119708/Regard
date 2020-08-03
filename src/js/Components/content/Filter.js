@@ -1,11 +1,11 @@
 import { accardion, renderProductCards } from "./renderContent.functions"
 import { ActiveRout } from "../../Routing/ActiveRouter"
-import { urlParse } from '../../core/utils'
+import { urlParse, searchMaxAndMinNumber } from '../../core/utils'
 import { catalog } from "../../core/urlHash.fn"
-import { $ } from "../../core/Dom"
-import { pagination } from "../../core/pagination"
+import { pagination, showItems } from "../../core/pagination"
 
 export class Filter {
+
 
   static onClick(e, content) {
 
@@ -60,14 +60,66 @@ export class Filter {
       const changeURL = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${currentURL[2]}`
       ActiveRout.setHash(changeURL)
     }
+
+    const mobileBTN = e.target.dataset.filterMobileButton
+    const $node = $root.qSelector('[data-content-block__filter-mobile]')
+
+    if (mobileBTN === 'false') {
+      const $heightNode = $node.scrollHeight
+
+      e.target.setAttribute('data-filter-mobile-button', true)
+      $node.style.maxHeight = $heightNode + 'px'
+      $node.style.marginBottom = 10 + 'px'
+    }
+    else if (mobileBTN === 'true') {
+      e.target.setAttribute('data-filter-mobile-button', false)
+      $node.style.maxHeight = 0
+      $node.style.marginBottom = 0
+    }
+
   }
 
-  static rangeSliderINIT(content) {
+  static renderHTML(base) {
+    return `
+        <div class="content-block__filter unselectable" data-filter data-da="[data-content-block__filter-mobile],0,1245,max">
+          <div class="content-block__filter-header">Подбор по параметрам</div>
+          <div class="content-block__filter-reset" data-reset="reset">Сбросить фильтры</div>
+          <ul class="content-block__filter-list" data-simplebar>
+
+            <li class="content-block__filter-item" data-accardion="true" data-randeSliderPC>
+              <div class="content-block__filter-title" data-filterTittle="filterTittle">
+                <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.
+            </div>
+              <div class="content-block__filter-price" data-inputFilterParent>
+                <div class="input-price from">
+                от
+                <input type="number" data-minInput value="${searchMaxAndMinNumber(false, base)}" min="${searchMaxAndMinNumber(false, base)}">
+                </div>
+                <div class="input-price before">
+                  до
+                <input type="number" data-maxInput value="${searchMaxAndMinNumber(true, base)}" max="${searchMaxAndMinNumber(true, base)}">
+                </div>
+                </div>
+
+                <div class="content__range-slider" data-rangeParent>
+                  <button class="content__range-button" data-range="left"></button>
+                  <button class="content__range-button" data-range="right"></button>
+                  <div class="content__range-slider-line" data-rangeLine></div>
+                </div>
+            </li>
+
+            ${Filter.renderFilterContent(base)}
+          </ul>
+        </div>
+    `
+  }
+
+  static rangeSliderINIT(content, parent) {
 
     const { catalogCards: base, $root: $elem, store } = content
 
     // Возращаем из инстенса класса DOM, DOM - элемент'
-    const $root = $elem.returnNode()
+    const $root = $elem.qSelector(parent)
 
     // Получение интупа мин и макс
     const inputMin = $root.querySelector('[data-minInput]')
@@ -78,7 +130,7 @@ export class Filter {
     const $rightRange = $root.querySelector('[data-range="right"]')
 
     // Родитель всего слайдера
-    const $slider = $root.querySelector('[data-rangeparent]')
+    const $slider = $root.querySelector('[data-rangeParent]')
 
     // Линия между кнопками
     const $line = $root.querySelector('[data-rangeLine]')
@@ -106,8 +158,8 @@ export class Filter {
         // Снова вызываем ф-н делает все тоже самое
         rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, $line)
 
-        Filter.changeURL = $($root)
-        Filter.displayСardsBasedOnTheFilter(base, $($root), store)
+        Filter.changeURL = $elem
+        Filter.displayСardsBasedOnTheFilter(content)
       }
     }
 
@@ -202,7 +254,8 @@ export class Filter {
           $root.onmousemove = null
           $root.onmouseup = null
 
-          Filter.changeURL = $($root)
+
+          Filter.changeURL = $elem
           Filter.displayСardsBasedOnTheFilter(content)
         }
       }
@@ -290,7 +343,7 @@ export class Filter {
           $root.onmousemove = null
           $root.onmouseup = null
 
-          Filter.changeURL = $($root)
+          Filter.changeURL = $elem
           Filter.displayСardsBasedOnTheFilter(content)
         }
       }
@@ -311,6 +364,7 @@ export class Filter {
 
         return renderHTMLFilter(
           ['Тип продукта'],
+          base,
           typeHTML
         )
       }
@@ -340,6 +394,7 @@ export class Filter {
 
         return renderHTMLFilter(
           ['Мощность, W'],
+          base,
           wattsHTML,
         )
       }
@@ -405,7 +460,27 @@ export class Filter {
           "Radeon RX 590",
           "Titan RTX"
         ]
+
         const typeMemory = ['DDR3', 'DDR4', 'GDDR5', 'GDDR5X', 'GDDR6']
+
+        const producer = [
+          "AMD",
+          "ASRock",
+          "ASUS",
+          "Colorful",
+          "Dell",
+          "EVGA",
+          "Gigabyte",
+          "lnno3D",
+          "KFA2",
+          "MSI",
+          "PNY",
+          "Palit",
+          "PowerColor",
+          "Sapphire",
+          "nVidia"
+        ]
+
         let memory = [
                       1,
                       11,
@@ -433,6 +508,8 @@ export class Filter {
                       16384,
                      ]
 
+
+
         memory = memory.map(item => {
           if (item > 100) {
             return item + 'Mb'
@@ -445,16 +522,20 @@ export class Filter {
         const selectionMemory = searchForMatches(base, memory)
         const typeMemoryArray = searchForMatches(base, typeMemory)
         const seriaArray = searchForMatches(base, seria)
+        const producerArray = searchForMatches(base, producer)
 
         const memoryHTML = selectionMemory.map(trainingHTMLList)
         const typeMemoryHTML = typeMemoryArray.map(trainingHTMLList)
         const seriaHTML = seriaArray.map(trainingHTMLList)
+        const producerHTML = producerArray.map(trainingHTMLList)
 
         return renderHTMLFilter(
-          ['Обьем памяти', 'Тип памяти', 'Серия'],
+          ['Обьем памяти', 'Тип памяти', 'Серия','Производитель'],
+          base,
           memoryHTML,
           typeMemoryHTML,
-          seriaHTML
+          seriaHTML,
+          producerHTML
         )
       }
 
@@ -508,6 +589,7 @@ export class Filter {
 
         return renderHTMLFilter(
           ['Семейство', 'Сокет', 'Тип поставки'],
+          base,
           processorFamilyHTML,
           socketArrayHTML,
           deliveryTypeHTML
@@ -554,6 +636,7 @@ export class Filter {
 
         return renderHTMLFilter(
             ['Форм-фактор', 'Объём накопителя', 'Скорость вращения'],
+            base,
             formFactorHTML,
             storageVolumeHTML,
             rotationalSpeedHTML
@@ -624,6 +707,7 @@ export class Filter {
 
         return renderHTMLFilter(
           ['Производитель', 'Чипсет'],
+          base,
           producerHTML,
           chipsetHTML,
         )
@@ -676,6 +760,7 @@ export class Filter {
 
         return renderHTMLFilter(
           ['Тактовая частота', 'Объём памяти'],
+          base,
           clockFrequencyHTML,
           memoryHTML
         )
@@ -722,6 +807,7 @@ export class Filter {
 
         return renderHTMLFilter(
           ['Блок питания', 'Цвет корпуса'],
+          base,
           powerSupplyHTML,
           colorHTML
         )
@@ -733,7 +819,7 @@ export class Filter {
 
   static displayСardsBasedOnTheFilter(content) {
 
-    const { catalogCards : BASE, $root, store } = content
+    let { catalogCards : BASE, $root, store } = content
 
     const currentURL = urlParse()[3] || []
 
@@ -755,10 +841,23 @@ export class Filter {
         return
       }
 
-      dataCardsWrapDiv.innerHTML = renderProductCards(pagination.showItems(goods), store)
-      pagination.changingURLBasedOnActivePage(1)
-      paginationWrap.innerHTML = pagination.__INIT__(goods)
+      dataCardsWrapDiv.style.opacity = '0.2'
+      dataCardsWrapDiv.style.transition = 'opacity .4s linear'
 
+      setTimeout(() => {
+        dataCardsWrapDiv.innerHTML = renderProductCards(pagination.showItems(goods), store)
+        dataCardsWrapDiv.style.opacity = '1'
+        dataCardsWrapDiv.style.transition = 'opacity .4s linear'
+      }, 400)
+
+      const pageActive = pagination.pageActive()
+      const counterPages = Math.ceil(goods.length / showItems)
+
+      if (pageActive > counterPages) {
+        pagination.changingURLBasedOnActivePage(1)
+      }
+
+      paginationWrap.innerHTML = pagination.__INIT__(goods)
       return goods
     }
   }
@@ -783,8 +882,14 @@ export class Filter {
           $elem.children[0].style.display = 'block'
         }
       }
-    }
 
+      const priceMinAndMax = urlPARSE[1].split('--')
+      const minPrice = $root.qSelector('[data-mininput]')
+      const maxPrice = $root.qSelector('[data-maxinput]')
+
+      minPrice.value = priceMinAndMax[0]
+      maxPrice.value = priceMinAndMax[1]
+    }
   }
 
   static set changeURL($root) {
@@ -806,7 +911,7 @@ export class Filter {
 
     checked.forEach(elem => {
       if (elem.dataset.checked === 'true') {
-        checkeds.push(elem.dataset.value)
+        checkeds.unshift(elem.dataset.value)
       }
     })
 
@@ -820,11 +925,13 @@ export class Filter {
 // Фильрация выбранных элементов
 function filterChecked(urlString, sort) {
 
+  urlString = urlString.slice(2, urlString.length)
+
   let checkboxCheckeds = []
 
-  if (urlString[2] !== '') {
+  if (urlString.length && urlString[0] !== '') {
 
-    for (let i = 1; i < urlString.length; i++) {
+    for (let i = 0; i < urlString.length; i++) {
       sort.forEach(item => {
 
         const searchItem = urlString[i].split(' ').join('').toLowerCase()
@@ -873,14 +980,6 @@ function filterSortPrice(value,base) {
 
 // Изменение состояние инпут range Slider
 function rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, $line) {
-
-  const currentURL = urlParse()[3] || []
-
-  if (currentURL.length > 0) {
-    const urlString = currentURL.split(';')[1].split('--')
-    inputMin.value = urlString[0]
-    inputMax.value = urlString[1]
-  }
 
   const min = +inputMin.min
   const max = +inputMax.max
@@ -956,7 +1055,7 @@ function trainingHTMLList(item) {
 }
 
 // Выводим отфильрованные и подготовленые HTML фильтры
-function renderHTMLFilter(title, ...content) {
+function renderHTMLFilter(title, base, ...content) {
 
   const htmlStrings = []
 

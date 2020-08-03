@@ -12,12 +12,16 @@
   font-size: 13px;
   color : #fff;
 
-  display: flex;
+  display: none;
   justify-content: space-between;
 
   & span {
     display: inline-block;
     cursor: pointer;
     border-bottom: 1px dashed #fff;
+  }
+
+  @media(min-width: 1245px) {
+    display: flex;
   }
 }

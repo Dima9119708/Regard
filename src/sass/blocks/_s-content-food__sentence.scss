@@ -1,7 +1,17 @@
 .s-content-food__sentence {
-  @include s-products__foods-Width(49%);
+  @include s-products__foods-Width(100%);
+
+  @media(min-width: 768px) {
+    @include s-products__foods-Width(49%);
+  }
+
+  @media(min-width: 1245px) {
+
+  }
 
   & .content-block__card{
    @include product-block(100%)
   }
+
+
 }

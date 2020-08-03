@@ -4,7 +4,16 @@
 }
 
 .content__foods {
-  @include s-products__foods-Width(80%)
+  @include s-products__foods-Width(100%);
+
+
+  @media(min-width: 768px) {
+    @include s-products__foods-Width(100%);
+  }
+
+  @media(min-width: 1245px) {
+    @include s-products__foods-Width(80%);
+  }
 }
 
 .content-hits__top {

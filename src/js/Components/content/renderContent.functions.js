@@ -114,7 +114,7 @@ export function accardion(event, frag) {
   const plus = $(event).qSelector('[data-plus]')
 
   if (JSON.parse(dataset.accardion)) {
-    style.maxHeight = 26 + 'px'
+    style.maxHeight = 23 + 'px'
     event.setAttribute('data-accardion', false)
     style.transition = 'max-height .2s easy'
     if (plus) {

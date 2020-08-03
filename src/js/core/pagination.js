@@ -13,7 +13,7 @@ export const pagination = {
   step : 2,
   counterPages : null,
 
-  pageActive: function () {
+  pageActive() {
     let pageActive = 1
     const urlParseArray = urlParse()
 
@@ -28,7 +28,7 @@ export const pagination = {
     return pageActive
   },
 
-  startLine : function () {
+  startLine() {
     return `
       <div
         class="content-blocks__pagination-item"
@@ -43,7 +43,7 @@ export const pagination = {
     `
   },
 
-  finishLine : function (finishNumber) {
+  finishLine(finishNumber) {
 
     return `
       <div
@@ -59,7 +59,7 @@ export const pagination = {
     `
   },
 
-  __INIT__: function (base) {
+  __INIT__(base) {
     const item = showItems
     this.counterPages = Math.ceil(base.length / item)
 
@@ -67,7 +67,7 @@ export const pagination = {
   },
 
   start(countPages, paginationNumber) {
-    const activePage = paginationNumber ? +paginationNumber : this.pageActive()
+    let activePage = paginationNumber ? +paginationNumber : this.pageActive()
 
     if (countPages > 10) {
 
@@ -110,7 +110,7 @@ export const pagination = {
 
   },
 
-  renderItems: function (start, finish, activeNumber) {
+  renderItems(start, finish, activeNumber) {
 
     const trainingHTMLPagination = []
 
@@ -135,12 +135,15 @@ export const pagination = {
     return trainingHTMLPagination.join('')
   },
 
-  showItems: function (base) {
-    const start = (this.pageActive() - 1) * showItems
+  showItems(base) {
+
+    let pageActive = this.pageActive() - 1
+
+    const start = pageActive * showItems
     return base.slice(start, start + showItems)
   },
 
-  onClick: function (event, content) {
+  onClick(event, content) {
 
     let { catalogCards: DATA, store, $root } = content
 
@@ -195,5 +198,4 @@ export const pagination = {
       .clear()
       .insertHTML('beforeend', renderProductCards(newBase, store))
   }
-
 }

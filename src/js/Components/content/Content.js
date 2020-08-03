@@ -5,10 +5,10 @@ import { addBasketProducts } from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import { renderMainContent, renderCatalogContent } from "./renderContent";
 import { catalog } from "../../core/urlHash.fn";
-import Swiper from 'swiper'
 import { pagination } from "../../core/pagination";
 import { Filter } from "./filter";
 import 'simplebar';
+import { dinamic__adapt } from "../../core/dinamic__adapt";
 
 export class Content extends ParentComponent {
 
@@ -37,19 +37,17 @@ export class Content extends ParentComponent {
       this.catalogCards = renderCatalogContent(this).base
       return renderCatalogContent(this).content
     }
-
   }
 
   init() {
     super.init()
-    this.slider__INIT__()
+
+    dinamic__adapt.__INIT__()
 
     if(ActiveRout.urLHash.startsWith(catalog)) {
-
-      Filter.rangeSliderINIT(this)
-      Filter.displayСardsBasedOnTheFilter(this)
       Filter.viewUpdateDom(this)
-
+      Filter.displayСardsBasedOnTheFilter(this)
+      Filter.rangeSliderINIT(this, '[data-randeSliderPC]')
     }
   }
 
@@ -57,33 +55,9 @@ export class Content extends ParentComponent {
     return `
       <div class="content">
         <div class="content-wrap">
-          <div class="content-product" data-lsideBar>
-            <div class="content-product__type" data-type id="data-type">
-                <button
-                    class="content-product__tab ${this.sideBar.activeClassDomINIT().type}"
-                    type="button"
-                    data-tab="tab"
-                    data-types="types">По типам
-                </button>
-                <button
-                  class="content-product__tab ${this.sideBar.activeClassDomINIT().brand}"
-                  type="button"
-                  data-tab="tab"
-                  data-types="brand"
-                  >По брендам
-                </button>
-            </div>
-            <ul class="content-product__menu" data-menuProduct>
-                ${this.sideBar.render()}
-            </ul>
-          </div>
+          ${this.sideBar.renderHTML()}
           <main class="content-center">
-            <section class="s-content__search">
-                <div class="s-content__search-rel" data-search-rel>
-                  <input class="s-content__input" type="text" data-search="search" placeholder="Поиск среди товаров">
-                </div>
-                <button class="s-content__find" data-searchButton="search" type="search">Найти</button>
-            </section>
+            ${this.search.renderHTML()}
 
             <div class="content-wrapper" data-content-wrapper>
               ${this.renderContent()}
@@ -114,24 +88,5 @@ export class Content extends ParentComponent {
 
   onInput(event) {
     this.search.onInput(event)
-  }
-
-  slider__INIT__() {
-
-    const mySwiper = new Swiper('.swiper-1', {
-      direction: "horizontal",
-      loop: true,
-
-      pagination: {
-        el: '.swiper-pag-1',
-        clickable: true,
-      },
-
-      // Navigation arrows
-      navigation: {
-        nextEl: '.swiper-next-1',
-        prevEl: '.swiper-prev-1',
-      },
-    })
   }
 }

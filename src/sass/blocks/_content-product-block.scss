@@ -1,5 +1,13 @@
 .content-block__card {
-  @include product-block(49%)
+  @include product-block(100%);
+
+  @media(min-width: 768px) {
+    @include product-block(49%)
+  }
+
+  @media(min-width: 1245px) {
+
+  }
 }
 
 .content-block__card-image-block {
