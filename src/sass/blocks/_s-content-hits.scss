@@ -27,7 +27,15 @@
   border-top-left-radius: 5px;
 
   & h2 {
-    font-size: 20px;
+    font-size: 16px;
+
+    @media(min-width: 768px) {
+      font-size: 18px;
+    }
+
+    @media(min-width: 1245px) {
+      font-size: 20px;
+    }
   }
 }
 

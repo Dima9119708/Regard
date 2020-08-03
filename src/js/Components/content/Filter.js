@@ -821,13 +821,13 @@ export class Filter {
 
     let { catalogCards : BASE, $root, store } = content
 
+    const dataCardsWrapDiv = $root.qSelector('[data-cards]')
+
     const currentURL = urlParse()[3] || []
 
     if (currentURL.length > 0) {
 
-      const dataCardsWrapDiv = $root.qSelector('[data-cards]')
       const paginationWrap = $root.qSelector('[data-pagination]')
-
       const urlParse = currentURL.split(';')
       const sliderPriceINITNumber = urlParse[1].split('--')
 
@@ -859,6 +859,15 @@ export class Filter {
 
       paginationWrap.innerHTML = pagination.__INIT__(goods)
       return goods
+    }
+    else {
+      dataCardsWrapDiv.style.opacity = '0.2'
+      dataCardsWrapDiv.style.transition = 'opacity .4s linear'
+
+      setTimeout(() => {
+        dataCardsWrapDiv.style.opacity = '1'
+        dataCardsWrapDiv.style.transition = 'opacity .4s linear'
+      }, 400)
     }
   }
 

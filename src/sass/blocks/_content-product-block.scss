@@ -4,10 +4,6 @@
   @media(min-width: 768px) {
     @include product-block(49%)
   }
-
-  @media(min-width: 1245px) {
-
-  }
 }
 
 .content-block__card-image-block {
@@ -28,11 +24,15 @@
 
 .content-block__card-content-name {
   margin-bottom: 7px;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
 
   &:hover {
     color : $red;
+  }
+
+  @media(min-width: 1245px) {
+    font-size: 14px;
   }
 }
 

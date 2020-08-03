@@ -49,7 +49,7 @@ export function renderMainContent(content) {
 
 export function renderCatalogContent(content) {
 
-  const { $root,DATA, store } = content
+  const { DATA, store } = content
   let base = reSotingDATA(DATA)
 
   return {
@@ -61,7 +61,7 @@ export function renderCatalogContent(content) {
       </div>
       <div class="content-block__filter-mobile" data-content-block__filter-mobile="true"></div>
 
-      <div class="content__blocks" >
+      <div class="content__blocks" id="#bazinga">
         <div class="content__foods">
           <div class="content-hits__top">
             <h2 data-titleSearch>${renderTitle()}</h2>

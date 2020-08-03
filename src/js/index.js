@@ -4,6 +4,7 @@ import '../sass/main.scss'
 import firebase from 'firebase/app'
 import "firebase/auth";
 import "firebase/database";
+import smoothscroll from 'smoothscroll-polyfill';
 
 import { Router } from './Routing/Router'
 import { MainPage } from './Pages/MainPage'
@@ -11,6 +12,8 @@ import { MainPage } from './Pages/MainPage'
 new Router('#app', {
   main: MainPage
 })
+
+smoothscroll.polyfill();
 
 firebase.initializeApp({
   apiKey: "AIzaSyCOOBwnyg2X4AwOCwobaMjOBx5386lex0k",

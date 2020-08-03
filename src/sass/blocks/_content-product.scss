@@ -140,19 +140,22 @@
 }
 
 .content-product__menu-inside-item-link {
-  display: inline-block;
+  display: block;
   text-decoration: none;
   padding: 5px 0;
   font-size: 12px;
-  color: inherit;
+  color: rgb(32, 32, 32);
   text-align: left;
   background-color: transparent;
   cursor: pointer;
+
+  &:hover {
+    color: #f81919;
+  }
 }
 
 .content-product__menu-inside-item-link--active {
-  color: #000000;
+  color: #c31010;
   font-size: 13px;
   font-weight: bold;
-  border-bottom: 2px dashed #c50808;
 }
