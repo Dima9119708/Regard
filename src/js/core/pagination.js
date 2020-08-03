@@ -5,7 +5,7 @@ import { catalog } from "./urlHash.fn";
 import { ActiveRout } from "../Routing/ActiveRouter";
 import { Filter } from "../Components/content/Filter";
 
-export const showItems = 10
+export const showItems = 15
 export const pageTransitionAnimationSpeed = 300
 
 export const pagination = {
@@ -13,7 +13,7 @@ export const pagination = {
   step : 2,
   counterPages : null,
 
-  pageActive: function () {
+  pageActive() {
     let pageActive = 1
     const urlParseArray = urlParse()
 
@@ -28,38 +28,44 @@ export const pagination = {
     return pageActive
   },
 
-  startLine : function () {
+  startLine() {
     return `
-      <div
+      <a
         class="content-blocks__pagination-item"
         data-paginationNumber="1"
-        data-paginationItem="0">
+        data-paginationItem="0"
+        data-scroll
+        href="#bazinga"
+        >
         1
-      </div>
-      <div
+      </a>
+      <a
         class="content-blocks__pagination-item">
         ...
-      </div>
+      </a>
     `
   },
 
-  finishLine : function (finishNumber) {
+  finishLine(finishNumber) {
 
     return `
-      <div
+      <a
         class="content-blocks__pagination-item">
         ...
-      </div>
-      <div
+      </a>
+      <a
         class="content-blocks__pagination-item"
         data-paginationNumber="${finishNumber}"
-        data-paginationItem="${(finishNumber * showItems) - showItems}">
+        data-paginationItem="${(finishNumber * showItems) - showItems}"
+        data-scroll
+        href="#bazinga"
+        >
         ${finishNumber}
-      </div>
+      </a>
     `
   },
 
-  __INIT__: function (base) {
+  __INIT__(base) {
     const item = showItems
     this.counterPages = Math.ceil(base.length / item)
 
@@ -67,7 +73,7 @@ export const pagination = {
   },
 
   start(countPages, paginationNumber) {
-    const activePage = paginationNumber ? +paginationNumber : this.pageActive()
+    let activePage = paginationNumber ? +paginationNumber : this.pageActive()
 
     if (countPages > 10) {
 
@@ -110,7 +116,7 @@ export const pagination = {
 
   },
 
-  renderItems: function (start, finish, activeNumber) {
+  renderItems(start, finish, activeNumber) {
 
     const trainingHTMLPagination = []
 
@@ -122,31 +128,44 @@ export const pagination = {
       }
 
       trainingHTMLPagination.push(`
-        <div
+        <a
           class="content-blocks__pagination-item ${active}"
           data-paginationNumber="${startNumber}"
-          data-paginationItem="${((startNumber * showItems) - showItems)}" >
+          data-paginationItem="${((startNumber * showItems) - showItems)}"
+          data-scroll
+          href="#bazinga"
+          >
 
           ${ startNumber}
-        </div>
+        </a>
       `)
     }
 
     return trainingHTMLPagination.join('')
   },
 
-  showItems: function (base) {
-    const start = (this.pageActive() - 1) * showItems
+  showItems(base) {
+
+    let pageActive = this.pageActive() - 1
+
+    const start = pageActive * showItems
     return base.slice(start, start + showItems)
   },
 
-  onClick: function (event, content) {
+  onClick(event, content) {
 
     let { catalogCards: DATA, store, $root } = content
 
     const paginationItem = event.target.closest('[data-paginationnumber]')
 
     if (paginationItem) {
+
+      const $parentCardWrapTop = $root.qSelector('[data-cards]')
+
+      window.scrollTo({
+        top: $parentCardWrapTop.offsetTop,
+        behavior: "smooth"
+      });
 
       const filteredСards = Filter.displayСardsBasedOnTheFilter(content)
 
@@ -195,5 +214,4 @@ export const pagination = {
       .clear()
       .insertHTML('beforeend', renderProductCards(newBase, store))
   }
-
 }

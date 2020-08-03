@@ -5,7 +5,6 @@
 @import './blocks/header';
 @import './blocks/content-product';
 @import './blocks/s-input';
-@import './blocks/slider';
 @import './blocks/content-product-block';
 @import './blocks/s-content-hits';
 @import './blocks/s-content-food__sentence';
@@ -21,9 +20,8 @@
 @import './blocks/modal';
 @import './blocks/form';
 @import './blocks/checkbox';
+@import './blocks/header__menu-mobile';
 
 @import '../../node_modules/normalize.css/normalize.css';
-
 @import '../../node_modules/@fortawesome/fontawesome-free/css/all.css';
-@import '../../node_modules/swiper/css/swiper.min.css';
 @import '../../node_modules/simplebar/dist/simplebar.min.css';

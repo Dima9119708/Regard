@@ -1,6 +1,6 @@
 export function renderLoginHTML() {
   return `
-    <button class="header__auth-button" data-auth="auth" type="button">Войти</button>
+    <button class="header__auth-button" data-auth="true" type="button">Войти</button>
   `
 }
 

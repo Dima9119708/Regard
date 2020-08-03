@@ -4,7 +4,16 @@
 }
 
 .content__foods {
-  @include s-products__foods-Width(80%)
+  @include s-products__foods-Width(100%);
+
+
+  @media(min-width: 768px) {
+    @include s-products__foods-Width(100%);
+  }
+
+  @media(min-width: 1245px) {
+    @include s-products__foods-Width(80%);
+  }
 }
 
 .content-hits__top {
@@ -18,7 +27,15 @@
   border-top-left-radius: 5px;
 
   & h2 {
-    font-size: 20px;
+    font-size: 16px;
+
+    @media(min-width: 768px) {
+      font-size: 18px;
+    }
+
+    @media(min-width: 1245px) {
+      font-size: 20px;
+    }
   }
 }
 

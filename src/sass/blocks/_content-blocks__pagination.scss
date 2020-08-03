@@ -7,13 +7,15 @@
   font-size: 13px;
 
   .content-blocks__pagination-item {
-    padding: 4px 8px;
+    padding: 5px 8px;
     margin-right: 5px;
     color: #ffffff;
+    font-size: 15px;
     border-radius: 5px;
     cursor: pointer;
     background-color: rgba(102, 102, 245, 0.644);
-    transition: background-color .1s linear;
+    transition: background-color .2s linear;
+    text-decoration: none;
 
     &:hover {
       background-color: rgba(36, 36, 255, 0.644);
@@ -22,6 +24,18 @@
 
     &.content-blocks__pagination-item--active {
       background-color: rgb(102, 102, 245);
+      transition: background-color .2s linear;
+    }
+
+    @media(min-width: 768px) {
+      padding: 6px 14px;
+      font-size: 20px;
+    }
+
+    @media(min-width: 1245px) {
+      padding: 4px 8px;
+      margin-right: 5px;
+      font-size: 14px;
     }
   }
 }

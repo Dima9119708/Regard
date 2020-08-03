@@ -11,21 +11,45 @@ export class Sidebar {
     this.DATA = content.DATA
   }
 
-  render() {
+  renderHTML() {
+    return `
+       <div class="content-product" data-lsideBar data-da="[data-header-menu],1,1245,max">
+          <div class="content-product__type" data-type id="data-type">
+              <button
+                  class="content-product__tab ${this.#activeClassDomINIT().type}"
+                  type="button"
+                  data-tab="tab"
+                  data-types="types">По типам
+              </button>
+              <button
+                class="content-product__tab ${this.#activeClassDomINIT().brand}"
+                type="button"
+                data-tab="tab"
+                data-types="brand"
+                >По брендам
+              </button>
+          </div>
+          <ul class="content-product__menu" data-menuProduct>
+              ${this.#renderContent()}
+          </ul>
+      </div>
+    `
+  }
+
+  #renderContent() {
 
     const urlParams = urlParse()
 
     if (urlParams[1] === catalogHashPath.production) {
-      return this.renderBrand()
+      return this.#renderBrand()
     }
     else {
-      return this.renderSideBar()
+      return this.#renderSideBar()
     }
-
 
   }
 
-  activeClassDomINIT() {
+  #activeClassDomINIT() {
 
     const urlParams = urlParse()
 
@@ -48,7 +72,7 @@ export class Sidebar {
   }
 
   // Рендер SideBar по типам продукта
-  renderSideBar() {
+  #renderSideBar() {
 
     let types = this.DATA.map(elem => elem.type); // сбор всех типов товара
 
@@ -59,20 +83,8 @@ export class Sidebar {
     return trainingSidebarHTML(reSort).join('')
   }
 
-  renderSidebarTAB(target, types) {
-
-    sidebarTABDOMActive(target)
-    sideBarRenderContent(
-      types,
-      this.$root,
-      this.renderSideBar.bind(this),
-      this.renderBrand.bind(this)
-    )
-
-  }
-
   // Рендер всех брендов
-  renderBrand() {
+  #renderBrand() {
 
     const filterBrand = filterBrands(this.DATA)
 
@@ -81,6 +93,18 @@ export class Sidebar {
     brands = [...new Set(brands)]
 
     return trainingBrandsHTML(brands)
+  }
+
+  #renderSidebarTAB(target, types) {
+
+    sidebarTABDOMActive(target)
+    sideBarRenderContent(
+      types,
+      this.$root,
+      this.#renderSideBar.bind(this),
+      this.#renderBrand.bind(this)
+    )
+
   }
 
   onClick(event) {
@@ -100,7 +124,7 @@ export class Sidebar {
         accardion(parentProduct)
       }
       else if (tab) {
-        this.renderSidebarTAB(target,types)
+        this.#renderSidebarTAB(target,types)
       }
 
       if (brand) {
@@ -180,7 +204,7 @@ function trainingSidebarHTML(reSort) {
     })
 
     let accardionBoolean = false
-    let maxHeight = '26px'
+    let maxHeight = '23px'
 
     if (urlParams[0] === goods) {
       accardionBoolean = true,
@@ -241,7 +265,8 @@ function trainingBrandsHTML(brand) {
             >
             <a class="content-product__menu-inside-item-link ${active}"
              data-brand="${item}"
-             href="#">${item}</a>
+             href="#">${item}
+            </a>
           </li>
       `
 

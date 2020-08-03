@@ -5,7 +5,7 @@
 .checkbox-fake {
 	padding-left: 20px;
 	position: relative;
-	font-size: 13px;
+	font-size: 14px;
 
 	&::before {
 		content: '';
@@ -31,4 +31,12 @@
 		font-size: 20px;
 		font-weight: 600;
 	}
+
+  @media(min-width: 768px) {
+		font-size: 17px;
+  }
+
+  @media(min-width: 1245px) {
+		font-size: 13px;
+  }
 }

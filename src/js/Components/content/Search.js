@@ -11,7 +11,18 @@ export class Search {
     this.store = content.store
   }
 
-  getHistorySearch() {
+  renderHTML() {
+    return `
+      <section class="s-content__search">
+          <div class="s-content__search-rel" data-search-rel>
+            <input class="s-content__input" type="text" data-search="search" placeholder="Поиск среди товаров">
+          </div>
+          <button class="s-content__find" data-searchButton="search" type="search">Найти</button>
+      </section>
+    `
+  }
+
+  #getHistorySearch() {
 
     const history = this.store.getState().history || []
 
@@ -40,7 +51,7 @@ export class Search {
     return ''
   }
 
-  productSearchButton() {
+  #productSearchButton() {
     const searchList = this.$root.qSelector('[data-search-list-item]')
 
     if (searchList) {
@@ -63,12 +74,12 @@ export class Search {
     }
   }
 
-  createAndAppendSearchList() {
+  #createAndAppendSearchList() {
     const searchList = this.$root.qSelector('[data-search-list]')
 
     if (!searchList) {
       const parent = this.$root.qSelector('[data-search-rel]')
-      const node = createSearchList(this.getHistorySearch.bind(this))
+      const node = createSearchList(this.#getHistorySearch.bind(this))
       parent.append(node)
 
       const search = this.$root.qSelector('[data-search]')
@@ -85,7 +96,7 @@ export class Search {
     const searchInput = event.target.closest('[data-search-rel]')
 
     if (searchbutton) {
-      this.productSearchButton()
+      this.#productSearchButton()
     }
     else if (historyitem) {
 
@@ -102,7 +113,7 @@ export class Search {
 
     }
     else if (searchInput) {
-      this.createAndAppendSearchList()
+      this.#createAndAppendSearchList()
     }
     else {
 
@@ -118,11 +129,11 @@ export class Search {
     const { search } = event.target.dataset
 
     if (search) {
-      this.createAndAppendSearchList()
+      this.#createAndAppendSearchList()
     }
 
     if (search && event.key === 'Enter') {
-      this.productSearchButton()
+      this.#productSearchButton()
     }
   }
 

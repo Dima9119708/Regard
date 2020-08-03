@@ -1,4 +1,6 @@
 .s-content__search {
+  display: flex;
+  justify-content: center;
   padding: 15px 10px;
   background-color: #E4EEF4;
   width: 100%;
@@ -9,7 +11,7 @@
 .s-content__search-rel {
   position: relative;
   display: inline-block;
-  width: 88%;
+  width: 100%;
 }
 
 .s-content__search-block {
@@ -36,11 +38,22 @@
   }
 
   &:nth-child(1) {
+    display: none;
     width: 48%;
+
+    @media(min-width: 768px) {
+      display: block;
+    }
   }
 
   &:nth-child(2) {
-    width: 48%;
+    width: 100%;
+    font-size: 15px;
+
+    @media(min-width: 768px) {
+      width: 48%;
+      font-size: unset;
+    }
   }
 }
 
@@ -58,11 +71,16 @@
 }
 
 .s-content__search-block-item-list-image{
-  position: relative;
-  overflow: hidden;
-  height: 50px;
-  width: 50px;
-  margin-right: 5px;
+  display: none;
+
+  @media(min-width: 768px) {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    height: 50px;
+    width: 50px;
+    margin-right: 5px;
+  }
 }
 
 .s-content__search-block-item-list-inner {
@@ -75,8 +93,12 @@
 }
 
 .s-content__search-block-item-list-price {
-  font-size: 12px;
+  font-size: 15px;
   color: #777;
+
+  @media(min-width: 1245px) {
+    font-size: 12px;
+  }
 }
 
 .s-content__search-block-item-history {
@@ -123,11 +145,11 @@
 }
 
 .s-content__find {
-  margin-left: 20px;
+  margin-left: 10px;
   border: 0;
   padding: 0;
   outline: none;
-  padding: 5px 20px;
+  padding: 5px 10px;
   background-color: #D1242B;
   color: #fff;
   font-size: 17px;
@@ -136,5 +158,10 @@
 
   &:hover {
     background-color: rgb(240, 31, 38);
+  }
+
+  @media(min-width: 1245px) {
+    padding: 5px 20px;
+    margin-left: 20px;
   }
 }

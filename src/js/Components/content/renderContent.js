@@ -8,34 +8,6 @@ import { Filter } from "./filter"
 export function renderMainContent(content) {
   return `
 
-    <div class="content-slider">
-    <div class="swiper-container swiper-1">
-      <div class="swiper-wrapper">
-          <div class="swiper-slide" >
-            <img src="./images/delivery6.jpg" alt="" srcset="">
-          </div>
-          <div class="swiper-slide">
-            <img src="./images/delivery6.jpg" alt="" srcset="">
-          </div>
-          <div class="swiper-slide" >
-            <img src="./images/delivery6.jpg" alt="" srcset=""></div>
-          <div class="swiper-slide">
-              <img src="./images/delivery6.jpg" alt="" srcset="">
-          </div>
-      </div>
-      <div class="swiper-pagination swiper-pag-1 swiper-pagination-bullets">
-        <span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span>
-        <span class="swiper-pagination-bullet" ></span>
-      </div>
-      <div class="swiper-button-prev swiper-prev-1">
-          <i class="fas fa-arrow-circle-left"></i>
-      </div>
-      <div class="swiper-button-next swiper-next-1">
-          <i class="fas fa-arrow-circle-right"></i>
-      </div>
-      </div>
-      </div>
-
     <section class="content__blocks">
     <section class="content__foods">
       <div class="content-hits__top">
@@ -77,13 +49,19 @@ export function renderMainContent(content) {
 
 export function renderCatalogContent(content) {
 
-  const { $root,DATA, store } = content
+  const { DATA, store } = content
   let base = reSotingDATA(DATA)
 
   return {
     base: base,
     content: `
-      <div class="content__blocks" >
+
+      <div class="content__filter-button-inner">
+        <button type="button" class="filter__button" data-filter-mobile-button="false">Фильтр</button>
+      </div>
+      <div class="content-block__filter-mobile" data-content-block__filter-mobile="true"></div>
+
+      <div class="content__blocks" id="#bazinga">
         <div class="content__foods">
           <div class="content-hits__top">
             <h2 data-titleSearch>${renderTitle()}</h2>
@@ -110,47 +88,10 @@ export function renderCatalogContent(content) {
           </div>
 
           <div class="content-blocks__pagination" data-pagination>
-
-            ${
-              pagination.__INIT__(base)
-            }
+            ${ pagination.__INIT__(base) }
           </div>
         </div>
-        <div class="content-block__filter unselectable">
-
-            <div class="content-block__filter-header">Подбор по параметрам</div>
-            <div class="content-block__filter-reset" data-reset="reset">Сбросить фильтры</div>
-            <ul class="content-block__filter-list" data-simplebar>
-
-              <li class="content-block__filter-item" data-accardion="true">
-                <div class="content-block__filter-title" data-filterTittle="filterTittle">
-                  <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.
-                </div>
-                  <div class="content-block__filter-price" data-inputFilterParent>
-                  <div class="input-price from">
-                    от
-                      <input type="number" data-minInput value="${searchMaxAndMinNumber(false, base)}" min="${searchMaxAndMinNumber(false, base)}">
-                      </div>
-                    <div class="input-price before">
-                      до
-                      <input type="number" data-maxInput value="${searchMaxAndMinNumber(true, base)}" max="${searchMaxAndMinNumber(true, base)}">
-                      </div>
-                    </div>
-
-                    <div class="content__range-slider" data-rangeParent>
-
-                      <button class="content__range-button" data-range="left"></button>
-                      <button class="content__range-button" data-range="right"></button>
-                      <div class="content__range-slider-line" data-rangeLine></div>
-
-                    </div>
-              </li>
-
-              ${Filter.renderFilterContent(base)}
-
-
-            </ul>
-          </div>
+        ${Filter.renderHTML(base)}
     </div>
   `
   }
