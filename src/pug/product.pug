@@ -1,28 +1,112 @@
 extends ./layout/_base.pug
 
-//- block content
-//-     section.s-content-foods
-//-       .content-blocks
-//-             .goods
-//-                 .goods-header
-//-                     .goods-header__id 297676
-//-                     h2.goods-header__name Внешний жёсткий диск 1Tb ADATA HV620S Black (AHV620S-1TU31-CBK)
-//-                 .goods__wrap
-//-                     .goods-img
-//-                         .goods-img-block
-//-                     .goods-block__dist
-//-                         .goods__dist asdsadsadasdasd
-//-                         .goods__price-block
-//-                             .goods__price-header
-//-                                   .goods__price-existence в наличии
-//-                                   .goods__price-simile Добавить к сравнению
+block content
+    section.s-content-foods
+      .content-blocks
+            .goods
+                .goods__header
+                    .goods__header-id 297676
+                    h2.goods__header-name Внешний жёсткий диск 1Tb ADATA HV620S Black (AHV620S-1TU31-CBK)
+                .goods__wrap
+                    .goods__img
+                        .goods__img-block
+                        .goods__mini-img-block
+                    .goods-block__dist
+                        .goods__dist asdsadsadasdasd
+                        .goods__price-block
+                            .goods__price-header
+                                  .goods__price-existence в наличии
 
-//-                             .goods__price-bl
-//-                                 .goods__price 3 850 руб.
-//-                                 .goods-add-basket Добавить в корзину
-//-                                     .goods-in-basket В корзине
-//-                                        input(type="number" value="1")
-//-                                        | шт
-//-                                        span.plus +
-//-                                        | /
-//-                                        span.minus -
+                            .goods__price-bl
+                                .goods__price 3 850 руб.
+                                .goods__add-basket Добавить в корзину
+                                    .goods__in-basket В корзине
+                                       input(type="number" value="1")
+                                       | шт
+                                       span.plus +
+                                       | /
+                                       span.minus -
+
+                .goods__tabs
+                    .goods__tabs-item Характеристики
+                    .goods__tabs-item Отзывы
+
+
+                .goods__tabs-content-overall-rating
+                        | Общий рейтинг товара:
+                        span 5.50
+
+                .goods__tabs-content
+
+                    .goods__tabs-content-form-tabs
+
+                        .goods__tabs-content-form-tabs-button
+                            button(type="button").goods__tabs-content-form-tabs-button-item Оставить отзыв
+                            button(type="button").goods__tabs-content-form-tabs-button-item Задать вопрос
+
+                        form.goods__tabs-form
+
+                            .goods__tabs-form-item
+                                label(for="plus").goods__tabs-form-item-lable Достоинства :
+                                input(type="text")#plus.goods__tabs-form-item-input
+                            .goods__tabs-form-item
+
+                                label(for="plus").goods__tabs-form-item-lable Недостатки :
+                                input(type="text").goods__tabs-form-item-input#plus
+
+                            .goods__tabs-form-item
+                                .goods__tabs-form-item-rating
+                                    .goods__tabs-form-item-rating-item
+                                        p Цена :
+                                        button(type="button").goods__tabs-form-item-rating-item-button 1
+                                        button(type="button").goods__tabs-form-item-rating-item-button 2
+                                        button(type="button").goods__tabs-form-item-rating-item-button 3
+                                        button(type="button").goods__tabs-form-item-rating-item-button 4
+                                        button(type="button").goods__tabs-form-item-rating-item-button 5
+                                    .goods__tabs-form-item-rating-item
+                                        p Качество :
+                                        button(type="button").goods__tabs-form-item-rating-item-button 1
+                                        button(type="button").goods__tabs-form-item-rating-item-button 2
+                                        button(type="button").goods__tabs-form-item-rating-item-button 3
+                                        button(type="button").goods__tabs-form-item-rating-item-button 4
+                                        button(type="button").goods__tabs-form-item-rating-item-button 5
+
+                            .goods__tabs-form-item
+                                textarea.goods__tabs-form-item-area
+
+                            .goods__tabs-form-item
+                                button(type="submit").goods__tabs-form-item-submit Оставить отзыв
+
+                        form.goods__tabs-form
+                            .goods__tabs-form-item
+                                label(for="form-item-area").goods__tabs-form-item-lable Задать вопрос :
+                                textarea.goods__tabs-form-item-area#form-item-area
+                            .goods__tabs-form-item
+                                button(type="submit").goods__tabs-form-item-submit Задать вопрос
+
+
+                .goods__tabs-content-reviews
+
+                    .goods__tabs-content-reviews-item
+                        .goods__tabs-content-reviews-userName Пользователь : Дима
+                        .goods__tabs-content-reviews-data Дата отзыва : 26.04.2021
+                        .goods__tabs-content-reviews-plus
+                        p Достоинства :
+                        p Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nostrum, odit at suscipit vero eius fugit, molestiae consectetur placeat facere commodi unde. Tempora sunt placeat esse delectus nesciunt ratione ad.
+                        .goods__tabs-content-reviews-minus
+                        p Недостатки :
+                        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti natus impedit eveniet quasi et consequuntur sit veniam incidunt officiis, corporis nesciunt dolor accusamus numquam corrupti temporibus neque praesentium illum optio?
+                        .goods__tabs-content-reviews-price Цена, оценка : 3
+                        .goods__tabs-content-reviews-quality Качество, оценка : 2
+
+                    .goods__tabs-content-reviews-item
+                        .goods__tabs-content-reviews-userName Дима
+                        .goods__tabs-content-reviews-data 26.04.2021
+                        .goods__tabs-content-reviews-plus
+                        p Достоинства :
+                        p Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nostrum, odit at suscipit vero eius fugit, molestiae consectetur placeat facere commodi unde. Tempora sunt placeat esse delectus nesciunt ratione ad.
+                        .goods__tabs-content-reviews-minus
+                        p Недостатки :
+                        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti natus impedit eveniet quasi et consequuntur sit veniam incidunt officiis, corporis nesciunt dolor accusamus numquam corrupti temporibus neque praesentium illum optio?
+                        .goods__tabs-content-reviews-price Цена, оценка : 3
+                        .goods__tabs-content-reviews-quality Качество, оценка : 2

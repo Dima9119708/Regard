@@ -52,9 +52,7 @@ export function renderCatalogContent(content) {
   const { DATA, store } = content
   let base = reSotingDATA(DATA)
 
-  return {
-    base: base,
-    content: `
+  return `
 
       <div class="content__filter-button-inner">
         <button type="button" class="filter__button" data-filter-mobile-button="false">Фильтр</button>
@@ -94,5 +92,4 @@ export function renderCatalogContent(content) {
         ${Filter.renderHTML(base)}
     </div>
   `
-  }
 }

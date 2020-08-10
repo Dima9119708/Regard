@@ -3,7 +3,11 @@
   text-transform: uppercase;
   font-size: 13px;
   cursor: pointer;
-  min-width: 238px;
+  width: 100%;
+
+  @media(min-width: 1245px) {
+    width: 330px;
+  }
 }
 
 .content-product__type {
@@ -28,7 +32,7 @@
     &:nth-child(1) {
       top: 0;
       left: 0;
-      padding-left: 28px;
+      padding-left: 35px;
 
       &::before {
         content: '';
@@ -47,7 +51,7 @@
       top: 0;
       right: 0;
       background-color: $blur;
-      padding-right: 28px;
+      padding-right: 35px;
 
       &::before {
         content: '';
@@ -155,7 +159,7 @@
 }
 
 .content-product__menu-inside-item-link--active {
-  color: #c31010;
+  color: #e00909;
   font-size: 13px;
   font-weight: bold;
 }

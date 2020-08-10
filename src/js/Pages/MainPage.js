@@ -8,7 +8,7 @@ import { InterfacePages } from './InterfacePage'
 import firebase from 'firebase/app'
 import { initialState } from '../core/initialState'
 import { storage } from '../core/utils'
-import base from './../base.json'
+import newBase from './../newBase.json'
 
 function whetherTheUserIsSaved() {
 
@@ -27,6 +27,7 @@ function whetherTheUserIsSaved() {
 }
 
 function retrievingSpecificUserData(user) {
+
   return new Promise(resolve => {
     firebase
       .database()
@@ -34,6 +35,22 @@ function retrievingSpecificUserData(user) {
       .on('value', function (dataSnapshot) {
         resolve(dataSnapshot.val())
       })
+  })
+
+}
+
+function getDATA() {
+
+  return new Promise(resolve => {
+
+    firebase
+          .database()
+          .ref(`base/`)
+          .on('value', function (dataSnapshot) {
+
+      resolve(dataSnapshot.val())
+    })
+
   })
 }
 
@@ -43,10 +60,10 @@ export class MainPage extends InterfacePages {
 
     this.user = null
 
-    // const GET__DATA = await fetch('https://regard-ab2be.firebaseio.com/base.json')
-    // const DATA = await GET__DATA.json()
+    //const DATA = await getDATA()
+
+    const DATA = await newBase
     //const user = await whetherTheUserIsSaved()
-    const DATA = await base
     const user = false
 
     if (user) {
@@ -68,7 +85,7 @@ export class MainPage extends InterfacePages {
 
     this.initComponent = new InitComponent(
       [HeaderTop, Header, Content, Footer, LoginBar],
-      DATA.base,
+      DATA,
       this.userState,
       this.user
     )

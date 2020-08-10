@@ -103,6 +103,8 @@ export function renderProductCards(data, store) {
 
 export function accardion(event, frag) {
 
+  const { scrollHeight, style, dataset } = event
+
   if (frag) {
     event.style.maxHeight = event.scrollHeight + 'px'
     event.setAttribute('data-accardion', true)
@@ -110,13 +112,13 @@ export function accardion(event, frag) {
     return
   }
 
-  const { scrollHeight, style, dataset } = event
   const plus = $(event).qSelector('[data-plus]')
 
   if (JSON.parse(dataset.accardion)) {
     style.maxHeight = 23 + 'px'
     event.setAttribute('data-accardion', false)
     style.transition = 'max-height .2s easy'
+
     if (plus) {
       plus.innerHTML = '+'
     }
@@ -129,4 +131,13 @@ export function accardion(event, frag) {
       plus.innerHTML = '-'
     }
   }
+}
+
+export function accardionObjectTrue($root) {
+
+  const accardionItems = $root.qSelectorAll('[data-accardion="true"]')
+
+  accardionItems.forEach(item => {
+    item.style.maxHeight = item.scrollHeight + 'px'
+  })
 }

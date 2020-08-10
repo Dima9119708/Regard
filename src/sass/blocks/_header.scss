@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 9999;
   padding: 10px 10px;
   background-color: #F6F6F6;
   border-bottom: 2px solid rgb(160, 160, 160);
@@ -95,7 +95,7 @@
 .header__links {
   display: none;
 
-  @media(min-width: 1140px) {
+  @media(min-width: 1245px) {
     display: block;
   }
 }

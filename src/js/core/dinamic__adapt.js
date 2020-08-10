@@ -1,3 +1,6 @@
+
+// Перенос DOM элемента в другое место DOM,
+// относительно ширины окна
 export const dinamic__adapt = {
 
   __INIT__() {
@@ -45,7 +48,7 @@ export const dinamic__adapt = {
         const el = daElementsArray[index];
         const daBreakpoint = el.breakpoint;
         const daType = el.type;
-
+    
         daMatchMedia.push(window.matchMedia("(" + daType + "-width: " + daBreakpoint + "px)"));
         daMatchMedia[index].addListener(dynamicAdapt);
       }

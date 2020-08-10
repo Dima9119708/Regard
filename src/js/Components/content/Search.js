@@ -6,6 +6,7 @@ import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn"
 export class Search {
 
   constructor(content) {
+    this.content = content
     this.$root = content.$root
     this.DATA = content.DATA
     this.store = content.store
@@ -15,7 +16,7 @@ export class Search {
     return `
       <section class="s-content__search">
           <div class="s-content__search-rel" data-search-rel>
-            <input class="s-content__input" type="text" data-search="search" placeholder="Поиск среди товаров">
+            <input class="s-content__input" type="text" data-search="search" placeholder="Поиск среди ${this.DATA.length} товаров">
           </div>
           <button class="s-content__find" data-searchButton="search" type="search">Найти</button>
       </section>
@@ -52,6 +53,7 @@ export class Search {
   }
 
   #productSearchButton() {
+
     const searchList = this.$root.qSelector('[data-search-list-item]')
 
     if (searchList) {
@@ -70,6 +72,9 @@ export class Search {
 
         const hash = changeURLCalatog(value, catalogHashPath.search)
         ActiveRout.setHash(hash)
+
+        this.deleteList()
+        this.content.reRenderHTML()
       }
     }
   }
@@ -164,6 +169,11 @@ export class Search {
       listItem.setAttribute('data-search-list-item', true)
       $(listItem).clear().insertHTML('beforeend', searchDATA.join(''))
     }
+  }
+
+  deleteList() {
+    const list = this.$root.qSelector('[data-search-list="search-list"]')
+    list.remove()
   }
 }
 

@@ -4,7 +4,7 @@
   background-color: #ffffff;
 }
 
-.goods-header {
+.goods__header {
   padding: 10px;
   display: flex;
   background-color: #F5F5F5;
@@ -13,14 +13,14 @@
   margin-bottom: 15px;
   border: $border;
 
-  & .goods-header__id {
+  & .goods__header-id {
     padding-right: 10px;
     color: #7DB0CF;
     border-right: $border;
 
   }
 
-  & .goods-header__name {
+  & .goods__header-name {
     padding-left: 10px;
     font-size: 20px;
     font-weight: 400;
@@ -30,15 +30,16 @@
 .goods__wrap {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 
-.goods-img {
+.goods__img {
   padding: 10px;
   background: #f6f6f6;
   width: 44%;
   border: $border;
 
-  & .goods-img-block {
+  & .goods__img-block {
     height: 350px;
     background: #ffffff;
     border: $border;
@@ -96,7 +97,7 @@
     font-size: 40px;
   }
 
-  & .goods-add-basket {
+  & .goods__add-basket {
     position: relative;
     padding: 5px 10px;
     height: max-content;
@@ -106,7 +107,7 @@
     border-radius: 5px;
     cursor: pointer;
 
-    & .goods-in-basket {
+    & .goods__in-basket {
       display: none;
       position: absolute;
       top: -30px;
@@ -136,4 +137,169 @@
       }
     }
   }
+}
+
+.goods__tabs {
+  display: flex;
+  background: #f6f6f6;
+  padding: 10px 10px;
+  margin-bottom: 20px;
+  border: 1px solid #D2D2D2;
+}
+
+.goods__tabs-item {
+  margin-right: 30px;
+  cursor: pointer;
+  text-transform: uppercase;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    color: rgb(216, 36, 36);
+  }
+}
+
+.goods__tabs-item--active {
+  border-bottom: dashed 2px rgb(240, 16, 16);
+}
+
+.goods__tabs-content {
+  margin-bottom: 10px;
+  background: #f6f6f6;
+  border: 1px solid #D2D2D2;
+}
+
+.goods__tabs-form {
+  padding: 10px;
+  display: none;
+
+  &:nth-child(2) {
+    display: block;
+  }
+}
+
+.goods__tabs-form-item {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.goods__tabs-form-item-lable {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.goods__tabs-form-item-input {
+  font-size: inherit;
+  width: 100%;
+  outline: none;
+
+  &:focus {
+    border: 2px solid rgb(228, 32, 32);
+  }
+}
+
+.goods__tabs-form-item-area {
+  font-size: inherit;
+  width: 100%;
+  resize: vertical;
+  min-height: 100px;
+
+  &:focus {
+    border: none;
+    outline: 2px solid red;
+  }
+}
+
+.goods__tabs-form-item-submit  {
+  cursor: pointer;
+  border: 2px solid rgb(12, 113, 207);
+  padding: 7px 15px;
+  border-radius: 5px;
+  outline: none;
+
+  &:hover {
+    background-color: rgb(12, 113, 207);
+    color: #ffffff;
+    transition: background-color .1s linear, color .1s linear;
+  }
+}
+
+.goods__tabs-content-form-tabs-button {
+  display: flex;
+  padding: 10px;
+
+  & .goods__tabs-content-form-tabs-button-item {
+    margin-right: 10px;
+    cursor: pointer;
+    border: 2px solid rgb(207, 12, 12);
+    padding: 7px 15px;
+    border-radius: 5px;
+    outline: none;
+
+    &:hover {
+      background-color: rgb(207, 12, 12);
+      color: #ffffff;
+      transition: background-color .1s linear, color .1s linear;
+    }
+  }
+}
+
+.goods__tabs-form-item-rating-item {
+  margin-bottom: 5px;
+  display: flex;
+}
+
+.goods__tabs-form-item-rating-item-button {
+  margin-left: 5px;
+  cursor: pointer;
+  border: 2px solid rgb(204, 11, 11);
+  color: #070707;
+
+  &:hover {
+    color: #ffffff;
+    background-color: rgb(204, 11, 11);
+  }
+}
+
+.goods__tabs-form-item-rating-item-button--active {
+  color: #ffffff;
+  background-color: rgb(204, 11, 11);
+}
+
+.goods__tabs-content-overall-rating {
+  padding: 10px;
+  background: #f6f6f6;
+  margin-bottom: 10px;
+  border: 1px solid #D2D2D2;
+
+  span {
+    font-size: 20px;
+    color: rgb(192, 25, 25);
+    font-weight: bold;
+  }
+}
+
+.goods__tabs-content-reviews {
+  min-height: 100px;
+  background: #f6f6f6;
+  padding: 10px;
+}
+
+.goods__tabs-content-reviews-item {
+  padding-bottom: 10px;
+  border-bottom: 2px dashed rgb(207, 15, 15);
+  margin-bottom: 15px;
+}
+
+.goods__tabs-content-reviews-userName {
+  margin-bottom: 10px;
+}
+
+.goods__tabs-content-reviews-data {
+  margin-bottom: 10px;
 }
