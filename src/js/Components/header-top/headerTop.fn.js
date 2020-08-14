@@ -1,37 +1,39 @@
 import firebase from 'firebase/app'
 import MicroModal from 'micromodal';
-import { modalINITOnClick, modalINITOnInput, createModal } from '../../core/modal';
-import { ActiveRout } from '../../Routing/ActiveRouter';
+import { modalINITOnClick, modalINITOnInput, createModal } from '../../core/modal';import { ActiveRout } from '../../Routing/ActiveRouter';
+;
 
-let openMobileMenu = false
-export function burgerMobileMenu(event, $root) {
+export function burgerMobileMenu(event) {
 
-  const $parentMenuMobile = event.target.closest('[data-parentMenuMobile]')
+  const $burgerParent = event.target.closest('[data-parentMenuMobile]')
 
-  if ($parentMenuMobile) {
+  if ($burgerParent) {
 
-    const menuBtn = $root.qSelector('[data-burger]')
-    const headerMenu = $root.qSelector('[data-header-menu]')
+    const $burger = $burgerParent.querySelector('[data-burger]')
+    const $headerMenu = document.querySelector('[data-header-menu]')
 
-    if (!openMobileMenu) {
-      menuBtn.classList.add('open');
-      headerMenu.classList.add('header__mobile-menu-list--active')
-      openMobileMenu = true;
+    const burgerOpen = JSON.parse($burger.dataset.burger)
+
+    if (!burgerOpen) {
+      $burger.classList.add('open');
+      $headerMenu.classList.add('content__mobile-menu-list--active')
+      document.body.style.overflowY = 'hidden'
+      $burger.setAttribute('data-burger', true);
     } else {
-      menuBtn.classList.remove('open');
-      headerMenu.classList.remove('header__mobile-menu-list--active')
-      openMobileMenu = false;
+      $burger.classList.remove('open');
+      $headerMenu.classList.remove('content__mobile-menu-list--active')
+      document.body.style.overflowY = 'scroll'
+      $burger.setAttribute('data-burger', false);
     }
   }
-
 }
 
-export function initAndOpeningModalWindow(e, $root) {
+export function initAndOpeningModalWindow(e, $root, flag) {
 
   const { auth, exit } = e.target.dataset
 
   if (auth) {
-    const modal = createModal()
+    const modal = createModal(flag)
     const app = $root.closest('#app')
     app.append(modal)
 

@@ -6,13 +6,14 @@ import firebase from 'firebase/app'
 import { storage } from "../../core/utils";
 
 export class InitComponent {
-  constructor(components, DATA, userDATAState, userID) {
+  constructor(components, DATA, userDATAState, userID, reviews) {
     this.components = components
     this.store = new Store(reducer, userDATAState.userDATA || userDATAState)
     this.emmiter = new Emmiter()
     this.DATA = DATA
     this.user = userDATAState
     this.userID = userID
+    this.reviews = reviews
   }
 
   getRoot() {
@@ -21,7 +22,9 @@ export class InitComponent {
       DATA: this.DATA,
       store: this.store,
       emmiter: this.emmiter,
+      userID: this.userID,
       user : this.user,
+      reviews: this.reviews
     }
 
     const main = $.create('div', 'main')
@@ -53,18 +56,20 @@ export class InitComponent {
 
   storeSubscribe() {
     this.store.subscribe( data => {
-      storage('REGARD', data)
-      // if (!this.user) {
-      //   storage('REGARD', data)
-      // }
-      // else {
-      //   setTimeout(async () =>
-      //                     await firebase
-      //                     .database()
-      //                     .ref(`users/${this.userID.uid}/userDATA/`)
-      //                     .set(data),
-      //                   500)
-      // }
+
+      //storage('REGARD', data)
+
+      if (!this.userID) {
+        storage('REGARD', data)
+      }
+      else {
+        setTimeout(async () =>
+                          await firebase
+                          .database()
+                          .ref(`users/${this.userID.uid}/userDATA/`)
+                          .set(data),
+                        500)
+      }
     })
   }
 }

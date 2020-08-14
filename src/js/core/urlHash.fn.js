@@ -7,3 +7,10 @@ export const catalogHashPath = {
 export const changeURLCalatog = (params, params2, pageActive = 1) => {
   return `${catalog}/+/${params}/+/${params2}/+/${pageActive}`
 }
+
+
+export const card = 'card'
+
+export const changeURLCard = (id) => {
+  return `${card}/+/${id}`
+}

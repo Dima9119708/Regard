@@ -1,25 +1,14 @@
 import { $ } from "./Dom"
 import { auth } from "../Auth/auth"
 
-export function createModal() {
-
+export function createModal(flag) {
   const createModal = $.create('div', 'modals')
 
   createModal.innerHTML = `
     <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
       <div class="modal__overlay" tabindex="-1" data-close="close" data-micromodal-close>
         <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-          <header class="modal__header">
-            <h2 class="modal__title" id="modal-1-title">
-              <button class="modal-auth__button modal-auth__button--active" data-login="login" type="button">Вход</button>
-              <button class="modal-auth__button" data-reg="reg" type="button">Регистрация</button>
-            </h2>
-            <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
-          </header>
-          <main class="modal__content" id="modal-1-content">
-             ${renderModalContent('login')}
-          </main>
-          <footer class="modal__footer"></footer>
+          ${renderContentModal(flag)}
       </div>
     </div>
   </div>
@@ -66,7 +55,66 @@ export function modalINITOnInput(node) {
   node.oninput = e => { auth(e) }
 }
 
-function renderModalContent(content) {
+function renderContentModal(flag) {
+
+  if (flag === 'Авторизация') {
+    return `
+      <header class="modal__header">
+          <h2 class="modal__title" id="modal-1-title">
+            <button class="modal-auth__button modal-auth__button--active" data-login="login" type="button">Вход</button>
+            <button class="modal-auth__button" data-reg="reg" type="button">Регистрация</button>
+          </h2>
+          <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
+        </header>
+        <main class="modal__content" id="modal-1-content">
+            ${renderAuthContent('login')}
+        </main>
+      <footer class="modal__footer"></footer>
+    `
+  }
+  else if (flag === 'Спасибо за отзыв') {
+    return `
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+           Спасибо за отзыв. В ближайшее время ваш отзыв, будет опубликован.
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
+      </header>
+    `
+  }
+  else if (flag === 'Спасибо за ваш вопрос') {
+    return `
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+           Спасибо за ваш вопрос. В ближайшее время ваш отзыв, будет опубликован.
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
+      </header>
+    `
+  }
+  else if (flag === 'Пустое поле') {
+    return `
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+           Поле пустое
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
+      </header>
+    `
+  }
+  else if (flag === 'Спасибо за ваш ответ') {
+    return `
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+          Спасибо за ваш ответ. В ближайшее время ваш ответ, будет опубликован.
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
+      </header>
+    `
+  }
+}
+
+function renderAuthContent(content) {
 
   if (content === 'login') {
     return `
@@ -93,8 +141,8 @@ function renderModalContent(content) {
     <div class="fieldset-body" id="login_form">
 
       <p class="field">
-        <label for="user">Email</label>
-        <input type="text" id="user" name="user" title="Username">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="user" title="Username">
         <span id="valida" class="i i-warning"></span>
       </p>
       <p class="field">

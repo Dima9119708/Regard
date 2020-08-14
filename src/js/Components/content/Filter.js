@@ -6,7 +6,6 @@ import { pagination, showItems } from "../../core/pagination"
 
 export class Filter {
 
-
   static onClick(e, content) {
 
     const { $root } = content
@@ -59,6 +58,7 @@ export class Filter {
       const currentURL = urlParse()
       const changeURL = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${currentURL[2]}`
       ActiveRout.setHash(changeURL)
+      content.reRenderHTML()
     }
 
     const mobileBTN = e.target.dataset.filterMobileButton
@@ -85,30 +85,8 @@ export class Filter {
           <div class="content-block__filter-header">Подбор по параметрам</div>
           <div class="content-block__filter-reset" data-reset="reset">Сбросить фильтры</div>
           <ul class="content-block__filter-list" data-simplebar>
-
-            <li class="content-block__filter-item" data-accardion="true" data-randeSliderPC>
-              <div class="content-block__filter-title" data-filterTittle="filterTittle">
-                <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.
-            </div>
-              <div class="content-block__filter-price" data-inputFilterParent>
-                <div class="input-price from">
-                от
-                <input type="number" data-minInput value="${searchMaxAndMinNumber(false, base)}" min="${searchMaxAndMinNumber(false, base)}">
-                </div>
-                <div class="input-price before">
-                  до
-                <input type="number" data-maxInput value="${searchMaxAndMinNumber(true, base)}" max="${searchMaxAndMinNumber(true, base)}">
-                </div>
-                </div>
-
-                <div class="content__range-slider" data-rangeParent>
-                  <button class="content__range-button" data-range="left"></button>
-                  <button class="content__range-button" data-range="right"></button>
-                  <div class="content__range-slider-line" data-rangeLine></div>
-                </div>
-            </li>
-
-            ${Filter.renderFilterContent(base)}
+            ${Filter.#renderRangeSliderHTML(base)}
+            ${Filter.#renderFilterContent(base)}
           </ul>
         </div>
     `
@@ -116,10 +94,14 @@ export class Filter {
 
   static rangeSliderINIT(content, parent) {
 
-    const { catalogCards: base, $root: $elem, store } = content
+    const { $root: $elem } = content
 
     // Возращаем из инстенса класса DOM, DOM - элемент'
-    const $root = $elem.qSelector(parent)
+    const $root = $elem.qSelector(parent) || document.querySelector(parent)
+
+    if (!$root) {
+      return
+    }
 
     // Получение интупа мин и макс
     const inputMin = $root.querySelector('[data-minInput]')
@@ -158,7 +140,7 @@ export class Filter {
         // Снова вызываем ф-н делает все тоже самое
         rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, $line)
 
-        Filter.changeURL = $elem
+        Filter.changeURL = content.$root
         Filter.displayСardsBasedOnTheFilter(content)
       }
     }
@@ -254,8 +236,7 @@ export class Filter {
           $root.onmousemove = null
           $root.onmouseup = null
 
-
-          Filter.changeURL = $elem
+          Filter.changeURL = content.$root
           Filter.displayСardsBasedOnTheFilter(content)
         }
       }
@@ -340,17 +321,54 @@ export class Filter {
         }
 
         $root.ontouchend = e => {
-          $root.onmousemove = null
-          $root.onmouseup = null
+          $root.ontouchmove = null
+          $root.ontouchend = null
 
-          Filter.changeURL = $elem
+          Filter.changeURL = content.$root
           Filter.displayСardsBasedOnTheFilter(content)
         }
       }
     }
   }
 
-  static renderFilterContent(base) {
+  static #renderRangeSliderHTML(base) {
+
+    const min = searchMaxAndMinNumber(false, base)
+    const max = searchMaxAndMinNumber(true, base)
+
+    if (min === max) {
+      return ''
+    }
+    else if (min === Infinity || max === 0) {
+      return ''
+    }
+
+    return `
+      <li class="content-block__filter-item" data-accardion="true" data-randeSliderPC>
+        <div class="content-block__filter-title" data-filterTittle="filterTittle">
+          <i class="fas fa-long-arrow-alt-right"></i>Цена, руб.
+      </div>
+        <div class="content-block__filter-price" data-inputFilterParent>
+          <div class="input-price from">
+          от
+          <input type="number" data-minInput value="${searchMaxAndMinNumber(false, base)}" min="${searchMaxAndMinNumber(false, base)}">
+          </div>
+          <div class="input-price before">
+            до
+          <input type="number" data-maxInput value="${searchMaxAndMinNumber(true, base)}" max="${searchMaxAndMinNumber(true, base)}">
+          </div>
+          </div>
+
+          <div class="content__range-slider" data-rangeParent>
+            <button class="content__range-button" data-range="left"></button>
+            <button class="content__range-button" data-range="right"></button>
+            <div class="content__range-slider-line" data-rangeLine></div>
+          </div>
+      </li>
+    `
+  }
+
+  static #renderFilterContent(base) {
 
     if (base.length) {
 
@@ -819,10 +837,9 @@ export class Filter {
 
   static displayСardsBasedOnTheFilter(content) {
 
-    let { catalogCards : BASE, $root, store } = content
+    let { filterCards : DATA, $root, store } = content
 
     const dataCardsWrapDiv = $root.qSelector('[data-cards]')
-
     const currentURL = urlParse()[3] || []
 
     if (currentURL.length > 0) {
@@ -831,7 +848,7 @@ export class Filter {
       const urlParse = currentURL.split(';')
       const sliderPriceINITNumber = urlParse[1].split('--')
 
-      let sort = filterSortPrice(urlParse[0], BASE)
+      let sort = filterSortPrice(urlParse[0], DATA)
       sort = filteringByPrice(sort, sliderPriceINITNumber)
       const goods = filterChecked(urlParse, sort)
 
@@ -860,15 +877,16 @@ export class Filter {
       paginationWrap.innerHTML = pagination.__INIT__(goods)
       return goods
     }
-    else {
-      dataCardsWrapDiv.style.opacity = '0.2'
-      dataCardsWrapDiv.style.transition = 'opacity .4s linear'
 
-      setTimeout(() => {
-        dataCardsWrapDiv.style.opacity = '1'
-        dataCardsWrapDiv.style.transition = 'opacity .4s linear'
-      }, 400)
-    }
+    dataCardsWrapDiv.style.opacity = '0.2'
+    dataCardsWrapDiv.style.transition = 'opacity .4s linear'
+
+    setTimeout(() => {
+      dataCardsWrapDiv.style.opacity = '1'
+      dataCardsWrapDiv.style.transition = 'opacity .4s linear'
+    }, 400)
+
+    return DATA
   }
 
   static viewUpdateDom(content) {
@@ -912,8 +930,12 @@ export class Filter {
       }
     })
 
-    const minPrice = $root.qSelector('[data-mininput]').value
-    const maxPrice = $root.qSelector('[data-maxinput]').value
+    const minPrice = $root.qSelector('[data-mininput]')
+    const maxPrice = $root.qSelector('[data-maxinput]')
+
+    if (!minPrice || !maxPrice) {
+      return
+    }
 
     const checkeds = []
     const checked = $root.qSelectorAll('[data-checked]')
@@ -926,7 +948,7 @@ export class Filter {
 
     const currentURL = urlParse()
 
-    const changeURL = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${currentURL[2]}/+/${sortPriceActive};${minPrice}--${maxPrice};${checkeds.join(';')}`
+    const changeURL = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${currentURL[2]}/+/${sortPriceActive};${minPrice.value}--${maxPrice.value};${checkeds.join(';')}`
     ActiveRout.hash(changeURL)
   }
 }
@@ -1057,7 +1079,9 @@ function trainingHTMLList(item) {
           data-checked="false"
           data-value="${item}">
           ${item}
-        <div class="checkbox-fake--active">&#10003;</div>
+        <div class="checkbox-fake--active">
+          <i class="fa fa-check" aria-hidden="true"></i>
+        </div>
       </div>
     </div>
   `

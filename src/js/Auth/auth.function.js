@@ -16,6 +16,7 @@ export function validateForm(e, form) {
   if (e.target.id === 'email') {
 
     if (isValidEmail(value)) {
+      console.log('+')
       e.target.style.border = 'none'
       form.email = value
     }

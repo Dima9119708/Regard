@@ -1,14 +1,15 @@
 import { ParentComponent } from "../../core/ParentComponent";
 import { Sidebar } from "./Sidebar";
 import { Search } from "./Search";
-import { addBasketProducts } from "./content.functions";
+import { addBasketProducts, reSotingDATA } from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
-import { renderMainContent, renderCatalogContent } from "./renderContent";
-import { catalog } from "../../core/urlHash.fn";
+import { catalog, card } from "../../core/urlHash.fn";
 import { pagination } from "../../core/pagination";
 import { Filter } from "./filter";
 import 'simplebar';
+import { accardionObjectTrue } from "./renderContent.functions";
 import { dinamic__adapt } from "../../core/dinamic__adapt";
+import { Card } from "./Card";
 
 export class Content extends ParentComponent {
 
@@ -18,7 +19,7 @@ export class Content extends ParentComponent {
   constructor($root, options) {
     super($root, {
       name: 'Content',
-      listener: ['click', 'input', 'keydown'],
+      listener: ['click', 'input', 'keydown', 'change'],
       ...options
     })
   }
@@ -26,28 +27,29 @@ export class Content extends ParentComponent {
   prepare() {
     this.sideBar = new Sidebar(this)
     this.search = new Search(this)
+    this.card = new Card(this)
   }
-
-  renderContent() {
-
-    if (ActiveRout.urLHash === '') {
-      return renderMainContent(this)
-    }
-    else if (ActiveRout.urLHash.startsWith(catalog)) {
-      this.catalogCards = renderCatalogContent(this).base
-      return renderCatalogContent(this).content
-    }
-  }
-
   init() {
-    super.init()
+    super.listener()
 
     dinamic__adapt.__INIT__()
+    accardionObjectTrue(this.$root)
 
-    if(ActiveRout.urLHash.startsWith(catalog)) {
+    this.search.DOM
+    this.sideBar.DOM
+
+    if (ActiveRout.urLHash.startsWith(catalog)) {
+
+      this.filterCards = reSotingDATA(this.DATA)
+
       Filter.viewUpdateDom(this)
       Filter.displayСardsBasedOnTheFilter(this)
       Filter.rangeSliderINIT(this, '[data-randeSliderPC]')
+
+      this.sideBar.renderContentActiveType()
+    }
+    else if (ActiveRout.urLHash.startsWith(card)) {
+      this.card.DOM
     }
   }
 
@@ -55,7 +57,9 @@ export class Content extends ParentComponent {
     return `
       <div class="content">
         <div class="content-wrap">
-          ${this.sideBar.renderHTML()}
+          <div class="content-left__menu" data-left-menu data-da="[data-header-menu],1,1245,max">
+            ${this.sideBar.renderHTML()}
+          </div>
           <main class="content-center">
             ${this.search.renderHTML()}
 
@@ -68,7 +72,14 @@ export class Content extends ParentComponent {
         <div class="content-footer">
           <p>© 2000–2020. Сеть компьютерных магазинов "РЕГАРД". Многоканальная телефонная линия: (495) 921-41-58</p>
         </div>
-     </div>
+      </div>
+
+      <! Мобильное Меню >
+      <div class="content__mobile-menu-list" data-header-menu>
+        <div class="content__mobile-links">
+          <a class="content__mobile-link" href="#">Конфигуратор ПК</a>
+        </div>
+      </div>
     `
   }
 
@@ -79,6 +90,9 @@ export class Content extends ParentComponent {
 
     pagination.onClick(event, this)
     Filter.onClick(event, this)
+
+    this.card.openPageCard(event, this)
+    this.card.onClick(event)
   }
 
   onKeydown(event) {
@@ -86,7 +100,28 @@ export class Content extends ParentComponent {
     this.search.onKeyBoard(event)
   }
 
+  onChange(event) {
+
+    const { target } = event
+    const currentCard = target.dataset.inputCard
+
+    if (currentCard) {
+      if (!target.value) {
+        target.value = 1
+      }
+      else if (+target.value < 0) {
+        target.value = 1
+      }
+
+      this.card.increaseInGoods(+target.value)
+      this.emmiter.emit('LOGIN__BAR', true)
+      this.emmiter.emit('HEADER__TOP', true)
+    }
+
+  }
+
   onInput(event) {
     this.search.onInput(event)
+    this.card.onInput(event)
   }
 }

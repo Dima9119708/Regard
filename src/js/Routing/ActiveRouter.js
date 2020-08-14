@@ -11,7 +11,6 @@ export class ActiveRout {
 
   static setHash(hash) {
     location.hash = hash
-    location.reload()
   }
 
   static reloadPage() {

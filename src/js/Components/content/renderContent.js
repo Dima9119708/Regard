@@ -2,7 +2,6 @@ import { reSotingDATA, } from "./content.functions"
 
 import { renderTitle, checkLackOfGoods, renderProductCards, renderRandomContent } from "./renderContent.functions"
 import { pagination } from "../../core/pagination"
-import { searchMaxAndMinNumber } from "../../core/utils"
 import { Filter } from "./filter"
 
 export function renderMainContent(content) {
@@ -52,9 +51,7 @@ export function renderCatalogContent(content) {
   const { DATA, store } = content
   let base = reSotingDATA(DATA)
 
-  return {
-    base: base,
-    content: `
+  return `
 
       <div class="content__filter-button-inner">
         <button type="button" class="filter__button" data-filter-mobile-button="false">Фильтр</button>
@@ -94,5 +91,13 @@ export function renderCatalogContent(content) {
         ${Filter.renderHTML(base)}
     </div>
   `
-  }
+}
+
+export function renderCard(card) {
+
+  return `
+    <div class="goods">
+    ${card.renderHTML()}
+    </div>
+  `
 }

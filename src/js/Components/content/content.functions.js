@@ -2,7 +2,6 @@ import * as actions from '../../core/redux/actions'
 import { catalogHashPath } from '../../core/urlHash.fn'
 import { urlParse } from '../../core/utils'
 
-
 export function addBasketProducts(event, content) {
 
   const { DATA, store, emmiter } = content

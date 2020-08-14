@@ -114,11 +114,20 @@
   }
 
   & .input-price input{
-    font-size: 12px;
-    width: 50px;
+    font-size: 18px;
+    width: 100px;
     margin-left: 5px;
     text-align: right;
     outline: none;
+
+    @media(min-width: 768px) {
+      width: 200px;
+    }
+
+    @media(min-width: 1245px) {
+      font-size: 12px;
+      width: 50px;
+    }
   }
 
   @media(min-width: 1245px) {

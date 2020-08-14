@@ -1,4 +1,4 @@
-import { SEARCH_HISTORY, __INIT__, ADD_BASKET, SUM_TOTAL, COUNTER } from "./constans";
+import { SEARCH_HISTORY, __INIT__, ADD_BASKET, PRICE__INCREASE, DELETE__CARD } from "./constans";
 
 export function reducer(state, action) {
 
@@ -40,6 +40,54 @@ export function reducer(state, action) {
       sumTotal: sumResult,
       counter: counterResult
     }
-  }
 
+    case PRICE__INCREASE :
+
+      let { card, counter : count } = action
+
+      const price = +card.price * count
+
+      card = { ...card, price, 'counter': count}
+
+      state.basket.forEach( (item, index) => {
+        if (+item.id === +card.id){
+          state.basket.splice(index, 1, card)
+        }
+      });
+
+      state.sumTotal = 0
+
+      state.basket.forEach( item => {
+        state.sumTotal += +item.price
+      });
+
+    return {
+      ...state
+    }
+
+    case DELETE__CARD :
+
+      state.basket.forEach((item,index) => {
+        if (+item.id === +action.card.id) {
+          state.basket.splice(index, 1)
+        }
+      })
+
+      state.sumTotal = 0
+
+      state.basket.forEach(item => {
+        state.sumTotal += +item.price
+      })
+
+      if (state.counter >= 1) {
+        state.counter -= 1
+      }
+      else {
+        state.counter = 0
+      }
+
+    return {
+      ...state,
+    }
+  }
 }

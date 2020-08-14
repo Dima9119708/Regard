@@ -23,9 +23,22 @@ h1,h2,h3,h4,li,ul,p {
   font-weight: 400;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 img {
   max-width: 100%;
   height: auto;
+}
+
+button {
+  background: none;
 }
 
 .container {
@@ -66,15 +79,6 @@ img {
   }
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-
 .content__preloader {
   position: absolute;
   top: 50%;
@@ -93,4 +97,15 @@ input[type="number"] {
 
 .simplebar-scrollbar::before {
   background-color: rgb(116, 116, 116);
+}
+
+.brand {
+  display: none;
+}
+
+.error {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: rgb(190, 37, 37);
 }

@@ -6,16 +6,26 @@ import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn"
 export class Search {
 
   constructor(content) {
+    this.content = content
     this.$root = content.$root
     this.DATA = content.DATA
     this.store = content.store
+  }
+
+  get DOM() {
+    return {
+      searchParent: this.$root.qSelector('[data-search-rel]'),
+      searchListParent: this.$root.qSelector('[data-search-list]'),
+      searchList: this.$root.qSelector('[data-search-list-item]'),
+      searchInput: this.$root.qSelector('[data-search]')
+    }
   }
 
   renderHTML() {
     return `
       <section class="s-content__search">
           <div class="s-content__search-rel" data-search-rel>
-            <input class="s-content__input" type="text" data-search="search" placeholder="Поиск среди товаров">
+            <input class="s-content__input" type="text" data-search="search" placeholder="Поиск среди ${this.DATA.length} товаров">
           </div>
           <button class="s-content__find" data-searchButton="search" type="search">Найти</button>
       </section>
@@ -52,7 +62,8 @@ export class Search {
   }
 
   #productSearchButton() {
-    const searchList = this.$root.qSelector('[data-search-list-item]')
+
+    const searchList = this.DOM.searchList || this.$root.qSelector('[data-search-list-item]')
 
     if (searchList) {
 
@@ -60,7 +71,7 @@ export class Search {
 
       if (JSON.parse(searchListItem)) {
 
-        const { value } = this.$root.qSelector('[data-search]')
+        const { value } = this.DOM.searchInput
 
         const history = this.store.getState().history || []
 
@@ -70,22 +81,22 @@ export class Search {
 
         const hash = changeURLCalatog(value, catalogHashPath.search)
         ActiveRout.setHash(hash)
+
+        this.deleteList()
+        this.content.reRenderHTML()
       }
     }
   }
 
   #createAndAppendSearchList() {
-    const searchList = this.$root.qSelector('[data-search-list]')
+    const searchList = this.DOM.searchListParent
 
     if (!searchList) {
-      const parent = this.$root.qSelector('[data-search-rel]')
       const node = createSearchList(this.#getHistorySearch.bind(this))
-      parent.append(node)
+      this.DOM.searchParent.append(node)
 
-      const search = this.$root.qSelector('[data-search]')
-
-      if (search.value) {
-        this.onInput(search)
+      if (this.DOM.searchInput.value) {
+        this.onInput(this.DOM.searchInput)
       }
     }
   }
@@ -99,10 +110,8 @@ export class Search {
       this.#productSearchButton()
     }
     else if (historyitem) {
-
-      const searchInput = this.$root.qSelector('[data-search]')
-      searchInput.value = event.target.innerHTML.trim()
-      this.onInput(searchInput)
+      this.DOM.searchInput.value = event.target.innerHTML.trim()
+      this.onInput(this.DOM.searchInput)
     }
     else if (historyclear) {
 
@@ -117,7 +126,7 @@ export class Search {
     }
     else {
 
-      const searchList = this.$root.qSelector('[data-search-list]')
+      const searchList = this.DOM.searchListParent
 
       if (searchList) {
         searchList.remove()
@@ -148,7 +157,7 @@ export class Search {
 
       const searchDATA = baseSearch(this.DATA, value)
 
-      const listItem = this.$root.qSelector('[data-search-list-item]')
+      const listItem = this.DOM.searchList
 
       if (!searchDATA.length) {
         listItem.setAttribute('data-search-list-item', false)
@@ -164,6 +173,11 @@ export class Search {
       listItem.setAttribute('data-search-list-item', true)
       $(listItem).clear().insertHTML('beforeend', searchDATA.join(''))
     }
+  }
+
+  deleteList() {
+    const list = this.DOM.searchListParent
+    list.remove()
   }
 }
 

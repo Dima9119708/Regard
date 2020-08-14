@@ -154,7 +154,7 @@ export const pagination = {
 
   onClick(event, content) {
 
-    let { catalogCards: DATA, store, $root } = content
+    const { store, $root } = content
 
     const paginationItem = event.target.closest('[data-paginationnumber]')
 
@@ -167,13 +167,9 @@ export const pagination = {
         behavior: "smooth"
       });
 
-      const filteredСards = Filter.displayСardsBasedOnTheFilter(content)
-
-      if (filteredСards) {
-        DATA = filteredСards
-      }
-
       const { paginationnumber } = event.target.dataset
+
+      const DATA = Filter.displayСardsBasedOnTheFilter(content)
 
       const pagitanionParent = event.target.closest('[data-pagination]') || $root.qSelector('[data-pagination]')
       const htmlPagination = this.start(this.counterPages, paginationnumber)

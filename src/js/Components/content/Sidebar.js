@@ -1,4 +1,3 @@
-import { $ } from "../../core/Dom";
 import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import { urlParse } from "../../core/utils";
@@ -7,49 +6,69 @@ import { accardion } from "./renderContent.functions";
 export class Sidebar {
 
   constructor(content) {
+    this.content = content
     this.$root = content.$root
     this.DATA = content.DATA
   }
 
+  get DOM() {
+    return {
+      brand: this.$root.qSelector('#brand'),
+      type: this.$root.qSelector('#type'),
+      burgerMenu: document.querySelector('[data-burger]')
+    }
+  }
+
   renderHTML() {
     return `
-       <div class="content-product" data-lsideBar data-da="[data-header-menu],1,1245,max">
-          <div class="content-product__type" data-type id="data-type">
-              <button
-                  class="content-product__tab ${this.#activeClassDomINIT().type}"
-                  type="button"
-                  data-tab="tab"
-                  data-types="types">По типам
-              </button>
-              <button
-                class="content-product__tab ${this.#activeClassDomINIT().brand}"
-                type="button"
-                data-tab="tab"
-                data-types="brand"
-                >По брендам
-              </button>
-          </div>
-          <ul class="content-product__menu" data-menuProduct>
-              ${this.#renderContent()}
-          </ul>
+      <div class="content-product" data-lsideBar>
+          ${this.#renderContent()}
       </div>
     `
   }
 
   #renderContent() {
+    return `
+      <div class="content-product__type" data-type id="data-type">
+        <button
+            class="content-product__tab ${this.#activeClassDom().type}"
+            type="button"
+            data-tab="type"
+            data-types="types">По типам
+        </button>
+        <button
+          class="content-product__tab ${this.#activeClassDom().brand}"
+          type="button"
+          data-tab="brand"
+          data-types="brand"
+          >По брендам
+        </button>
+    </div>
+    <ul class="content-product__menu" data-menuProduct>
+      ${this.#renderSideBar()}
+      ${this.#renderBrand()}
+    </ul>
+    `
+  }
+
+  renderContentActiveType() {
 
     const urlParams = urlParse()
 
+    const brand = this.DOM.brand
+    const type = this.DOM.type
+
     if (urlParams[1] === catalogHashPath.production) {
-      return this.#renderBrand()
+      type.style.display = 'none'
+      brand.style.display = 'block'
     }
     else {
-      return this.#renderSideBar()
+      type.style.display = 'block'
+      brand.style.display = 'none'
     }
-
   }
 
-  #activeClassDomINIT() {
+  #activeClassDom() {
 
     const urlParams = urlParse()
 
@@ -74,13 +93,16 @@ export class Sidebar {
   // Рендер SideBar по типам продукта
   #renderSideBar() {
 
-    let types = this.DATA.map(elem => elem.type); // сбор всех типов товара
+    let types = this.DATA.map(elem => elem.type ); // сбор всех типов товара
 
     types = [...new Set(types)] // оставляем только уникальные названия
 
     const reSort = reSorting(types, this.DATA) // пересортировали массив в объект
 
-    return trainingSidebarHTML(reSort).join('')
+    return `<div class="content-product__menu-type" id="type">
+      ${trainingSidebarHTML(reSort).join('')}
+    </div>
+    `
   }
 
   // Рендер всех брендов
@@ -92,19 +114,10 @@ export class Sidebar {
 
     brands = [...new Set(brands)]
 
-    return trainingBrandsHTML(brands)
-  }
-
-  #renderSidebarTAB(target, types) {
-
-    sidebarTABDOMActive(target)
-    sideBarRenderContent(
-      types,
-      this.$root,
-      this.#renderSideBar.bind(this),
-      this.#renderBrand.bind(this)
-    )
-
+    return `<div class="content-product__menu-type brand" id="brand">
+      ${trainingBrandsHTML(brands)}
+    </div>
+    `
   }
 
   onClick(event) {
@@ -117,14 +130,26 @@ export class Sidebar {
 
     if (sidebar) {
 
-      const { tab, types,brand } = target.dataset
-      const parentProduct = target.closest('[data-parentProduct]')
+      const { tab, brand } = target.dataset
+      const parentProduct = target.closest('[data-parentproduct]')
 
       if (parentProduct) {
         accardion(parentProduct)
       }
       else if (tab) {
-        this.#renderSidebarTAB(target,types)
+        sidebarTABDOMActive(target)
+
+        const brand = this.DOM.brand
+        const type = this.DOM.type
+
+        if (tab === 'brand') {
+          type.style.display = 'none'
+          brand.style.display = 'block'
+        }
+        else {
+          type.style.display = 'block'
+          brand.style.display = 'none'
+        }
       }
 
       if (brand) {
@@ -133,8 +158,21 @@ export class Sidebar {
 
         const brands = brand === goods ? catalogHashPath.production : brand
 
+        const $menuMobile = target.closest('[data-header-menu]')
+
+        if ($menuMobile) {
+
+          $menuMobile.classList.remove('content__mobile-menu-list--active')
+          this.DOM.burgerMenu.classList.remove('open')
+
+          document.querySelector('[data-burger]').setAttribute('data-burger', false)
+          document.body.style.overflowY = 'scroll'
+        }
+
         const urlSTR = changeURLCalatog(goods, brands)
         ActiveRout.setHash(urlSTR)
+
+        this.content.reRenderHTML()
       }
     }
   }
@@ -182,22 +220,23 @@ function trainingSidebarHTML(reSort) {
   return Object.keys(reSort).map(goods => {
 
     let brand = reSort[goods].map(elem => elem.producer)
-    let active = ''
+    let activeDom = ''
+    let activeAllGoodsDom = ''
 
     brand = [...new Set(brand)]
 
     brand = brand.map(item => {
 
-      active = ''
+      activeDom = ''
 
       if (urlParams[0] === goods && urlParams[1] === item) {
-        active = 'content-product__menu-inside-item-link--active'
+        activeDom = 'content-product__menu-inside-item-link--active'
       }
 
       if (item) {
         return `
           <li class="content-product__menu-inside-item" data-brand="${item}">
-            <a class="content-product__menu-inside-item-link ${active}" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
+            <a class="content-product__menu-inside-item-link ${activeDom}" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
           </li>
         `
       }
@@ -212,18 +251,25 @@ function trainingSidebarHTML(reSort) {
     }
 
     if (urlParams[0] === goods) {
-      active = 'content-product__menu-inside-item-link--active'
+      activeDom = 'content-product__menu-inside-item-link--active'
+    }
+
+    if (urlParams[0] === goods && urlParams[1] === 'Все') {
+      activeAllGoodsDom = 'content-product__menu-inside-item-link--active'
     }
 
     return `
-      <li class="content-product__menu-item " data-parentProduct data-accardion="${accardionBoolean}" data-goods="${goods}"
+      <li class="content-product__menu-item "
+      data-parentProduct
+      data-accardion="${accardionBoolean}"
+      data-goods="${goods}"
       style="max-height:${maxHeight}"
       >
-      <button class="content-product__menu-item-button ${active}" data-buttonMainProduct="MainProduct" type="button"> ${goods}</button>
+      <button class="content-product__menu-item-button ${activeDom}" data-buttonMainProduct="MainProduct" type="button"> ${goods}</button>
       <span data-plus>+</span>
           <ul class="content-product__menu-inside" data-internal">
             <li class="content-product__menu-inside-item">
-            <a class="content-product__menu-inside-item-link" data-brand="Все"  data-internal-item="internal" href="#">все товары раздела</a></li>
+            <a class="content-product__menu-inside-item-link ${activeAllGoodsDom || ''}" data-brand="Все"  data-internal-item="internal" href="#">все товары раздела</a></li>
             ${brand.join('')}
           </ul>
       </li>
@@ -232,12 +278,16 @@ function trainingSidebarHTML(reSort) {
 }
 
 function filterBrands(DATA) {
+
   return DATA.filter(item => {
 
     if (item.type === 'Блоки питания'
       || item.type === 'Оперативная память'
       || item.type === 'Корпуса'
-      || item.type === 'Жесткие диски (HDD)') {
+      || item.type === 'Жесткие диски (HDD)'
+      || item.type === 'Сетевые фильтры'
+      || item.type === 'Аккумуляторные батареи'
+      ) {
 
       return item
     }
@@ -269,7 +319,6 @@ function trainingBrandsHTML(brand) {
             </a>
           </li>
       `
-
       acc.push(str)
     }
 
@@ -286,16 +335,4 @@ function sidebarTABDOMActive(target) {
   }
 
   event.target.classList.add('content-product__tab--active')
-}
-
-function sideBarRenderContent(types, $root, renderSideBar, renderBrand) {
-
-  const menu = $root.qSelector('[data-menuProduct]')
-
-  if (types === 'types') {
-    $(menu).clear().insertHTML('beforeend', renderSideBar())
-  }
-  else if (types === 'brand') {
-    $(menu).clear().insertHTML('beforeend', renderBrand())
-  }
 }
