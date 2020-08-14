@@ -84,29 +84,41 @@ block content
                             .goods__tabs-form-item
                                 button(type="submit").goods__tabs-form-item-submit Задать вопрос
 
+                        .goods__tabs-noAuth
+                            button(type="button").auth-button Войти
 
                 .goods__tabs-content-reviews
 
                     .goods__tabs-content-reviews-item
-                        .goods__tabs-content-reviews-userName Пользователь : Дима
-                        .goods__tabs-content-reviews-data Дата отзыва : 26.04.2021
+                        .goods__tabs-content-reviews-userName <i class="fas fa-user"></i> Дима
+                        .goods__tabs-content-reviews-data <i class="fas fa-calendar-day"></i> 26.04.2021
                         .goods__tabs-content-reviews-plus
-                        p Достоинства :
-                        p Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nostrum, odit at suscipit vero eius fugit, molestiae consectetur placeat facere commodi unde. Tempora sunt placeat esse delectus nesciunt ratione ad.
+                            p Достоинства :
+                            p Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nostrum, odit at suscipit vero eius fugit, molestiae consectetur placeat facere commodi unde. Tempora sunt placeat esse delectus nesciunt ratione ad.
                         .goods__tabs-content-reviews-minus
-                        p Недостатки :
-                        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti natus impedit eveniet quasi et consequuntur sit veniam incidunt officiis, corporis nesciunt dolor accusamus numquam corrupti temporibus neque praesentium illum optio?
-                        .goods__tabs-content-reviews-price Цена, оценка : 3
-                        .goods__tabs-content-reviews-quality Качество, оценка : 2
+                            p Недостатки :
+                            p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti natus impedit eveniet quasi et consequuntur sit veniam incidunt officiis, corporis nesciunt dolor accusamus numquam corrupti temporibus neque praesentium illum optio?
+                        .goods__tabs-content-reviews-price Цена, оценка :
+                                    span 3
+                        .goods__tabs-content-reviews-quality Качество, оценка :
+                                    span 2
 
-                    .goods__tabs-content-reviews-item
-                        .goods__tabs-content-reviews-userName Дима
-                        .goods__tabs-content-reviews-data 26.04.2021
-                        .goods__tabs-content-reviews-plus
-                        p Достоинства :
-                        p Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit nostrum, odit at suscipit vero eius fugit, molestiae consectetur placeat facere commodi unde. Tempora sunt placeat esse delectus nesciunt ratione ad.
-                        .goods__tabs-content-reviews-minus
-                        p Недостатки :
-                        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti natus impedit eveniet quasi et consequuntur sit veniam incidunt officiis, corporis nesciunt dolor accusamus numquam corrupti temporibus neque praesentium illum optio?
-                        .goods__tabs-content-reviews-price Цена, оценка : 3
-                        .goods__tabs-content-reviews-quality Качество, оценка : 2
+                        .goods__tabs-content-reviews-answer <i class="fas fa-reply"></i> Ответить
+
+                        .goods__tabs-content-reviews-item-internal
+
+                              .goods__tabs-content-reviews-item-internal-item
+
+                                    .goods__tabs-content-reviews-item-internal-item-user Дима
+                                    .goods__tabs-content-reviews-item-internal-item-commet Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos, facilis. Eum, sequi esse at quae maiores eaque reprehenderit possimus quod voluptates officiis deleniti! Ullam fugit unde eaque quasi reprehenderit laboriosam!
+
+                              .goods__tabs-content-reviews-item-internal-item
+
+                                    .goods__tabs-content-reviews-item-internal-item-user Дима
+                                    .goods__tabs-content-reviews-item-internal-item-commet Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis soluta excepturi suscipit magnam repellendus quidem nemo totam beatae impedit sapiente, provident reprehenderit. Nobis, itaque consectetur harum officia minus aut odio?
+
+                              textarea().goods__tabs-content-reviews-item-internal-item-textarea
+                              button(type="submit").goods__tabs-content-reviews-item-internal-item-button Отправить
+
+                              .goods__tabs-content-reviews-item-internal-item-noAuth
+                                    button(type="button").auth-button Войти

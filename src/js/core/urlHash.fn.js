@@ -9,3 +9,8 @@ export const changeURLCalatog = (params, params2, pageActive = 1) => {
 }
 
 
+export const card = 'card'
+
+export const changeURLCard = (id) => {
+  return `${card}/+/${id}`
+}

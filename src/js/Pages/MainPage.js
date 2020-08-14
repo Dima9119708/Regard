@@ -54,6 +54,20 @@ function getDATA() {
   })
 }
 
+function gettingFeedback() {
+
+  return new Promise(resolve => {
+
+    firebase
+      .database()
+      .ref(`reviews/`)
+      .on('value', function (dataSnapshot) {
+        resolve(dataSnapshot.val())
+      })
+
+  })
+}
+
 export class MainPage extends InterfacePages {
 
   async render() {
@@ -63,8 +77,10 @@ export class MainPage extends InterfacePages {
     //const DATA = await getDATA()
 
     const DATA = await newBase
-    //const user = await whetherTheUserIsSaved()
-    const user = false
+    const user = await whetherTheUserIsSaved()
+    const reviews = await gettingFeedback()
+    //const user = false
+    //const reviews = 'sadasd'
 
     if (user) {
       this.user = user
@@ -87,8 +103,9 @@ export class MainPage extends InterfacePages {
       [HeaderTop, Header, Content, Footer, LoginBar],
       DATA,
       this.userState,
-      this.user
-    )
+      this.user,
+      reviews
+      )
 
     return this.initComponent.getRoot()
   }

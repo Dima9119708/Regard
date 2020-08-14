@@ -2,7 +2,6 @@ import { reSotingDATA, } from "./content.functions"
 
 import { renderTitle, checkLackOfGoods, renderProductCards, renderRandomContent } from "./renderContent.functions"
 import { pagination } from "../../core/pagination"
-import { searchMaxAndMinNumber } from "../../core/utils"
 import { Filter } from "./filter"
 
 export function renderMainContent(content) {
@@ -90,6 +89,15 @@ export function renderCatalogContent(content) {
           </div>
         </div>
         ${Filter.renderHTML(base)}
+    </div>
+  `
+}
+
+export function renderCard(card) {
+
+  return `
+    <div class="goods">
+    ${card.renderHTML()}
     </div>
   `
 }

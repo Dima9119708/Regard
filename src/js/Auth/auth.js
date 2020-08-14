@@ -123,5 +123,5 @@ async function resetEmail(target) {
   else if (target.id === 'resetEmail'){
     collectionOfAllInputs('#modal-1-content', 'input')
   }
-  
+
 }

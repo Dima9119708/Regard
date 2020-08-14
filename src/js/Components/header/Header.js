@@ -1,5 +1,6 @@
 
 import { ParentComponent } from "../../core/ParentComponent";
+import { ActiveRout } from "../../Routing/ActiveRouter";
 
 export class Header extends ParentComponent {
 
@@ -9,7 +10,7 @@ export class Header extends ParentComponent {
   constructor($root, options) {
     super($root, {
       name: 'Header',
-      listener: [],
+      listener: ['click'],
       ...options
     })
   }
@@ -37,8 +38,8 @@ export class Header extends ParentComponent {
   renderHTML() {
     return `
       <div class="header-content__wrap">
-      <a href="index.html" class="header-content_item">
-        <img src="./images/logo.png" alt="">
+      <a href="#" class="header-content_item" data-logo="logo">
+        <img src="./images/logo.png" alt="logo" data-logo="logo">
       </a>
 
       <div class="header-content__contants header-content_item">
@@ -47,5 +48,14 @@ export class Header extends ParentComponent {
           <div><span>800 </span>444-42-44 </div><div><span>999 </span>333-60-58
           </div></div><div class="header-content__consult"><div class="consult-1">Наличие, заказ, консультации</div><div>ПН–ПТ: 9:30 – 20:00</div><div>СБ–ВС: 10:00 – 17:00</div></div></div><div class="header-content__point header-content__phone-item"><div class="point-1">Пункт выдачи заказов</div><div class="closest-1">Временно закрыт</div></div></div><div class="header-content_item"><div class="header-content__basket"><i class="fas fa-cart-arrow-down"></i><div>В корзине <span data-counter>0 товаров</span></div>На сумму <span data-sumTotal>0 р</span></div></div></div>
     `
+  }
+
+  onClick(event) {
+    const logo = event.target.dataset.logo
+
+    if (logo) {
+      ActiveRout.setHash('')
+      this.reRenderHTML()
+    }
   }
 }

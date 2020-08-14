@@ -1,13 +1,8 @@
 import { ParentComponent } from "../../core/ParentComponent";
 import { renderUserInterface, renderLoginHTML } from "./header-top.content";
-import { ActiveRout } from "../../Routing/ActiveRouter";
 import { Sidebar } from "../content/Sidebar";
 import { burgerMobileMenu, initAndOpeningModalWindow } from "./headerTop.fn";
-import { accardionObjectTrue } from "../content/renderContent.functions";
-import { Filter } from "../content/Filter";
-import { catalog } from "../../core/urlHash.fn";
-import { dinamic__adapt } from "../../core/dinamic__adapt";
-import { reSotingDATA } from "../content/content.functions";
+
 
 export class HeaderTop extends ParentComponent {
 
@@ -43,7 +38,6 @@ export class HeaderTop extends ParentComponent {
           ${this.#renderContentLogin() }
         </div>
       </div>
-
     `
   }
 
@@ -60,7 +54,7 @@ export class HeaderTop extends ParentComponent {
   }
 
   onClick(e) {
-    initAndOpeningModalWindow(e, this.$root)
+    initAndOpeningModalWindow(e, this.$root, 'Авторизация')
     burgerMobileMenu(event, this.$root)
   }
 }

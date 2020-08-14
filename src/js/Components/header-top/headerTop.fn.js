@@ -1,8 +1,9 @@
 import firebase from 'firebase/app'
 import MicroModal from 'micromodal';
-import { modalINITOnClick, modalINITOnInput, createModal } from '../../core/modal';;
+import { modalINITOnClick, modalINITOnInput, createModal } from '../../core/modal';import { ActiveRout } from '../../Routing/ActiveRouter';
+;
 
-export function burgerMobileMenu(event, $root) {
+export function burgerMobileMenu(event) {
 
   const $burgerParent = event.target.closest('[data-parentMenuMobile]')
 
@@ -27,12 +28,12 @@ export function burgerMobileMenu(event, $root) {
   }
 }
 
-export function initAndOpeningModalWindow(e, $root) {
+export function initAndOpeningModalWindow(e, $root, flag) {
 
   const { auth, exit } = e.target.dataset
 
   if (auth) {
-    const modal = createModal()
+    const modal = createModal(flag)
     const app = $root.closest('#app')
     app.append(modal)
 

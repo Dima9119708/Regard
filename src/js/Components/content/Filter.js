@@ -3,10 +3,9 @@ import { ActiveRout } from "../../Routing/ActiveRouter"
 import { urlParse, searchMaxAndMinNumber } from '../../core/utils'
 import { catalog } from "../../core/urlHash.fn"
 import { pagination, showItems } from "../../core/pagination"
-import { reSotingDATA } from "./content.functions"
 
 export class Filter {
-  
+
   static onClick(e, content) {
 
     const { $root } = content
@@ -336,7 +335,6 @@ export class Filter {
 
     const min = searchMaxAndMinNumber(false, base)
     const max = searchMaxAndMinNumber(true, base)
-
 
     if (min === max) {
       return ''
@@ -839,8 +837,7 @@ export class Filter {
 
   static displayСardsBasedOnTheFilter(content) {
 
-    let { DATA, $root, store } = content
-    DATA = reSotingDATA(DATA)
+    let { filterCards : DATA, $root, store } = content
 
     const dataCardsWrapDiv = $root.qSelector('[data-cards]')
     const currentURL = urlParse()[3] || []

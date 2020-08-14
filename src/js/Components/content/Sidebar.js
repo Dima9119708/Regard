@@ -1,9 +1,7 @@
-import { $ } from "../../core/Dom";
 import { changeURLCalatog, catalogHashPath } from "../../core/urlHash.fn";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import { urlParse } from "../../core/utils";
 import { accardion } from "./renderContent.functions";
-
 
 export class Sidebar {
 
@@ -13,37 +11,43 @@ export class Sidebar {
     this.DATA = content.DATA
   }
 
+  get DOM() {
+    return {
+      brand: this.$root.qSelector('#brand'),
+      type: this.$root.qSelector('#type'),
+      burgerMenu: document.querySelector('[data-burger]')
+    }
+  }
+
   renderHTML() {
     return `
-       <div class="content-product" data-lsideBar data-da="[data-header-menu],1,1245,max">
-          <div class="content-product__type" data-type id="data-type">
-              <button
-                  class="content-product__tab ${this.#activeClassDomINIT().type}"
-                  type="button"
-                  data-tab="type"
-                  data-types="types">По типам
-              </button>
-              <button
-                class="content-product__tab ${this.#activeClassDomINIT().brand}"
-                type="button"
-                data-tab="brand"
-                data-types="brand"
-                >По брендам
-              </button>
-          </div>
-          <ul class="content-product__menu" data-menuProduct>
-            ${this.renderContent()}
-          </ul>
+      <div class="content-product" data-lsideBar>
+          ${this.#renderContent()}
       </div>
     `
   }
 
-  renderContent() {
+  #renderContent() {
     return `
-      <div>
-        ${this.#renderSideBar()}
-        ${this.#renderBrand()}
-      </div>
+      <div class="content-product__type" data-type id="data-type">
+        <button
+            class="content-product__tab ${this.#activeClassDom().type}"
+            type="button"
+            data-tab="type"
+            data-types="types">По типам
+        </button>
+        <button
+          class="content-product__tab ${this.#activeClassDom().brand}"
+          type="button"
+          data-tab="brand"
+          data-types="brand"
+          >По брендам
+        </button>
+    </div>
+    <ul class="content-product__menu" data-menuProduct>
+      ${this.#renderSideBar()}
+      ${this.#renderBrand()}
+    </ul>
     `
   }
 
@@ -51,8 +55,8 @@ export class Sidebar {
 
     const urlParams = urlParse()
 
-    const brand = document.querySelector('#brand')
-    const type = document.querySelector('#type')
+    const brand = this.DOM.brand
+    const type = this.DOM.type
 
     if (urlParams[1] === catalogHashPath.production) {
       type.style.display = 'none'
@@ -64,7 +68,7 @@ export class Sidebar {
     }
   }
 
-  #activeClassDomINIT() {
+  #activeClassDom() {
 
     const urlParams = urlParse()
 
@@ -135,8 +139,8 @@ export class Sidebar {
       else if (tab) {
         sidebarTABDOMActive(target)
 
-        const brand = this.$root.qSelector('#brand')
-        const type = this.$root.qSelector('#type')
+        const brand = this.DOM.brand
+        const type = this.DOM.type
 
         if (tab === 'brand') {
           type.style.display = 'none'
@@ -157,10 +161,9 @@ export class Sidebar {
         const $menuMobile = target.closest('[data-header-menu]')
 
         if ($menuMobile) {
-          const burger = document.querySelector('[data-burger]')
 
           $menuMobile.classList.remove('content__mobile-menu-list--active')
-          burger.classList.remove('open')
+          this.DOM.burgerMenu.classList.remove('open')
 
           document.querySelector('[data-burger]').setAttribute('data-burger', false)
           document.body.style.overflowY = 'scroll'

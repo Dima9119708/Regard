@@ -1,15 +1,15 @@
 import { ParentComponent } from "../../core/ParentComponent";
 import { Sidebar } from "./Sidebar";
 import { Search } from "./Search";
-import { addBasketProducts, reSotingDATA} from "./content.functions";
+import { addBasketProducts, reSotingDATA } from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
-import { catalog } from "../../core/urlHash.fn";
+import { catalog, card } from "../../core/urlHash.fn";
 import { pagination } from "../../core/pagination";
 import { Filter } from "./filter";
 import 'simplebar';
 import { accardionObjectTrue } from "./renderContent.functions";
 import { dinamic__adapt } from "../../core/dinamic__adapt";
-import { renderCatalogContent, renderMainContent } from "./renderContent";
+import { Card } from "./Card";
 
 export class Content extends ParentComponent {
 
@@ -19,7 +19,7 @@ export class Content extends ParentComponent {
   constructor($root, options) {
     super($root, {
       name: 'Content',
-      listener: ['click', 'input', 'keydown'],
+      listener: ['click', 'input', 'keydown', 'change'],
       ...options
     })
   }
@@ -27,29 +27,29 @@ export class Content extends ParentComponent {
   prepare() {
     this.sideBar = new Sidebar(this)
     this.search = new Search(this)
+    this.card = new Card(this)
   }
-
   init() {
     super.listener()
 
     dinamic__adapt.__INIT__()
     accardionObjectTrue(this.$root)
 
+    this.search.DOM
+    this.sideBar.DOM
+
     if (ActiveRout.urLHash.startsWith(catalog)) {
+
+      this.filterCards = reSotingDATA(this.DATA)
+
       Filter.viewUpdateDom(this)
-      this.sideBar.renderContentActiveType()
       Filter.displayСardsBasedOnTheFilter(this)
       Filter.rangeSliderINIT(this, '[data-randeSliderPC]')
-    }
-  }
 
-  renderContent() {
-
-    if (ActiveRout.urLHash === '') {
-      return renderMainContent(this)
+      this.sideBar.renderContentActiveType()
     }
-    else if (ActiveRout.urLHash.startsWith(catalog)) {
-      return renderCatalogContent(this)
+    else if (ActiveRout.urLHash.startsWith(card)) {
+      this.card.DOM
     }
   }
 
@@ -57,7 +57,9 @@ export class Content extends ParentComponent {
     return `
       <div class="content">
         <div class="content-wrap">
-          ${this.sideBar.renderHTML()}
+          <div class="content-left__menu" data-left-menu data-da="[data-header-menu],1,1245,max">
+            ${this.sideBar.renderHTML()}
+          </div>
           <main class="content-center">
             ${this.search.renderHTML()}
 
@@ -81,31 +83,6 @@ export class Content extends ParentComponent {
     `
   }
 
-
-  reRenderHTML() {
-    this.destroy()
-
-    const contentWrap = this.$root.qSelector('[data-content-wrapper]')
-    const reRenderSiderBar = this.$root.qSelector('[data-menuProduct]')
-
-    contentWrap.innerHTML = this.renderContent()
-
-    if (window.innerWidth < 1245) {
-
-      setTimeout(() => {
-        reRenderSiderBar.innerHTML = this.sideBar.renderContent()
-        this.sideBar.renderContentActiveType()
-        accardionObjectTrue(this.$root)
-      }, 1000)
-
-      this.init()
-      return
-    }
-
-    reRenderSiderBar.innerHTML = this.sideBar.renderContent()
-    this.init()
-  }
-
   onClick(event) {
     this.sideBar.onClick(event)
     this.search.onClick(event)
@@ -113,6 +90,9 @@ export class Content extends ParentComponent {
 
     pagination.onClick(event, this)
     Filter.onClick(event, this)
+
+    this.card.openPageCard(event, this)
+    this.card.onClick(event)
   }
 
   onKeydown(event) {
@@ -120,7 +100,28 @@ export class Content extends ParentComponent {
     this.search.onKeyBoard(event)
   }
 
+  onChange(event) {
+
+    const { target } = event
+    const currentCard = target.dataset.inputCard
+
+    if (currentCard) {
+      if (!target.value) {
+        target.value = 1
+      }
+      else if (+target.value < 0) {
+        target.value = 1
+      }
+
+      this.card.increaseInGoods(+target.value)
+      this.emmiter.emit('LOGIN__BAR', true)
+      this.emmiter.emit('HEADER__TOP', true)
+    }
+
+  }
+
   onInput(event) {
     this.search.onInput(event)
+    this.card.onInput(event)
   }
 }
