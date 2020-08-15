@@ -1,8 +1,3 @@
-import firebase from 'firebase/app'
-import MicroModal from 'micromodal';
-import { modalINITOnClick, modalINITOnInput, createModal } from '../../core/modal';import { ActiveRout } from '../../Routing/ActiveRouter';
-;
-
 export function burgerMobileMenu(event) {
 
   const $burgerParent = event.target.closest('[data-parentMenuMobile]')
@@ -25,26 +20,5 @@ export function burgerMobileMenu(event) {
       document.body.style.overflowY = 'scroll'
       $burger.setAttribute('data-burger', false);
     }
-  }
-}
-
-export function initAndOpeningModalWindow(e, $root, flag) {
-
-  const { auth, exit } = e.target.dataset
-
-  if (auth) {
-    const modal = createModal(flag)
-    const app = $root.closest('#app')
-    app.append(modal)
-
-    MicroModal.init();
-    MicroModal.show('modal-1')
-
-    modalINITOnClick(modal)
-    modalINITOnInput(modal)
-  }
-  else if (exit) {
-    firebase.auth().signOut()
-    ActiveRout.reloadPage()
   }
 }

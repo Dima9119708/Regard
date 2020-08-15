@@ -40,3 +40,22 @@ export function searchMaxAndMinNumber(flag, array) {
     return Math.min(...allPrice)
   }
 }
+
+export function ratingСalc() {
+
+  let count = 0
+
+  return (obj) => {
+
+    const calcOfTheOverallRating = Object.keys(obj)
+        .map(item => obj[item].overallAssessment )
+        .filter(item => item)
+
+    return  calcOfTheOverallRating.reduce((acc, item) => {
+      count += item
+      acc = count / calcOfTheOverallRating.length
+
+      return acc
+    }, 0).toFixed(1)
+  }
+}
