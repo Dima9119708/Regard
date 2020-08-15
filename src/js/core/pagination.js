@@ -175,7 +175,7 @@ export const pagination = {
       const htmlPagination = this.start(this.counterPages, paginationnumber)
       $(pagitanionParent).clear().insertHTML('beforeend', htmlPagination)
 
-      this.cardRerender(event, $root, DATA, store)
+      this.cardRerender(event, $root, DATA, store, content)
       this.changingURLBasedOnActivePage(paginationnumber)
     }
   },
@@ -195,7 +195,7 @@ export const pagination = {
     ActiveRout.hash(hash)
   },
 
-  cardRerender(event, $root, DATA, store) {
+  cardRerender(event, $root, DATA, store, Content) {
 
     const { paginationitem } = event.target.dataset
 
@@ -208,6 +208,6 @@ export const pagination = {
 
     $($element)
       .clear()
-      .insertHTML('beforeend', renderProductCards(newBase, store))
+      .insertHTML('beforeend', renderProductCards(newBase, Content))
   }
 }

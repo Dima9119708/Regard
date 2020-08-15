@@ -835,9 +835,9 @@ export class Filter {
     return ''
   }
 
-  static displayСardsBasedOnTheFilter(content) {
+  static displayСardsBasedOnTheFilter(Content) {
 
-    let { filterCards : DATA, $root, store } = content
+    let { filterCards : DATA, $root, store } = Content
 
     const dataCardsWrapDiv = $root.qSelector('[data-cards]')
     const currentURL = urlParse()[3] || []
@@ -862,7 +862,7 @@ export class Filter {
       dataCardsWrapDiv.style.transition = 'opacity .4s linear'
 
       setTimeout(() => {
-        dataCardsWrapDiv.innerHTML = renderProductCards(pagination.showItems(goods), store)
+        dataCardsWrapDiv.innerHTML = renderProductCards(pagination.showItems(goods), Content)
         dataCardsWrapDiv.style.opacity = '1'
         dataCardsWrapDiv.style.transition = 'opacity .4s linear'
       }, 400)

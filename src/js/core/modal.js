@@ -1,64 +1,47 @@
 import { $ } from "./Dom"
 import { auth } from "../Auth/auth"
+import MicroModal from "micromodal";
 
-export function createModal(flag) {
-  const createModal = $.create('div', 'modals')
+export class Modal {
 
-  createModal.innerHTML = `
-    <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
-      <div class="modal__overlay" tabindex="-1" data-close="close" data-micromodal-close>
-        <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-          ${renderContentModal(flag)}
-      </div>
-    </div>
-  </div>
-  `
+  static __INIT__(e, $root, flag) {
+    const { auth } = e.target.dataset
 
-  return createModal
-}
+    if (auth) {
 
-export function modalINITOnClick(node) {
-  node.onclick = e => {
+      const modal = Modal.createModal(flag)
+      const app = $root.closest('#app')
+      app.append(modal)
 
-    e.preventDefault()
+      MicroModal.init();
+      MicroModal.show('modal-1')
 
-    const { customClose, close, login, reg, reset } = e.target.dataset
-    const loginNode = node.querySelector('#modal-1-content')
-    const $parent = e.target.closest('#modal-1-title')
+      Modal.onClick(modal)
+      Modal.onInput(modal)
 
-    if (customClose || close) {
-      setTimeout(() => node.remove(), 100)
     }
-    else if (login) {
-      loginNode.innerHTML = renderModalContent(login)
-    }
-    else if (reg) {
-      loginNode.innerHTML = renderModalContent(reg)
-    }
-    else if (reset) {
-      loginNode.innerHTML = renderModalContent(reset)
-    }
-
-    if ($parent) {
-
-      for (const item of $parent.children) {
-        item.classList.remove('modal-auth__button--active')
-      }
-      e.target.classList.add('modal-auth__button--active')
-    }
-
-    auth(e)
   }
-}
 
-export function modalINITOnInput(node) {
-  node.oninput = e => { auth(e) }
-}
 
-function renderContentModal(flag) {
+  static createModal(flag) {
+    const createModal = $.create('div', 'modals')
 
-  if (flag === 'Авторизация') {
-    return `
+    createModal.innerHTML = `
+      <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+        <div class="modal__overlay" tabindex="-1" data-close="close" data-micromodal-close>
+          <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+            ${Modal.#renderContentModal(flag)}
+        </div>
+      </div>
+     </div>
+    `
+
+    return createModal
+  }
+
+  static #renderContentModal(flag) {
+    if (flag === 'Авторизация') {
+      return `
       <header class="modal__header">
           <h2 class="modal__title" id="modal-1-title">
             <button class="modal-auth__button modal-auth__button--active" data-login="login" type="button">Вход</button>
@@ -67,13 +50,13 @@ function renderContentModal(flag) {
           <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
         </header>
         <main class="modal__content" id="modal-1-content">
-            ${renderAuthContent('login')}
+            ${Modal.#renderContentAUTH('login')}
         </main>
       <footer class="modal__footer"></footer>
     `
-  }
-  else if (flag === 'Спасибо за отзыв') {
-    return `
+    }
+    else if (flag === 'Спасибо за отзыв') {
+      return `
       <header class="modal__header">
         <h2 class="modal__title" id="modal-1-title">
            Спасибо за отзыв. В ближайшее время ваш отзыв, будет опубликован.
@@ -81,9 +64,9 @@ function renderContentModal(flag) {
         <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
       </header>
     `
-  }
-  else if (flag === 'Спасибо за ваш вопрос') {
-    return `
+    }
+    else if (flag === 'Спасибо за ваш вопрос') {
+      return `
       <header class="modal__header">
         <h2 class="modal__title" id="modal-1-title">
            Спасибо за ваш вопрос. В ближайшее время ваш отзыв, будет опубликован.
@@ -91,9 +74,9 @@ function renderContentModal(flag) {
         <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
       </header>
     `
-  }
-  else if (flag === 'Пустое поле') {
-    return `
+    }
+    else if (flag === 'Пустое поле') {
+      return `
       <header class="modal__header">
         <h2 class="modal__title" id="modal-1-title">
            Поле пустое
@@ -101,9 +84,9 @@ function renderContentModal(flag) {
         <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
       </header>
     `
-  }
-  else if (flag === 'Спасибо за ваш ответ') {
-    return `
+    }
+    else if (flag === 'Спасибо за ваш ответ') {
+      return `
       <header class="modal__header">
         <h2 class="modal__title" id="modal-1-title">
           Спасибо за ваш ответ. В ближайшее время ваш ответ, будет опубликован.
@@ -111,13 +94,51 @@ function renderContentModal(flag) {
         <button class="modal__close" aria-label="Close modal" data-custom-close="modal-1" data-micromodal-close></button>
       </header>
     `
+    }
   }
-}
 
-function renderAuthContent(content) {
+  static onClick(node) {
+    node.onclick = e => {
 
-  if (content === 'login') {
-    return `
+      e.preventDefault()
+
+      const { customClose, close, login, reg, reset } = e.target.dataset
+      const loginNode = node.querySelector('#modal-1-content')
+      const $parent = e.target.closest('#modal-1-title')
+
+      if (customClose || close) {
+        Modal.destroy(node)
+      }
+      else if (login) {
+        loginNode.innerHTML = Modal.#renderContentAUTH(login)
+      }
+      else if (reg) {
+        loginNode.innerHTML = Modal.#renderContentAUTH(reg)
+      }
+      else if (reset) {
+        loginNode.innerHTML = Modal.#renderContentAUTH(reset)
+      }
+
+      if ($parent) {
+
+        for (const item of $parent.children) {
+          item.classList.remove('modal-auth__button--active')
+        }
+        e.target.classList.add('modal-auth__button--active')
+      }
+
+      auth(e)
+    }
+  }
+
+  static onInput(node) {
+    node.oninput = e => { auth(e) }
+  }
+
+  static #renderContentAUTH(content) {
+
+    if (content === 'login') {
+      return `
       <div class="fieldset-body" id="login_form">
         <p class="field">
             <label for="email">Email</label>
@@ -134,9 +155,9 @@ function renderAuthContent(content) {
           <input type="submit" id="sign" value="Вход" title="Get Started">
       </div>
     `
-  }
-  else if (content === 'reg'){
-    return `
+    }
+    else if (content === 'reg'){
+      return `
 
     <div class="fieldset-body" id="login_form">
 
@@ -164,9 +185,10 @@ function renderAuthContent(content) {
       <label class="checkbox" data-error></label>
       <input type="submit" id="reg" value="Регистрация" title="Get Started">
     `
-  }
-  else if (content === 'reset') {
-    return `
+    }
+    else if (content === 'reset') {
+
+      return `
 
       <div class="fieldset-body" id="login_form">
 
@@ -179,5 +201,13 @@ function renderAuthContent(content) {
       <label class="checkbox" data-error></label>
       <input type="submit" id="resetEmail" value="Востановить пароль" title="Get Started">
     `
+    }
+
+  }
+
+  static destroy(node) {
+    node.onclick = null
+    node.oninput = null
+    setTimeout(() => node.remove(), 100)
   }
 }

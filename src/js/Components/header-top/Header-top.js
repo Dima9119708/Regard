@@ -1,7 +1,10 @@
 import { ParentComponent } from "../../core/ParentComponent";
 import { renderUserInterface, renderLoginHTML } from "./header-top.content";
 import { Sidebar } from "../content/Sidebar";
-import { burgerMobileMenu, initAndOpeningModalWindow } from "./headerTop.fn";
+import { burgerMobileMenu } from "./headerTop.fn";
+import firebase from "firebase";
+import {ActiveRout} from "../../Routing/ActiveRouter";
+import {Modal} from "../../core/modal";
 
 
 export class HeaderTop extends ParentComponent {
@@ -53,8 +56,15 @@ export class HeaderTop extends ParentComponent {
     }
   }
 
-  onClick(e) {
-    initAndOpeningModalWindow(e, this.$root, 'Авторизация')
-    burgerMobileMenu(event, this.$root)
+  async onClick(e) {
+    Modal.__INIT__(e, this.$root, 'Авторизация')
+    burgerMobileMenu(e, this.$root)
+
+    const { exit } = e.target.dataset
+
+    if(exit) {
+      await firebase.auth().signOut()
+      ActiveRout.reloadPage()
+    }
   }
 }

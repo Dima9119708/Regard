@@ -1,6 +1,6 @@
 import { changeURLCard } from "../../core/urlHash.fn"
 import { ActiveRout } from "../../Routing/ActiveRouter"
-import { urlParse, formatNumber } from "../../core/utils"
+import {urlParse, formatNumber, ratingСalc} from "../../core/utils"
 import {INCREASE__PRICE} from "../../core/redux/actions"
 import {
   addBasketCard,
@@ -12,11 +12,9 @@ import {
   dataFiling,
   sendFeedback,
   reRenderCardHTML,
-  validateFeedBackAnswer,
   sendFeedbackAnswer
 } from "./card.fn"
-import { initAndOpeningModalWindow } from "../header-top/headerTop.fn"
-import { PRICE__INCREASE } from "../../core/redux/constans"
+import { Modal} from "../../core/modal"
 
 export class Card {
 
@@ -196,24 +194,13 @@ export class Card {
       return 'Нет оценки'
     }
 
-    let count = 0
+    const rating = ratingСalc()(this.addReviews)
 
-    let calcOfTheOverallRating = Object.keys(this.addReviews)
-                                .map(item => this.addReviews[item].overallAssessment )
-                                .filter(item => item)
-
-    calcOfTheOverallRating = calcOfTheOverallRating.reduce((acc, item) => {
-                                count += item
-                                acc = count / calcOfTheOverallRating.length
-
-                                return acc
-                              }, 0)
-
-    if (calcOfTheOverallRating === 0) {
+    if (rating === '0.0') {
       return '<span>Нет оценки</span>'
     }
 
-    return `Общий рейтинг товара: <span> ${calcOfTheOverallRating.toFixed(1)} </span>`
+    return `Общий рейтинг товара: <span> ${rating} </span>`
   }
 
   #HTML__INIT__() {
@@ -226,7 +213,7 @@ export class Card {
     `
   }
 
-  onClick(event) {
+  async onClick(event) {
 
     const addCard = event.target.dataset.addcardBasket
     if (addCard) {
@@ -259,16 +246,17 @@ export class Card {
     const leaveAReview = event.target.dataset.leaveAReview
     if (leaveAReview) {
 
-      event.preventDefault();
-
       const reviews = validateFeedBack(this, 5)
-      if (reviews) {
-        const filling = dataFiling(this, 'Оставить отзыв', event.target)
-        sendFeedback(this, filling)
-        reRenderCardHTML(this, 'Оставить отзыв')
-        initAndOpeningModalWindow(event, this.$root, 'Спасибо за отзыв')
+
+      if (!reviews) {
+        Modal.__INIT__(event, this.$root, 'Пустое поле')
+        return
       }
 
+      const filling = dataFiling(this, 'Оставить отзыв', event.target)
+      await sendFeedback(this, filling, 8, 'Отзыв')
+      reRenderCardHTML(this, 'Оставить отзыв')
+      Modal.__INIT__(event, this.$root, 'Спасибо за отзыв')
     }
 
 
@@ -276,19 +264,24 @@ export class Card {
     if (askAQuestion) {
 
       const reviews = validateFeedBack(this, 1)
-      if (reviews) {
-        const filling = dataFiling(this, 'Задать вопрос', event.target)
-        sendFeedback(this, filling)
-        reRenderCardHTML(this, 'Задать вопрос')
-        initAndOpeningModalWindow(event, this.$root, 'Спасибо за ваш вопрос')
+
+      if (!reviews) {
+        Modal.__INIT__(event, this.$root, 'Пустое поле')
+        return
       }
+
+      const filling = dataFiling(this, 'Задать вопрос', event.target)
+      await sendFeedback(this, filling, 8, 'Отзыв')
+      reRenderCardHTML(this, 'Задать вопрос')
+      Modal.__INIT__(event, this.$root, 'Спасибо за ваш вопрос')
+
     }
 
 
     const modalAuth = event.target.dataset.auth
     if (modalAuth) {
       if (!this.user) {
-        initAndOpeningModalWindow(event, this.$root, 'Авторизация')
+        Modal.__INIT__(event, this.$root, 'Авторизация')
       }
     }
 
@@ -309,21 +302,20 @@ export class Card {
 
     const answerButton = event.target.dataset.internalCardButton
     if (answerButton) {
-      const reviews = validateFeedBackAnswer(this,  1)
+      const reviews = validateFeedBack(this,  1)
 
       if (!reviews) {
-        initAndOpeningModalWindow(event, this.$root, 'Пустое поле')
+        Modal.__INIT__(event, this.$root, 'Пустое поле')
         return
       }
 
-      const id = event.target.closest('[data-post-id]').dataset.postId
+      const post = event.target.closest('[data-post-id]')
       const filling = dataFiling(this, '', event.target)
-      sendFeedbackAnswer(this, id, filling)
+      await sendFeedback(this, filling, post.dataset.postId, 'Ответ')
 
-      const divAnswer = this.$root.qSelector('[data-block-answer]')
+      const divAnswer = post.querySelector('[data-block-answer]')
       divAnswer.innerHTML = this.#userInternalAuth()
-
-      initAndOpeningModalWindow(event, this.$root, 'Спасибо за ваш ответ')
+      Modal.__INIT__(event, this.$root, 'Спасибо за ваш ответ')
     }
   }
 

@@ -29,6 +29,7 @@ export class Content extends ParentComponent {
     this.search = new Search(this)
     this.card = new Card(this)
   }
+
   init() {
     super.listener()
 
@@ -39,8 +40,6 @@ export class Content extends ParentComponent {
     this.sideBar.DOM
 
     if (ActiveRout.urLHash.startsWith(catalog)) {
-
-      this.filterCards = reSotingDATA(this.DATA)
 
       Filter.viewUpdateDom(this)
       Filter.displayСardsBasedOnTheFilter(this)

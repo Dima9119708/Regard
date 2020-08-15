@@ -4,22 +4,6 @@ import { formatNumber } from '../../core/utils'
 
 export function validateFeedBack(Card, length) {
   const keys = Object.values(Card.review).map(item => item.trim())
-  const $error = Card.$root.qSelector('[data-error]')
-
-  if (keys.length < length) {
-    $error.style.display = 'block'
-    return null
-  }
-  else if (keys.includes('')) {
-    $error.style.display = 'block'
-    return null
-  }
-
-  return Card.review
-}
-
-export function validateFeedBackAnswer(Card, length) {
-  const keys = Object.values(Card.review).map(item => item.trim())
 
   if (keys.length < length) {
     return null
@@ -53,12 +37,20 @@ export function dataFiling(Card, params, $target) {
   }
 }
 
-export async function sendFeedback(Card, review) {
+export async function sendFeedback(Card, review, id, flag) {
 
-  await firebase
-      .database()
-      .ref(`reviews/${Card.id}/${review.id}/`)
-      .set(review.review)
+  if (flag === 'Отзыв') {
+    await firebase
+        .database()
+        .ref(`reviews/${Card.id}/${review.id}/`)
+        .set(review.review)
+  }
+  else if (flag === 'Ответ') {
+    await firebase
+        .database()
+        .ref(`reviews/${Card.id}/${id}/answer/${review.id}`)
+        .set(review.review)
+  }
 
   Card.review = {}
 }

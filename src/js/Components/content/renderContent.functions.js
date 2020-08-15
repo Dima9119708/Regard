@@ -1,4 +1,4 @@
-import { urlParse, formatNumber } from "../../core/utils"
+import {urlParse, formatNumber, ratingСalc} from "../../core/utils"
 import { $ } from "../../core/Dom"
 
 export function renderTitle() {
@@ -38,7 +38,7 @@ export function checkLackOfGoods(base,showItems, renderCardsTEST) {
 
 export function renderRandomContent(number, content) {
 
-  const { DATA, store } = content
+  const { DATA } = content
 
   const randomElements = []
 
@@ -47,10 +47,10 @@ export function renderRandomContent(number, content) {
     randomElements.push(DATA[random])
   }
 
-  return renderProductCards(randomElements, store)
+  return renderProductCards(randomElements, content)
 }
 
-export function renderProductCards(data, store) {
+export function renderProductCards(data, Сontent) {
 
   return data.reduce((arr, item) => {
 
@@ -59,7 +59,7 @@ export function renderProductCards(data, store) {
     let dataTitleButton = 'Добавить в корзину'
     let goToBasket = 'data-goToBasket="false"'
 
-    const basket = store.getState().basket || []
+    const basket = Сontent.store.getState().basket || []
 
     basket.forEach(goods => {
       if (goods.id === item.id) {
@@ -70,6 +70,18 @@ export function renderProductCards(data, store) {
       }
     });
 
+    const card = Сontent.reviews[item.id] || {}
+    const rating = ratingСalc()(card)
+
+    let strRating = ''
+
+    if (rating === '0.0') {
+      strRating = ''
+    }
+    else {
+      strRating = `Оценка: <span class="rating"> ${rating} </span>`
+    }
+
     if (item.id && item.name) {
 
       const elementSTR = `
@@ -78,8 +90,13 @@ export function renderProductCards(data, store) {
               <div class="content-block__card-img">
                 <img src="./images/235789_600.png" alt="альтернативный текст">
               </div>
-              <span>ID: ${item.id}</span></div>
-
+              <div class="content-block__card-id">
+                ID: ${item.id}
+              </div>
+              <div class="content-block__card-rating">
+                ${strRating}
+              </div>
+            </div>
             <div class="content-block__card-content">
                 <div class="content-block__card-content-name">${item.name}</div>
                 <div class="content-block__card-content-dist">Описание временно нет</div>

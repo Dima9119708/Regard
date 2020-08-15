@@ -46,10 +46,10 @@ export function renderMainContent(content) {
   `
 }
 
-export function renderCatalogContent(content) {
+export function renderCatalogContent(Content) {
 
-  const { DATA, store } = content
-  let base = reSotingDATA(DATA)
+  const { DATA } = Content
+  Content.filterCards = reSotingDATA(DATA)
 
   return `
 
@@ -73,22 +73,22 @@ export function renderCatalogContent(content) {
             </div>
             <div class="content-block__cards-inner" data-cards>
               ${
-                renderProductCards(pagination.showItems(base), store)
+                renderProductCards(pagination.showItems(Content.filterCards), Content)
                 ||
                 checkLackOfGoods(
-                  base,
-                  pagination.showItems(base),
-                  renderProductCards(pagination.showItems(base), store)
+                  Content.filterCards,
+                  pagination.showItems(Content.filterCards),
+                  renderProductCards(pagination.showItems(Content.filterCards), Content)
                 )
               }
             </div>
           </div>
 
           <div class="content-blocks__pagination" data-pagination>
-            ${ pagination.__INIT__(base) }
+            ${ pagination.__INIT__(Content.filterCards) }
           </div>
         </div>
-        ${Filter.renderHTML(base)}
+        ${Filter.renderHTML(Content.filterCards)}
     </div>
   `
 }
