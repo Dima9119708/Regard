@@ -102,7 +102,11 @@ export function renderProductCards(data, Сontent) {
                 <div class="content-block__card-content-dist">Описание временно нет</div>
                 <div class="content-block__card-content-price">
                   <span data-addBasket="${addBasket}" ${goToBasket} title="${dataTitleButton}">
-                      <i class="fas fa-cart-plus" data-iconCard style="color:${colorIcon}"></i>
+                      <i class="fas fa-cart-plus" 
+                        ${goToBasket} 
+                        data-iconCard 
+                        style="color:${colorIcon}">
+                      </i>
                   </span>
                   <span>
                       ${formatNumber(item.price)} руб

@@ -3,13 +3,14 @@ import { Sidebar } from "./Sidebar";
 import { Search } from "./Search";
 import { addBasketProducts, reSotingDATA } from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
-import { catalog, card } from "../../core/urlHash.fn";
+import {catalog, card, basket} from "../../core/urlHash.fn";
 import { pagination } from "../../core/pagination";
 import { Filter } from "./filter";
 import 'simplebar';
 import { accardionObjectTrue } from "./renderContent.functions";
 import { dinamic__adapt } from "../../core/dinamic__adapt";
 import { Card } from "./Card";
+import {Basket} from "./Basket";
 
 export class Content extends ParentComponent {
 
@@ -28,6 +29,7 @@ export class Content extends ParentComponent {
     this.sideBar = new Sidebar(this)
     this.search = new Search(this)
     this.card = new Card(this)
+    this.basket = new Basket(this)
   }
 
   init() {
@@ -83,8 +85,12 @@ export class Content extends ParentComponent {
   }
 
   onClick(event) {
+
     this.sideBar.onClick(event)
     this.search.onClick(event)
+
+    this.basket.openPage(event)
+
     addBasketProducts(event, this)
 
     pagination.onClick(event, this)
@@ -108,11 +114,18 @@ export class Content extends ParentComponent {
       if (!target.value) {
         target.value = 1
       }
-      else if (+target.value < 0) {
+      else if (+target.value <= 0) {
         target.value = 1
       }
 
-      this.card.increaseInGoods(+target.value)
+      if (ActiveRout.urLHash.startsWith(card)) {
+        this.card.increaseInGoods(+target.value)
+      }
+      else if (ActiveRout.urLHash.startsWith(basket)) {
+        const id = target.closest('[data-idCard]').dataset.idcard
+        this.basket.onChange(+target.value, id)
+      }
+
       this.emmiter.emit('LOGIN__BAR', true)
       this.emmiter.emit('HEADER__TOP', true)
     }

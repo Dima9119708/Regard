@@ -18,12 +18,17 @@
 
 .modal__container {
   background-color: #fff;
-  padding: 30px;
-  max-width: 500px;
+  padding: 20px;
+  max-width: 300px;
   max-height: 100vh;
   border-radius: 4px;
   overflow-y: auto;
   box-sizing: border-box;
+
+  @media(min-width: 768px) {
+    padding: 30px;
+    max-width: 500px;
+  }
 }
 
 .modal__header {

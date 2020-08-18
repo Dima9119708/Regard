@@ -59,7 +59,7 @@ export function reducer(state, action) {
 
       state.basket.forEach( item => {
         state.sumTotal += +item.price
-      });
+      })
 
     return {
       ...state

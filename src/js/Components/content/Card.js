@@ -43,8 +43,7 @@ export class Card {
 
     else if ($target) {
       this.id = $target.dataset.id
-      const changeUrl = changeURLCard(this.id)
-      ActiveRout.setHash(changeUrl)
+      ActiveRout.setHash(changeURLCard(this.id))
 
       this.#searchElemID()
       this.#getAllReviews()
@@ -172,10 +171,10 @@ export class Card {
     }
     else {
       return `
-        <div class="goods__add-basket goods__in-basket">
+        <div class="goods__add-basket goods__in-basket" data-gotobasket="true">
             Перейти в корзину
             <div class="goods__in-basket"
-            style="display: block"
+            style="display: flex"
             >
             В корзине
               <input type="number" value="${item.counter || 1}" data-input-card="card">шт
@@ -317,6 +316,8 @@ export class Card {
       divAnswer.innerHTML = this.#userInternalAuth()
       Modal.__INIT__(event, this.$root, 'Спасибо за ваш ответ')
     }
+
+
   }
 
   #numberOfReviews() {
@@ -388,6 +389,7 @@ export class Card {
             <div class="goods__tabs-content-reviews-item" >
               <div class="goods__tabs-content-reviews-userName"><i class="fas fa-user"></i> ${this.addReviews[item].user}</div>
               <div class="goods__tabs-content-reviews-data"><i class="fas fa-calendar-day"></i> ${this.addReviews[item].date}</div>
+              <div class="goods__tabs-content-reviews-price"><i class="fas fa-star-half-alt"></i> Oценка : <span>${this.addReviews[item].overallAssessment}</span></div>
               <div class="goods__tabs-content-reviews-plus">
                   <p>Достоинства :</p>
                   <p>${this.addReviews[item].plus}</p>
@@ -397,11 +399,10 @@ export class Card {
                   <p>${this.addReviews[item].minus}</p>
               </div>
               <div class="goods__tabs-content-reviews-dist">
-              <p>Описание :</p>
+              <p>Комментарий :</p>
               <p> ${this.addReviews[item].dist} </p>
               </div>
-              <div class="goods__tabs-content-reviews-price">Цена, оценка :<span>${this.addReviews[item].priceAppraisal}</span></div>
-              <div class="goods__tabs-content-reviews-quality">Качество, оценка :<span>${this.addReviews[item].qualityAppraisal}</span></div>
+             
               <div class="goods__tabs-content-reviews-answer" data-answer="answer">
                 <i class="fas fa-reply"></i> Ответить (${Object.keys(answer).length})
               </div>
@@ -461,9 +462,6 @@ export class Card {
 
   giveFeedbackHTML() {
     return `
-      <div class="error" data-error="error" style="display: none">
-        Поля не все заполнены !!!
-      </div>
       <div class="goods__tabs-form-item">
         <label class="goods__tabs-form-item-lable" for="plus">Достоинства :</label>
         <input class="goods__tabs-form-item-input" type="text" id="plus">

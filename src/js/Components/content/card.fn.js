@@ -75,8 +75,6 @@ export function reRenderCardHTML(Card, params) {
   }
 }
 
-
-
 export async function sendingFeedback(Card, length, params, $target) {
 
   const keys = Object.values(Card.review).map(item => item.trim())

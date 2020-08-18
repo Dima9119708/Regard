@@ -5,6 +5,7 @@ import { burgerMobileMenu } from "./headerTop.fn";
 import firebase from "firebase";
 import {ActiveRout} from "../../Routing/ActiveRouter";
 import {Modal} from "../../core/modal";
+import {Basket} from "../content/Basket";
 
 
 export class HeaderTop extends ParentComponent {
@@ -22,6 +23,7 @@ export class HeaderTop extends ParentComponent {
 
   prepare() {
     this.sideBar = new Sidebar(this)
+    this.basket = new Basket(this)
   }
 
   renderHTML() {
@@ -66,5 +68,7 @@ export class HeaderTop extends ParentComponent {
       await firebase.auth().signOut()
       ActiveRout.reloadPage()
     }
+
+    this.basket.openPage(e)
   }
 }

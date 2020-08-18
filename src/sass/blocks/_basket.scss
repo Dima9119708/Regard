@@ -3,87 +3,83 @@
 }
 
 .basket-empty {
-  margin: 15px 0;
+  padding: 15px 0;
   text-align: center;
   width: 100%;
   color: $red;
+  background-color: #F6F6F6;
+}
+
+.basket__total-amount {
+  margin-top: 10px;
+  padding: 10px;
+  text-align: center;
+  background-color: #F6F6F6;
+  border: 1px solid #D2D2D2;
+
+  & span {
+    font-size: 20px;
+    font-weight: bold;
+  }
 }
 
 .basket-in-product {
   text-align: center;
   padding: 10px 0;
   background-color: #E4EEF4;
-  border-radius: 10px;
   margin-bottom: 15px;
 }
 
-.basket-paramentrs {
-  display: flex;
-  justify-content: space-between;
+.basket-product__items-inner {
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: .3fr 2fr 1fr 1fr .5fr;
+  align-items: center;
+  grid-gap: 0 20px;
+  font-size: 13px;
+  text-align: center;
+  padding: 5px 0;
+  border-top: 2px solid rgb(182, 182, 182);
 
   & .basket-paramentrs__item {
     font-size: 13px;
     background: #eee;
     text-align: center;
-    padding: 5px 20px;
+    padding: 5px 0;
     border-radius: 5px;
     color: #777;
-
-    &:nth-child(2) {
-      padding: 5px 140px;
-    }
-  }
-}
-
-.basket-product {
-  margin-top: 10px;
-  display: flex;
-  font-size: 13px;
-  text-align: center;
-  padding: 5px 0;
-  border-top: 2px solid rgb(182, 182, 182);
-  border-bottom: 2px solid rgb(165, 165, 165);
-
-  &:hover {
-    background: #ececec;
   }
 
   & .basket-product-item {
     text-align: left;
 
-    &:nth-child(1) {
-      width: 55px;
-    }
     &:nth-child(2) {
-      width: 350px;
-      margin-right: 45px;
       cursor: pointer;
 
       &:hover {
-        color: $red;
+        color: #ea1212;
       }
+
     }
     &:nth-child(3) {
-      width: 55px;
-      margin-right: 45px;
-    }
-    &:nth-child(4) {
-      margin-right: 45px;
+      text-align: center;
       & input {
         width: 40px;
         text-align: right;
         outline: none;
+        text-align: center;
         border: 0;
         border: 1px solid #000;
         border-radius: 5px;
-      } 
+      }
+    }
+    &:nth-child(4) {
+      text-align: center;
     }
     &:nth-child(5) {
-      width: 55px;
-      margin-right: 50px;
-    }
-    &:nth-child(6) {
+      text-align: center;
       cursor: pointer;
     }
   }
+
 }
