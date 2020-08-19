@@ -105,6 +105,7 @@ export class Search {
 
     const { searchbutton, historyclear, historyitem } = event.target.dataset
     const searchInput = event.target.closest('[data-search-rel]')
+    const cardID = event.target.closest('[data-id]')
 
     if (searchbutton) {
       this.#productSearchButton()
@@ -132,6 +133,10 @@ export class Search {
         searchList.remove()
       }
     }
+
+    if (cardID) {
+      this.deleteList()
+    }
   }
 
   onKeyBoard(event) {
@@ -146,7 +151,7 @@ export class Search {
     }
   }
 
-  onInput(event) {
+  async onInput(event) {
 
     const target = event.target || event
     const { search } = target.dataset
@@ -155,9 +160,11 @@ export class Search {
 
       const { value } = event.target || event
 
-      const searchDATA = baseSearch(this.DATA, value)
-
       const listItem = this.DOM.searchList
+
+      $(listItem).clear().insertHTML('beforeend', 'Поиск...')
+
+      const searchDATA = await baseSearch(this.DATA, value)
 
       if (!searchDATA.length) {
         listItem.setAttribute('data-search-list-item', false)
@@ -177,7 +184,9 @@ export class Search {
 
   deleteList() {
     const list = this.DOM.searchListParent
-    list.remove()
+    if(list) {
+      list.remove()
+    }
   }
 }
 
@@ -198,36 +207,44 @@ function createSearchList(getHistorySearch) {
 
 function baseSearch(DATA, value) {
 
-  return DATA.reduce((acc, goods) => {
+  return new Promise(resolve => {
 
-    const searchItem = value.split(' ').join('').toLowerCase()
-    const itemWithoutSpaces = goods.name.split(' ').join('').toLowerCase()
+    setTimeout(() => {
 
-    if (value === '') {
-      return []
-    }
-    else if ( itemWithoutSpaces.includes(searchItem) ) {
+      DATA.reduce((acc, goods) => {
 
-      if (acc.length > 10) {
-        acc.splice(10, acc.length)
-      }
+        const searchItem = value.split(' ').join('').toLowerCase()
+        const itemWithoutSpaces = goods.name.split(' ').join('').toLowerCase()
 
-      const str = `
-        <a class="s-content__search-block-item-list" data-id="${goods.id}" href="#">
-          <div class="s-content__search-block-item-list-image">
-            <img src="./images/235789_600.png" alt="альтернативный текст">
-          </div>
+        if (value === '') {
+          return []
+        }
+        else if ( itemWithoutSpaces.includes(searchItem) ) {
 
-          <div class="s-content__search-block-item-list-inner">
-            <div class="s-content__search-block-item-list-title">${goods.name}</div>
-            <div class="s-content__search-block-item-list-price">${goods.price} руб.</div>
-          </div>
+          if (acc.length > 10) {
+            acc.splice(10, acc.length)
+          }
 
-        </a>
-      `
-      acc.push(str)
-    }
+          const str = `
+            <a class="s-content__search-block-item-list" data-id="${goods.id}" href="#">
+              <div class="s-content__search-block-item-list-image">
+                <img src="./images/235789_600.png" alt="альтернативный текст">
+              </div>
+    
+              <div class="s-content__search-block-item-list-inner">
+                <div class="s-content__search-block-item-list-title">${goods.name}</div>
+                <div class="s-content__search-block-item-list-price">${goods.price} руб.</div>
+              </div>
+    
+            </a>
+          `
+          acc.push(str)
+        }
 
-    return acc
-  }, [])
+        resolve(acc)
+        return acc
+      }, [])
+
+    }, 1000)
+  })
 }

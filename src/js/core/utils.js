@@ -59,3 +59,7 @@ export function ratingСalc() {
     }, 0).toFixed(1)
   }
 }
+
+export function searchItemID(DATA, id) {
+  return DATA.find(item => +item.id === +id )
+}

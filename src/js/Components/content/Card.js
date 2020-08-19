@@ -1,6 +1,6 @@
 import { changeURLCard } from "../../core/urlHash.fn"
 import { ActiveRout } from "../../Routing/ActiveRouter"
-import {urlParse, formatNumber, ratingСalc} from "../../core/utils"
+import {urlParse, formatNumber, ratingСalc, searchItemID} from "../../core/utils"
 import {INCREASE__PRICE} from "../../core/redux/actions"
 import {
   addBasketCard,
@@ -15,6 +15,7 @@ import {
   sendFeedbackAnswer
 } from "./card.fn"
 import { Modal} from "../../core/modal"
+import {DATABASE} from "../../core/DATABASE";
 
 export class Card {
 
@@ -100,7 +101,7 @@ export class Card {
 
   #searchElemID() {
     const id = urlParse().join('')
-    const item = this.DATA.find(item => item.id === id)
+    const item = searchItemID(this.DATA, id)
     if (item) {
       this.id = item.id || 0
       return item
@@ -253,7 +254,7 @@ export class Card {
       }
 
       const filling = dataFiling(this, 'Оставить отзыв', event.target)
-      await sendFeedback(this, filling, 8, 'Отзыв')
+      await DATABASE.sendFeedback(this, filling, 8, 'Отзыв')
       reRenderCardHTML(this, 'Оставить отзыв')
       Modal.__INIT__(event, this.$root, 'Спасибо за отзыв')
     }
@@ -270,7 +271,7 @@ export class Card {
       }
 
       const filling = dataFiling(this, 'Задать вопрос', event.target)
-      await sendFeedback(this, filling, 8, 'Отзыв')
+      await DATABASE.sendFeedback(this, filling, 8, 'Отзыв')
       reRenderCardHTML(this, 'Задать вопрос')
       Modal.__INIT__(event, this.$root, 'Спасибо за ваш вопрос')
 
@@ -310,7 +311,7 @@ export class Card {
 
       const post = event.target.closest('[data-post-id]')
       const filling = dataFiling(this, '', event.target)
-      await sendFeedback(this, filling, post.dataset.postId, 'Ответ')
+      await DATABASE.sendFeedback(this, filling, post.dataset.postId, 'Ответ')
 
       const divAnswer = post.querySelector('[data-block-answer]')
       divAnswer.innerHTML = this.#userInternalAuth()

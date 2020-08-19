@@ -52,7 +52,7 @@ export class ParentComponent extends DomListener {
     const reRenderSiderBar = document.querySelector('[data-left-menu]')
 
     contentWrap.innerHTML = ''
-    reRenderSiderBar.innerHTML = ''
+    //reRenderSiderBar.innerHTML = ''
 
     contentWrap.innerHTML = this.renderContent()
 
@@ -68,7 +68,7 @@ export class ParentComponent extends DomListener {
       return
     }
 
-    reRenderSiderBar.innerHTML = this.sideBar.renderHTML()
+    //reRenderSiderBar.innerHTML = this.sideBar.renderHTML()
     this.init()
   }
 

@@ -1,7 +1,8 @@
 import {changeURLBasket, changeURLCard} from "../../core/urlHash.fn";
 import {ActiveRout} from "../../Routing/ActiveRouter";
-import {formatNumber} from "../../core/utils";
-import {INCREASE__PRICE} from "../../core/redux/actions";
+import {formatNumber, searchItemID} from "../../core/utils";
+import {CARD__DELETE, INCREASE__PRICE} from "../../core/redux/actions";
+import {DELETE__CARD} from "../../core/redux/constans";
 
 export class Basket {
     constructor(Content) {
@@ -9,6 +10,14 @@ export class Basket {
         this.store = Content.store
         this.DATA = Content.DATA
         this.$root = Content.$root
+        this.emmiter = Content.emmiter
+    }
+
+    get DOM () {
+        return {
+            $totalAmount : this.$root.qSelector(`[data-totalAmount]`)
+        }
+
     }
 
     openPage(event ) {
@@ -24,11 +33,11 @@ export class Basket {
 
     renderHTML() {
         return `
-          ${this.renderCards()}
+          ${this.#renderCards()}
         `
     }
 
-    getCards() {
+    #getCards() {
         const basket = this.store.getState().basket || []
 
         return basket.reduce((acc,item) => {
@@ -43,8 +52,8 @@ export class Basket {
                       <input type="number" value="${item.counter}" data-input-card="card">
                    </div>
                    <div class="basket-product-item" data-card-price>${formatNumber(item.price)} руб.</div>
-                   <div class="basket-product-item">
-                      <i class="fas fa-times"></i>
+                   <div class="basket-product-item" data-basket-delete="delete">
+                      <i class="fas fa-times" data-basket-delete="delete"></i>
                    </div>
                 </div>
             `)
@@ -53,9 +62,9 @@ export class Basket {
         },[])
     }
 
-    renderCards() {
+    #renderCards() {
 
-        if (this.getCards().length) {
+        if (this.#getCards().length) {
             return `
                <div class="basket-in-product">Товары в корзине</div>
                 <div class="basket-product__items-inner">
@@ -64,13 +73,13 @@ export class Basket {
                    <div class="basket-paramentrs__item">Кол-во</div>
                    <div class="basket-paramentrs__item">Сумма, руб.</div>
                    <div class="basket-paramentrs__item">
-                      <i class="fas fa-times"></i>
+                      <i class="fas fa-times" ></i>
                    </div>
                 </div>
-                ${this.getCards().join('')}
+                ${this.#getCards().join('')}
                 <div class="basket__total-amount">
                     Итого: 
-                   <span data-totalAmount>${this.renderTotalAmount()} руб.</span> 
+                   <span data-totalAmount>${this.#renderTotalAmount()} руб.</span> 
                 </div>
             `
         }
@@ -83,13 +92,13 @@ export class Basket {
         }
     }
 
-    renderTotalAmount() {
+    #renderTotalAmount() {
         return formatNumber(this.store.getState().sumTotal)
     }
 
     onChange(counter, id) {
 
-        const item = this.DATA.find(item => +item.id === +id)
+        const item = searchItemID(this.DATA, id)
         this.store.dispath(INCREASE__PRICE(item, counter))
 
         const itemNew = this.store.getState().basket.find(item => +item.id === +id)
@@ -99,8 +108,27 @@ export class Basket {
             .querySelector('[data-card-price]')
             .innerHTML = `${formatNumber(itemNew.price)} руб.`
 
-        const $totalAmount = this.$root.qSelector(`[data-totalAmount]`)
-        $totalAmount.innerHTML = `${formatNumber(this.store.getState().sumTotal)} руб.`
+        this.DOM.$totalAmount
+                .innerHTML = `${formatNumber(this.store.getState().sumTotal)} руб.`
 
     }
+
+    onClick(event) {
+
+        const { basketDelete } = event.target.dataset
+
+        if (basketDelete) {
+            const id = event.target.closest('[data-idcard]').dataset.idcard
+
+            const item = searchItemID(this.DATA, id)
+            this.store.dispath(CARD__DELETE(item))
+
+            const divWrap = this.$root.qSelector('[data-basket-wrap]')
+            divWrap.innerHTML = this.#renderCards()
+
+            this.emmiter.emit('LOGIN__BAR', true)
+            this.emmiter.emit('HEADER__TOP', true)
+        }
+    }
+
 }

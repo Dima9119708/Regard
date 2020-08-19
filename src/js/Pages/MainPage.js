@@ -5,68 +5,11 @@ import { Content } from '../Components/content/Content'
 import { Footer } from '../Components/footer/Footer'
 import { LoginBar } from '../Components/loginBar/LoginBar'
 import { InterfacePages } from './InterfacePage'
-import firebase from 'firebase/app'
 import { initialState } from '../core/initialState'
 import { storage } from '../core/utils'
+
 import newBase from './../newBase.json'
-
-function whetherTheUserIsSaved() {
-
-  return new Promise(resolve => {
-
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        resolve(user)
-      }
-      else {
-        resolve(user)
-      }
-    })
-
-  });
-}
-
-function retrievingSpecificUserData(user) {
-
-  return new Promise(resolve => {
-    firebase
-      .database()
-      .ref(`users/${user.uid}/`)
-      .on('value', function (dataSnapshot) {
-        resolve(dataSnapshot.val())
-      })
-  })
-
-}
-
-function getDATA() {
-
-  return new Promise(resolve => {
-
-    firebase
-          .database()
-          .ref(`base/`)
-          .on('value', function (dataSnapshot) {
-
-      resolve(dataSnapshot.val())
-    })
-
-  })
-}
-
-function gettingFeedback() {
-
-  return new Promise(resolve => {
-
-    firebase
-      .database()
-      .ref(`reviews/`)
-      .on('value', function (dataSnapshot) {
-        resolve(dataSnapshot.val())
-      })
-
-  })
-}
+import {DATABASE} from "../core/DATABASE";
 
 export class MainPage extends InterfacePages {
 
@@ -74,17 +17,15 @@ export class MainPage extends InterfacePages {
 
     this.user = null
 
-    //const DATA = await getDATA()
+    //const DATA = await DATABASE.DATA()
 
     const DATA = await newBase
-    const user = await whetherTheUserIsSaved()
-    const reviews = await gettingFeedback()
-    //const user = false
-    //const reviews = 'sadasd'
+    const user = await DATABASE.whetherTheUserIsSaved()
+    const reviews = await DATABASE.reviews()
 
     if (user) {
       this.user = user
-      this.userState = await retrievingSpecificUserData(this.user)
+      this.userState = await DATABASE.retrievingSpecificUserData(this.user)
 
       if (this.userState) {
         if (!this.userState.userDATA) {

@@ -52,6 +52,9 @@ export class Content extends ParentComponent {
     else if (ActiveRout.urLHash.startsWith(card)) {
       this.card.DOM
     }
+    else if (ActiveRout.urLHash.startsWith(basket)) {
+      this.basket.DOM
+    }
   }
 
   renderHTML() {
@@ -98,6 +101,8 @@ export class Content extends ParentComponent {
 
     this.card.openPageCard(event, this)
     this.card.onClick(event)
+
+    this.basket.onClick(event)
   }
 
   onKeydown(event) {

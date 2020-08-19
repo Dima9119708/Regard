@@ -110,7 +110,7 @@ export function renderBasket(Basket) {
                <div class="content-hits__top">
                 <span>Корзина </span>
                </div>
-               <div class="content-blocks basket">
+               <div class="content-blocks basket" data-basket-wrap>
                
                     ${Basket.renderHTML()}
 
