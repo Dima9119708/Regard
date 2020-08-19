@@ -11,7 +11,7 @@ export function renderUserInterface({name}) {
     <button class="auth-button" type="button">Привет, ${name}</button>
       <div class="header__auth-user-interface">
 
-        <a class="header__auth-user-interface-link" href="#">Моя корзина</a>
+        <a class="header__auth-user-interface-link" href="#" data-gotobasket="true">Моя корзина</a>
         <button class="header__auth-user-interface-button" data-exit="exit" type="button">Выйти</button>
     </div>
   `

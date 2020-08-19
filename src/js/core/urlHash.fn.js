@@ -14,3 +14,10 @@ export const card = 'card'
 export const changeURLCard = (id) => {
   return `${card}/+/${id}`
 }
+
+
+export const basket = 'basket'
+
+export const changeURLBasket = () =>{
+  return `${basket}`
+}

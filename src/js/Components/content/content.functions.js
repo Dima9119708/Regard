@@ -28,6 +28,7 @@ export function addBasketProducts(event, content) {
 
       addBasket.setAttribute('data-addBasket', false)
       addBasket.setAttribute('data-goToBasket', true)
+      event.target.setAttribute('data-goToBasket', true)
       addBasket.title = 'Перейти в корзину'
 
       emmiter.emit('LOGIN__BAR', true)

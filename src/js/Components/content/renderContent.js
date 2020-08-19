@@ -93,11 +93,30 @@ export function renderCatalogContent(Content) {
   `
 }
 
-export function renderCard(card) {
+export function renderCard(Card) {
 
   return `
     <div class="goods">
-    ${card.renderHTML()}
+    ${Card.renderHTML()}
     </div>
   `
+}
+
+export function renderBasket(Basket) {
+
+    return `
+       <div class="s-content-products">
+           <div class="content__foods">
+               <div class="content-hits__top">
+                <span>Корзина </span>
+               </div>
+               <div class="content-blocks basket" data-basket-wrap>
+               
+                    ${Basket.renderHTML()}
+
+               </div>
+               
+           </div>
+        </div>
+    `
 }

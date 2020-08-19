@@ -1,5 +1,4 @@
-import firebase from 'firebase/app'
-import { addBasket, INCREASE__PRICE, CARD__DELETE } from "../../core/redux/actions"
+import { addBasket, CARD__DELETE } from "../../core/redux/actions"
 import { formatNumber } from '../../core/utils'
 
 export function validateFeedBack(Card, length) {
@@ -37,91 +36,7 @@ export function dataFiling(Card, params, $target) {
   }
 }
 
-export async function sendFeedback(Card, review, id, flag) {
-
-  if (flag === 'Отзыв') {
-    await firebase
-        .database()
-        .ref(`reviews/${Card.id}/${review.id}/`)
-        .set(review.review)
-  }
-  else if (flag === 'Ответ') {
-    await firebase
-        .database()
-        .ref(`reviews/${Card.id}/${id}/answer/${review.id}`)
-        .set(review.review)
-  }
-
-  Card.review = {}
-}
-
-export async function sendFeedbackAnswer(Card, id, review) {
-
-  await firebase
-      .database()
-      .ref(`reviews/${Card.id}/${id}/answer/${review.id}`)
-      .set(review.review)
-
-  Card.review = {}
-}
-
 export function reRenderCardHTML(Card, params) {
-
-  if (params === 'Оставить отзыв') {
-    Card.DOM.formContentBlock.innerHTML = Card.giveFeedbackHTML()
-  }
-  else {
-    Card.DOM.formContentBlock.innerHTML = Card.AskAQuestionHTML()
-  }
-}
-
-
-
-export async function sendingFeedback(Card, length, params, $target) {
-
-  const keys = Object.values(Card.review).map(item => item.trim())
-  const $error = Card.$root.qSelector('[data-error]')
-
-  if (keys.length < length) {
-    $error.style.display = 'block'
-    return
-  }
-  else if (keys.includes('')) {
-    $error.style.display = 'block'
-    return
-  }
-
-  const user = Card.userState.personalData.name || 'Ананим'
-  const date = new Date().toLocaleDateString()
-  const id = Date.now()
-
-  let setReviews = {}
-
-  if (!Object.keys(Card.addReviews)) {
-    setReviews = { [id]: Card.review }
-  }
-  else {
-    setReviews = { [id]: Card.review, ...Card.addReviews, }
-  }
-
-  Card.addReviews = setReviews
-
-  Card.review.user = user
-  Card.review.date = date
-
-  if (params === 'Оставить отзыв') {
-    Card.review.overallAssessment = (+Card.review.priceAppraisal + +Card.review.qualityAppraisal) / 2
-  }
-
-  $target.disable = false
-  $target.style.opacity = 0.8
-
-  await firebase
-    .database()
-    .ref(`reviews/${Card.id}/`)
-    .set(setReviews)
-
-  Card.review = {}
 
   if (params === 'Оставить отзыв') {
     Card.DOM.formContentBlock.innerHTML = Card.giveFeedbackHTML()
