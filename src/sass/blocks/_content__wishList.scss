@@ -67,6 +67,14 @@
         font-size: 22px;
         cursor: pointer;
 
+        & .fa-scroll {
+          margin-right: 10px;
+          color: #ffffff;
+
+          &:hover {
+            color: #a016d4;
+          }
+        }
         & .fa-check-square {
           margin-right: 10px;
           color: #ffffff;
@@ -98,7 +106,8 @@
       justify-content: space-between;
       padding: 15px;
       border: 1px solid #9a9a9a;
-      min-height: 50px;
+      min-height: 100px;
+      font-size: 20px;
       background-color: #F6F6F6;
       flex-wrap: wrap;
     }

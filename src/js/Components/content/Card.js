@@ -37,14 +37,15 @@ export class Card {
   }
 
   openPageCard(event, Content) {
+
     const $goToBasket = event.target.closest('[data-gotobasket]')
     const $target = event.target.closest('[data-id]')
-    const $addwishlist =  event.target.dataset.addwishlist
+    const $addwishlist = event.target.dataset.addwishlist
+    const $deleteCard = event.target.dataset.deleteCard
 
     if ($addwishlist) { return }
-
     else if ($goToBasket) { return }
-
+    else if ($deleteCard) { return }
     else if ($target) {
       this.id = $target.dataset.id
       ActiveRout.setHash(changeURLCard(this.id))

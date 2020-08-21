@@ -5,14 +5,20 @@ import {
   PRICE__INCREASE,
   DELETE__CARD,
   ADD__WISHLIST,
-  CREATE__GROUP, DEFAULT__GROUP__ITEM, DELETE__GROUP__ITEM
+  CREATE__GROUP,
+  DEFAULT__GROUP__ITEM,
+  DELETE__GROUP__ITEM,
+  CHANGE__GROUP__NAME__ITEM, DELETE__ITEM__GROUPS
 } from "./constans";
+import {initialState} from "../initialState";
 
 export function reducer(state, action) {
 
   switch (action.type) {
 
     case __INIT__ :
+
+      state = { ...initialState, ...state}
 
     return {
       ...state
@@ -169,6 +175,33 @@ export function reducer(state, action) {
       state.currentWishList = !Object.keys(state.wishListGroups).length
                               ? null
                               : Object.keys(state.wishListGroups)[0]
+
+    return {
+      ...state
+    }
+
+    case CHANGE__GROUP__NAME__ITEM :
+
+      state.wishListGroups[action.id].name = action.name
+
+    return {
+      ...state
+    }
+
+    case DELETE__ITEM__GROUPS :
+
+      state.wishListGroups[action.groupID].items
+            .forEach( (item,index) => {
+              if (+item.id === +action.idItem) {
+                state.wishListGroups[action.groupID].items.splice(index, 1)
+              }
+            })
+
+      state.wishListAll.forEach((item,index) => {
+          if (+item.id === +action.idItem) {
+            state.wishListAll.splice(index, 1)
+          }
+      })
 
     return {
       ...state

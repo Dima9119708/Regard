@@ -105,8 +105,8 @@ export function renderProductCards(data, Сontent) {
       if (ActiveRout.urLHash.startsWith(wishList)) {
 
         return `
-          <div class="content-block__card-delete">
-                <i class="fas fa-minus-circle"></i>
+          <div class="content-block__card-delete" data-delete-card="card">
+              <i class="fas fa-minus-circle" data-delete-card="card"></i>
           </div>
         `
       }

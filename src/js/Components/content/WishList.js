@@ -3,14 +3,12 @@ import {changeURLWishList} from "../../core/urlHash.fn";
 import {formatNumber, searchItemID} from "../../core/utils";
 import {
     ADD__WISHLIST_ITEM,
-    addBasket,
+    addBasket, CHANGE__GROUP__NAME,
     CREATE__WISHLIST__GROUP,
     DEFAULT__GROUP,
-    DELETE__GROUP
+    DELETE__GROUP, DELETE__ITEM__GROUP
 } from "../../core/redux/actions";
-import {Content} from "./Content";
 import {renderProductCards} from "./renderContent.functions";
-import {DELETE__GROUP__ITEM} from "../../core/redux/constans";
 
 export class WishList {
 
@@ -23,7 +21,6 @@ export class WishList {
             divGroupWrap : this.content.$root.qSelector('[data-wishList-group]')
         }
     }
-
 
     openPage(event) {
 
@@ -71,16 +68,54 @@ export class WishList {
 
         return Object.keys(wishListGroups).reduce((acc, item) => {
 
+            function testForEmptiness(Content, renderTotalCost) {
+
+                if (!renderProductCards(wishListGroups[item].items, Content).length) {
+                    return ` 
+                        <div 
+                          class="content__groups-item-inner" 
+                          data-groups-item-inner
+                          style="
+                          justify-content: center;
+                          align-items: center;
+                          "
+                          >
+                           Группа пустая
+                        </div>
+                       `
+                }
+
+                return `
+                    <div 
+                      class="content__groups-item-inner"
+                      style="font-size: 18px;"
+                      data-groups-item-inner
+                      >
+                      ${renderProductCards(wishListGroups[item].items, Content)}
+                    </div>
+                    <div class="content__groups-item-total-amount">
+                        Итого:
+                        <span>${renderTotalCost(wishListGroups[item].items)} руб.</span>
+                    </div>
+                 `
+            }
+
             acc.push(`
                <div class="content__groups-item" data-wishList-id="${item}">
                    
                <div class="content__groups-item-title">
                
                   <div class="content__groups-item-title-input">
-                      <input type="text" value="${wishListGroups[item].name}">
+                      <input type="text" value="${wishListGroups[item].name}" data-input>
                   </div>
                   
                   <div class="content__groups-item-title-icons">
+                      <i 
+                      class="fas fa-scroll"
+                      title="Сохранить измененное название группы"
+                      data-change-title-group="group"
+                      >
+                      </i>
                       <i 
                       class="far fa-check-square" title="Группа по умолчанию"
                       style="
@@ -107,14 +142,7 @@ export class WishList {
                    
                </div>
                
-               <div class="content__groups-item-inner" data-groups-item-inner>
-                  ${renderProductCards(wishListGroups[item].items, this.content) || 'Группа пустая'}
-
-               </div>
-               <div class="content__groups-item-total-amount">
-                   Итого:
-                   <span>${this.renderTotalCost(wishListGroups[item].items)} руб.</span> 
-               </div>
+               ${testForEmptiness(this.content, this.renderTotalCost.bind(this))}
             
              </div>
             `)
@@ -129,7 +157,13 @@ export class WishList {
 
     onClick(event) {
 
-        const { createGroup, groupDefault, deleteGroup,movingToTrash } = event.target.dataset
+        const { createGroup,
+                groupDefault,
+                deleteGroup,
+                movingToTrash,
+                changeTitleGroup,
+                deleteCard
+        } = event.target.dataset
 
         if (createGroup) {
             let { value } = this.content.$root.qSelector('[data-create-group-input]')
@@ -142,13 +176,18 @@ export class WishList {
 
         if (groupDefault) {
             const { wishlistId } = event.target.closest('[data-wishlist-id]').dataset
+            const currentID = this.content.store.getState().currentWishList
 
-            this.content.store.dispath(DEFAULT__GROUP(wishlistId))
-            this.DOM.divGroupWrap.innerHTML = this.renderWishListGroups()
+            if (currentID !== wishlistId) {
+                this.content.store.dispath(DEFAULT__GROUP(wishlistId))
+                this.DOM.divGroupWrap.innerHTML = this.renderWishListGroups()
+            }
         }
         else if (deleteGroup) {
             const $parent =  event.target.closest('[data-wishlist-id]')
             const { wishlistId } = event.target.closest('[data-wishlist-id]').dataset
+
+            console.log($parent)
 
             const items = Array.from($parent.querySelector('[data-groups-item-inner]').children)
                             .reduce((acc,item) => {
@@ -190,6 +229,33 @@ export class WishList {
                     this.content.store.dispath(addBasket(item,+item.price, 1))
                 },)
 
+            this.DOM.divGroupWrap.innerHTML = this.renderWishListGroups()
+        }
+        else if (changeTitleGroup) {
+
+            const { wishlistId } = event.target.closest('[data-wishlist-id]').dataset
+            let { value } = event.target
+                                .closest('[data-wishlist-id]')
+                                .querySelector('[data-input]')
+
+            const currentNameGroup = this.content
+                                           .store.getState()
+                                           .wishListGroups[wishlistId].name
+
+            if (value.trim() === '') {
+                value = 'Новая группа'
+            }
+
+            if (currentNameGroup !== value) {
+                this.content.store.dispath(CHANGE__GROUP__NAME(value, wishlistId))
+                this.DOM.divGroupWrap.innerHTML = this.renderWishListGroups()
+            }
+        }
+        else if (deleteCard) {
+            const { wishlistId } = event.target.closest('[data-wishlist-id]').dataset
+            const { id } = event.target.closest('[data-id]').dataset
+
+            this.content.store.dispath(DELETE__ITEM__GROUP(wishlistId, id))
             this.DOM.divGroupWrap.innerHTML = this.renderWishListGroups()
         }
     }

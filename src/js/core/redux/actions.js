@@ -6,7 +6,7 @@ import {
   PRICE__INCREASE,
   DELETE__CARD,
   ADD__WISHLIST,
-  CREATE__GROUP, DEFAULT__GROUP__ITEM, DELETE__GROUP__ITEM
+  CREATE__GROUP, DEFAULT__GROUP__ITEM, DELETE__GROUP__ITEM, CHANGE__GROUP__NAME__ITEM, DELETE__ITEM__GROUPS
 } from "./constans";
 import { renderCard } from "../../Components/content/renderContent";
 
@@ -69,5 +69,22 @@ export function DELETE__GROUP(id, items) {
     type : DELETE__GROUP__ITEM,
     id,
     items
+  }
+}
+
+export function CHANGE__GROUP__NAME(name,id) {
+  return {
+    type : CHANGE__GROUP__NAME__ITEM,
+    name,
+    id
+  }
+
+}
+
+export function DELETE__ITEM__GROUP(groupID, idItem) {
+  return {
+    type : DELETE__ITEM__GROUPS,
+    groupID,
+    idItem
   }
 }

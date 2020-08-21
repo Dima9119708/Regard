@@ -45,6 +45,9 @@ export class Header extends ParentComponent {
   }
 
   renderHTML() {
+
+
+
     return `
       <div class="header-content__wrap">
          <a href="#" class="header-content_item" data-logo="logo">
