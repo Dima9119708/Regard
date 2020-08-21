@@ -1,7 +1,13 @@
 import { DomListener } from "./DomListener";
 import { ActiveRout } from "../Routing/ActiveRouter";
-import {catalog, card, basket} from "./urlHash.fn";
-import {renderCatalogContent, renderMainContent, renderCard, renderBasket} from "../Components/content/renderContent";
+import {catalog, card, basket, wishList} from "./urlHash.fn";
+import {
+  renderCatalogContent,
+  renderMainContent,
+  renderCard,
+  renderBasket,
+  renderWishList
+} from "../Components/content/renderContent";
 import { accardionObjectTrue } from "../Components/content/renderContent.functions";
 import { Sidebar } from "../Components/content/Sidebar";
 import { dinamic__adapt } from "./dinamic__adapt";
@@ -41,6 +47,9 @@ export class ParentComponent extends DomListener {
     else if (ActiveRout.urLHash.startsWith(basket)) {
       return renderBasket(this.basket)
     }
+    else if (ActiveRout.urLHash.startsWith(wishList)) {
+      return renderWishList(this.wishList)
+    }
 
     return ''
   }
@@ -52,7 +61,7 @@ export class ParentComponent extends DomListener {
     const reRenderSiderBar = document.querySelector('[data-left-menu]')
 
     contentWrap.innerHTML = ''
-    //reRenderSiderBar.innerHTML = ''
+    reRenderSiderBar.innerHTML = ''
 
     contentWrap.innerHTML = this.renderContent()
 
@@ -68,7 +77,7 @@ export class ParentComponent extends DomListener {
       return
     }
 
-    //reRenderSiderBar.innerHTML = this.sideBar.renderHTML()
+    reRenderSiderBar.innerHTML = this.sideBar.renderHTML()
     this.init()
   }
 

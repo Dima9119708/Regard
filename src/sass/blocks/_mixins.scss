@@ -1,5 +1,6 @@
 @mixin product-block($width) {
   display: flex;
+  position: relative;
   padding: 10px;
   height: max-content;
   width: $width;

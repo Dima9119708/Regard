@@ -5,7 +5,7 @@
   right: 0;
   z-index: 9999;
   padding: 10px 10px;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   border-bottom: 2px solid rgb(160, 160, 160);
 
   @media(min-width: 1245px) {
@@ -25,12 +25,6 @@
 
 .header__auth {
   position: relative;
-
-  &:hover .header__auth-user-interface {
-    opacity: 1;
-    z-index: 100;
-    transition:opacity .2s linear, z-index .2s linear;
-  }
 }
 
 .auth-button {
@@ -52,11 +46,10 @@
 
 .header__auth-user-interface {
   position: absolute;
+  display: none;
   padding: 10px;
   left: 0;
   right: 0;
-  opacity: 0;
-  z-index: -100;
   height: max-content;
   border-radius: 5px;
   background-color: #8a8a8a;
@@ -82,6 +75,7 @@
   background-color: #ffffff;
   border-radius: 5px;
   cursor: pointer;
+  outline: none;
   padding: 5px;
   transition: background-color .2s linear;
 
@@ -331,20 +325,53 @@
 
 .header-content__basket {
   position: relative;
-  padding: 10px 0;
-  padding-left: 65px;
-  padding-right: 20px;
-  background-color: #eed6d6;
-  border-radius: 10px;
   font-size: 12px;
   cursor: pointer;
 
   & .fa-cart-arrow-down {
-    position: absolute;
-    top: 12px;
-    left: 25px;
-    font-size: 25px;
-    color: #ff2f2f;
+    position: relative;
+    font-size: 35px;
+    color: #ea1f1f;
+
+    .header-content__basket-count {
+      position: absolute;
+      bottom: -5px;
+      right: -30px;
+      height: 20px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 17px;
+      font-weight: bold;
+      color: #FFFFFF;
+      border-radius: 7px;
+      background-color: #000000;
+    }
+
+  }
+
+  & .fa-heart {
+    position: relative;
+    font-size: 35px;
+    color: #1352e1;
+    margin-right: 20px;
+
+    .header-content__basket-count {
+      position: absolute;
+      bottom: -5px;
+      right: -20px;
+      height: 20px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      font-weight: bold;
+      align-items: center;
+      font-size: 17px;
+      color: #FFFFFF;
+      border-radius: 7px;
+      background-color: #1c36b3;
+    }
   }
 
   &:hover {

@@ -1,4 +1,12 @@
-import { SEARCH_HISTORY, __INIT__, ADD_BASKET, PRICE__INCREASE, DELETE__CARD } from "./constans";
+import {
+  SEARCH_HISTORY,
+  __INIT__,
+  ADD_BASKET,
+  PRICE__INCREASE,
+  DELETE__CARD,
+  ADD__WISHLIST,
+  CREATE__GROUP, DEFAULT__GROUP__ITEM, DELETE__GROUP__ITEM
+} from "./constans";
 
 export function reducer(state, action) {
 
@@ -88,6 +96,82 @@ export function reducer(state, action) {
 
     return {
       ...state,
+    }
+
+    case ADD__WISHLIST :
+
+      if (!state.currentWishList) {
+
+        const id = Date.now().toString()
+
+        state.currentWishList = id
+
+        state.wishListGroups = {
+             ...state.wishListGroups,
+             [id] : {
+               name : 'Новая группа',
+               items : []
+             }
+        }
+
+        state.wishListGroups[id].items.push(action.card)
+      }
+      else {
+        state.wishListGroups[state.currentWishList].items.push(action.card)
+      }
+
+      state.wishListAll.push(action.card)
+
+    return {
+      ...state
+    }
+
+    case CREATE__GROUP :
+
+      const id = Date.now().toString()
+
+      if (!Object.keys(state.wishListGroups).length) {
+        state.currentWishList = id
+      }
+
+      state.wishListGroups = {
+        ...state.wishListGroups,
+        [id] : {
+          name : action.input,
+          items : []
+        },
+      }
+
+    return {
+      ...state
+    }
+
+    case DEFAULT__GROUP__ITEM :
+
+      state.currentWishList = action.id
+
+    return  {
+      ...state
+    }
+
+    case DELETE__GROUP__ITEM :
+
+      action.items.forEach(item => {
+        state.wishListAll.forEach( (elem,index) => {
+          if (+item === +elem.id) {
+            state.wishListAll.splice(index, 1)
+          }
+        })
+      })
+
+      delete state.wishListGroups[action.id]
+
+      state.currentWishList = !Object.keys(state.wishListGroups).length
+                              ? null
+                              : Object.keys(state.wishListGroups)[0]
+
+    return {
+      ...state
     }
   }
 }

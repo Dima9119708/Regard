@@ -20,8 +20,10 @@ export class MainPage extends InterfacePages {
     //const DATA = await DATABASE.DATA()
 
     const DATA = await newBase
-    const user = await DATABASE.whetherTheUserIsSaved()
-    const reviews = await DATABASE.reviews()
+    //const user = await DATABASE.whetherTheUserIsSaved()
+    //const reviews = await DATABASE.reviews()
+    const user = false
+    const reviews = []
 
     if (user) {
       this.user = user

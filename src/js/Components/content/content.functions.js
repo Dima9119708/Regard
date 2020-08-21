@@ -1,6 +1,6 @@
 import * as actions from '../../core/redux/actions'
 import { catalogHashPath } from '../../core/urlHash.fn'
-import { urlParse } from '../../core/utils'
+import {searchItemID, urlParse} from '../../core/utils'
 
 export function addBasketProducts(event, content) {
 
@@ -19,14 +19,14 @@ export function addBasketProducts(event, content) {
         .querySelector('[data-iconCard]')
         .style.color = 'green'
 
-      const goods = DATA.find(elem => elem.id === id)
+      const goods = searchItemID(DATA, id)
 
       const counter = 1
       const { price } = goods
 
       store.dispath(actions.addBasket(goods, +price, counter))
 
-      addBasket.setAttribute('data-addBasket', false)
+      addBasket.setAttribute('data-addbasket', false)
       addBasket.setAttribute('data-goToBasket', true)
       event.target.setAttribute('data-goToBasket', true)
       addBasket.title = 'Перейти в корзину'

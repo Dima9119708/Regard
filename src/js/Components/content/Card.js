@@ -39,8 +39,11 @@ export class Card {
   openPageCard(event, Content) {
     const $goToBasket = event.target.closest('[data-gotobasket]')
     const $target = event.target.closest('[data-id]')
+    const $addwishlist =  event.target.dataset.addwishlist
 
-    if ($goToBasket) { return }
+    if ($addwishlist) { return }
+
+    else if ($goToBasket) { return }
 
     else if ($target) {
       this.id = $target.dataset.id

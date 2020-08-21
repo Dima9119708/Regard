@@ -120,3 +120,32 @@ export function renderBasket(Basket) {
         </div>
     `
 }
+
+export function renderWishList(WishList) {
+
+    return `
+      <div class="s-content-products">
+           <div class="content__foods">
+               <div class="content-hits__top">
+                <span>Список желаемого </span>
+               </div>
+               <div class="content__create-group">
+               
+                  <div class="content__create-group-input">
+                    <input type="text" value="Новая группа" data-create-group-input>
+                  </div>
+                  <div class="content__create-group-icon" title="Создать группу" data-create-group="group">
+                    <i class="fas fa-folder-plus" data-create-group="group"></i>
+                  </div>
+                  
+               </div>
+
+               <div class="content__groups" data-wishList-group>
+                  
+                 ${WishList.renderHTML()}
+
+               </div>
+           </div>
+      </div>
+    `
+}

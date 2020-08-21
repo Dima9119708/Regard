@@ -30,16 +30,14 @@ export class HeaderTop extends ParentComponent {
     return `
       <! ПК >
       <div class="header-wrap" >
-        <div class="header__links">
-          <a class="header__link" href="#">Конфигуратор ПК</a>
-        </div>
+        <div class="header__links"></div>
         <div class="header__mobile-menu" data-parentMenuMobile>
           <div class="menu-btn" data-burger="false">
             <div class="menu-btn__burger"></div>
           </div>
         </div>
 
-        <div class="header__auth" data-auth>
+        <div class="header__auth" data-auth >
           ${this.#renderContentLogin() }
         </div>
       </div>
@@ -70,5 +68,16 @@ export class HeaderTop extends ParentComponent {
     }
 
     this.basket.openPage(e)
+
+    const { headertopMenu } = e.target.dataset
+
+    if (headertopMenu) {
+
+      const { nextElementSibling } = e.target
+
+      nextElementSibling.style.display === 'none'
+      ? nextElementSibling.style.display = 'block'
+      : nextElementSibling.style.display = 'none'
+    }
   }
 }
