@@ -62,11 +62,13 @@ export class WishList {
     }
 
     renderWishListGroups() {
-        const wishListGroups = this.content.store.getState().wishListGroups || {}
 
+        const wishListGroups = this.content.store.getState().wishListGroups || {}
         const currentGroup = this.content.store.getState().currentWishList || 0
 
         return Object.keys(wishListGroups).reduce((acc, item) => {
+
+            wishListGroups[item].items = wishListGroups[item].items || []
 
             function testForEmptiness(Content, renderTotalCost) {
 
