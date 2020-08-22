@@ -12,10 +12,11 @@ export class Sidebar {
   }
 
   get DOM() {
-    return {
+
+    return  {
       brand: this.$root.qSelector('#brand'),
       type: this.$root.qSelector('#type'),
-      burgerMenu: document.querySelector('[data-burger]')
+      burgerMenu: document.querySelector('[data-burger]'),
     }
   }
 
@@ -130,11 +131,10 @@ export class Sidebar {
 
     if (sidebar) {
 
-      const { tab, brand } = target.dataset
-      const parentProduct = target.closest('[data-parentproduct]')
+      const { tab, brand, parentProduct } = target.dataset
 
       if (parentProduct) {
-        accardion(parentProduct)
+        accardion(target.closest('[data-parentproduct]'))
       }
       else if (tab) {
         sidebarTABDOMActive(target)
@@ -170,9 +170,11 @@ export class Sidebar {
         }
 
         const urlSTR = changeURLCalatog(goods, brands)
-        ActiveRout.setHash(urlSTR)
 
-        this.content.reRenderHTML()
+        if (urlSTR !== ActiveRout.currentURL()) {
+          ActiveRout.setHash(urlSTR)
+          this.content.reRenderHTML()
+        }
       }
     }
   }
@@ -181,14 +183,26 @@ export class Sidebar {
 
     const { target } = event
 
-    const { tab, types } = target.dataset
+    const { tab } = target.dataset
     const parentProduct = target.closest('[data-parentProduct]')
 
     if (parentProduct) {
       accardion(parentProduct, 'Keydown')
     }
     else if (tab) {
-      this.renderSidebarTAB(target, types)
+      sidebarTABDOMActive(target)
+
+      const brand = this.DOM.brand
+      const type = this.DOM.type
+
+      if (tab === 'brand') {
+        type.style.display = 'none'
+        brand.style.display = 'block'
+      }
+      else {
+        type.style.display = 'block'
+        brand.style.display = 'none'
+      }
     }
   }
 }
@@ -220,56 +234,94 @@ function trainingSidebarHTML(reSort) {
   return Object.keys(reSort).map(goods => {
 
     let brand = reSort[goods].map(elem => elem.producer)
-    let activeDom = ''
-    let activeAllGoodsDom = ''
 
     brand = [...new Set(brand)]
 
     brand = brand.map(item => {
 
-      activeDom = ''
+      function activeDom() {
+        if (urlParams[0] === goods && urlParams[1] === item) {
+          return 'content-product__menu-inside-item-link--active'
+        }
 
-      if (urlParams[0] === goods && urlParams[1] === item) {
-        activeDom = 'content-product__menu-inside-item-link--active'
+        return ''
       }
 
       if (item) {
         return `
           <li class="content-product__menu-inside-item" data-brand="${item}">
-            <a class="content-product__menu-inside-item-link ${activeDom}" data-brand="${item}" data-internal-item="internal" href="#">${item}</a>
+            <a 
+            class="content-product__menu-inside-item-link ${activeDom()}" 
+            data-brand="${item}" 
+            data-internal-item="internal" href="#"
+            >${item}
+            </a>
           </li>
         `
       }
     })
 
-    let accardionBoolean = false
-    let maxHeight = '23px'
+    function activeAcc() {
+      if (urlParams[0] === goods) {
 
-    if (urlParams[0] === goods) {
-      accardionBoolean = true,
-      maxHeight = '100%'
+        return {
+          accardionBoolean : true,
+          maxHeight : '100%'
+        }
+      }
+
+      return {
+        accardionBoolean : false,
+        maxHeight : '23px'
+      }
     }
 
-    if (urlParams[0] === goods) {
-      activeDom = 'content-product__menu-inside-item-link--active'
+    function urlParamOne() {
+
+      if (urlParams[0] === goods) {
+        return  'content-product__menu-inside-item-link--active'
+      }
+
+      return ''
     }
 
-    if (urlParams[0] === goods && urlParams[1] === 'Все') {
-      activeAllGoodsDom = 'content-product__menu-inside-item-link--active'
+    function urlParamAll() {
+      if (urlParams[0] === goods && urlParams[1] === 'Все') {
+        return 'content-product__menu-inside-item-link--active'
+      }
+
+      return ''
     }
 
     return `
       <li class="content-product__menu-item "
       data-parentProduct
-      data-accardion="${accardionBoolean}"
+      data-accardion="${activeAcc().accardionBoolean}"
       data-goods="${goods}"
-      style="max-height:${maxHeight}"
+      style="max-height:${activeAcc().maxHeight}"
       >
-      <button class="content-product__menu-item-button ${activeDom}" data-buttonMainProduct="MainProduct" type="button"> ${goods}</button>
-      <span data-plus>+</span>
+      <div class="content-product__menu-item-block " data-parent-product="product">
+        <button 
+           class="content-product__menu-item-button 
+           ${urlParamOne()}" 
+           data-buttonMainProduct="MainProduct" 
+           type="button"
+           data-parent-product="product"
+           > ${goods}</button>
+        <span 
+          data-plus
+          data-parent-product="product"
+        >+</span>
+      </div>
           <ul class="content-product__menu-inside" data-internal">
             <li class="content-product__menu-inside-item">
-            <a class="content-product__menu-inside-item-link ${activeAllGoodsDom || ''}" data-brand="Все"  data-internal-item="internal" href="#">все товары раздела</a></li>
+            <a 
+             class="
+             content-product__menu-inside-item-link 
+             ${urlParamAll()}" 
+             data-brand="Все"  
+             data-internal-item="internal" href="#"
+             >все товары раздела</a></li>
             ${brand.join('')}
           </ul>
       </li>

@@ -72,7 +72,6 @@ export function renderProductCards(data, Сontent) {
       }
     });
 
-
     const wishListAll = Сontent.store.getState().wishListAll || []
 
     let addWishList = true
@@ -81,7 +80,9 @@ export function renderProductCards(data, Сontent) {
     let goToWishList = 'data-goToWishList="false"'
 
     wishListAll.forEach(goods => {
+
       if (goods.id === item.id) {
+
         addWishList = false
         colorIconWishList = '#FFA500'
         wishListTitle = 'Перейти в список желаемого'

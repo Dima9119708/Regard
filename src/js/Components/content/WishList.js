@@ -38,7 +38,10 @@ export class WishList {
 
         if (addwishlist)  {
 
-            const { id } = event.target.closest('[data-id]').dataset
+            const id = event.target.closest('[data-id]')
+                        ? event.target.closest('[data-id]').dataset.id
+                        :  event.target.closest('[data-CardID]').dataset.cardid
+
             const $item = event.target
 
             if(addwishlist === 'true') {
@@ -189,7 +192,6 @@ export class WishList {
             const $parent =  event.target.closest('[data-wishlist-id]')
             const { wishlistId } = event.target.closest('[data-wishlist-id]').dataset
 
-            console.log($parent)
 
             const items = Array.from($parent.querySelector('[data-groups-item-inner]').children)
                             .reduce((acc,item) => {
@@ -259,6 +261,7 @@ export class WishList {
 
             this.content.store.dispath(DELETE__ITEM__GROUP(wishlistId, id))
             this.DOM.divGroupWrap.innerHTML = this.renderWishListGroups()
+            this.content.emmiter.emit('HEADER__TOP', true)
         }
     }
 }

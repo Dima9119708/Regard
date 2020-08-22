@@ -870,6 +870,7 @@ export class Filter {
       const pageActive = pagination.pageActive()
       const counterPages = Math.ceil(goods.length / showItems)
 
+
       if (pageActive > counterPages) {
         pagination.changingURLBasedOnActivePage(1)
       }

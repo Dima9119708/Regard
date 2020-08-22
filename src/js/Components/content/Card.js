@@ -14,7 +14,7 @@ import {
   reRenderCardHTML,
   sendFeedbackAnswer
 } from "./card.fn"
-import { Modal} from "../../core/modal"
+import { Modal} from "../../core/Modal"
 import {DATABASE} from "../../core/DATABASE";
 
 export class Card {
@@ -71,35 +71,40 @@ export class Card {
 
   renderHTML() {
     return `
-      <div class="goods__header">
-        <div class="goods__header-id">${this.renderElem.id}</div>
-        <h2 class="goods__header-name">${this.renderElem.name}</h2>
-      </div>
-      <div class="goods__wrap">
-          <div class="goods__img">
-            <div class="goods__img-block">
-              <img src="./images/235789_600.png" alt="альтернативный текст">
+      <div class="goods" data-CardID="${this.renderElem.id}">
+        <div class="goods__header">
+          <div class="goods__header-id">${this.renderElem.id}</div>
+          <h2 class="goods__header-name">${this.renderElem.name}</h2>
+        </div>
+        <div class="goods__wrap">
+            <div class="goods__img">
+              <div class="goods__img-block">
+                <img src="./images/235789_600.png" alt="альтернативный текст">
+              </div>
+              <div class="goods__mini-img-block"></div>
             </div>
-            <div class="goods__mini-img-block"></div>
-          </div>
-          <div class="goods-block__dist">
-            <div class="goods__dist">Временно нет описание</div>
-            <div class="goods__price-block">
-                ${this.#availability.html}
-                <div class="goods__price-bl" data-priceBlock>
-                  <div class="goods__price">${formatNumber(this.renderElem.price)} руб.</div>
-                  ${this.addBasket()}
-                </div>
+            <div class="goods-block__dist">
+              <div class="goods__dist">Временно нет описание</div>
+              <div class="goods__price-block">
+                  ${this.#availability.html}       
+                  <div class="goods__price-bl" data-priceBlock>
+                    <div class="goods__price">
+                    ${formatNumber(this.renderElem.price)} руб.
+                    </div>
+                    ${this.addBasket()}
+                  </div>
+              </div>
             </div>
-          </div>
-      </div>
-      <div class="goods__tabs" data-card-tab-parent>
-        <div class="goods__tabs-item" data-card-tab="Характеристики">Характеристики</div>
-        <div class="goods__tabs-item" data-card-tab="Отзывы">Отзывы (${this.#numberOfReviews()})</div>
-      </div>
-      <div class="goods__tabs-content-overall-rating">${this.#calcOfTheOverallRating()}</div>
-      <div class="goods__tabs-content-inner" data-card-inner>
-      ${this.#HTML__INIT__()}
+        </div>
+        <div class="goods__tabs" data-card-tab-parent>
+          <div class="goods__tabs-item" data-card-tab="Характеристики">Характеристики</div>
+          <div class="goods__tabs-item" data-card-tab="Отзывы">Отзывы (${this.#numberOfReviews()})</div>
+        </div>
+        <div class="goods__tabs-content-overall-rating">${this.#calcOfTheOverallRating()}</div>
+        <div class="goods__tabs-content-inner" data-card-inner>
+         ${this.#HTML__INIT__()}
+        </div>
+    </div>
     `
   }
 
@@ -128,6 +133,7 @@ export class Card {
         html: `
           <div class="goods__price-header">
             <div class="goods__price-existence10">Заканчиваеться</div>
+            ${this.isTheProductOnTheWishlist()}
           </div>
         `
       }
@@ -140,6 +146,7 @@ export class Card {
         html: `
           <div class="goods__price-header">
             <div class="goods__price-existence1">Нет в наличии</div>
+            ${this.isTheProductOnTheWishlist()}
           </div>
         `
       }
@@ -151,13 +158,51 @@ export class Card {
       return {
         inStock,
         html: `
-          <div class="goods__price-header">
+          <div class="goods__price-header" >
             <div class="goods__price-existence">В наличии</div>
+            ${this.isTheProductOnTheWishlist()}
           </div>
         `
       }
 
     }
+  }
+
+  isTheProductOnTheWishlist() {
+
+    const { wishListAll } = this.store.getState()
+
+    let icon = ''
+
+    for (const item of wishListAll) {
+      if (+item.id === +this.id) {
+        icon = `
+          <i
+          class="fas fa-heart" 
+          title="Перейти в список желаемого"
+          data-addwishlist="false"
+          data-gotowishlist="true"
+          style="color: #FFA500"
+          >
+          </i>
+        `
+      }
+    }
+
+    if (icon === '') {
+      icon = `
+          <i
+          class="fas fa-heart" 
+          title="Перейти в список желаемого"
+          data-addwishlist="true"
+          data-gotowishlist="false"
+          style="color: #00CED1"
+          >
+          </i>
+        `
+    }
+
+    return icon
   }
 
   addBasket() {

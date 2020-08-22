@@ -96,9 +96,7 @@ export function renderCatalogContent(Content) {
 export function renderCard(Card) {
 
   return `
-    <div class="goods">
     ${Card.renderHTML()}
-    </div>
   `
 }
 

@@ -18,10 +18,8 @@ export class Modal {
 
       Modal.onClick(modal)
       Modal.onInput(modal)
-
     }
   }
-
 
   static createModal(flag) {
     const createModal = $.create('div', 'modals')
@@ -40,6 +38,7 @@ export class Modal {
   }
 
   static #renderContentModal(flag) {
+
     if (flag === 'Авторизация') {
       return `
       <header class="modal__header">
