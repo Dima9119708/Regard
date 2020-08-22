@@ -6,7 +6,6 @@ import { ActiveRout } from "../Routing/ActiveRouter";
 import { Filter } from "../Components/content/Filter";
 
 export const showItems = 15
-export const pageTransitionAnimationSpeed = 300
 
 export const pagination = {
 
@@ -72,8 +71,11 @@ export const pagination = {
     return this.start(this.counterPages)
   },
 
-  start(countPages, paginationNumber) {
-    let activePage = paginationNumber ? +paginationNumber : this.pageActive()
+  start(countPages, pagNumber) {
+
+    let activePage = +pagNumber ? +pagNumber : this.pageActive()
+
+    console.log(activePage)
 
     if (countPages > 10) {
 
@@ -116,20 +118,24 @@ export const pagination = {
 
   },
 
-  renderItems(start, finish, activeNumber) {
+  renderItems(start, finish, activePage ) {
 
     const trainingHTMLPagination = []
 
     for (let startNumber = start; startNumber < finish + 1; startNumber++) {
 
-      let active = ''
-      if (startNumber === activeNumber) {
-        active = 'content-blocks__pagination-item--active'
+      function active() {
+
+        if (startNumber === activePage) {
+          return 'content-blocks__pagination-item--active'
+        }
+
+        return ''
       }
 
       trainingHTMLPagination.push(`
         <a
-          class="content-blocks__pagination-item ${active}"
+          class="content-blocks__pagination-item ${active()}"
           data-paginationNumber="${startNumber}"
           data-paginationItem="${((startNumber * showItems) - showItems)}"
           data-scroll
@@ -167,29 +173,33 @@ export const pagination = {
         behavior: "smooth"
       });
 
-      const { paginationnumber } = event.target.dataset
-
       const DATA = Filter.displayСardsBasedOnTheFilter(content)
 
+      const { paginationnumber : pagNumber  } = event.target.dataset
+
       const pagitanionParent = event.target.closest('[data-pagination]') || $root.qSelector('[data-pagination]')
-      const htmlPagination = this.start(this.counterPages, paginationnumber)
+      const htmlPagination = this.start(this.counterPages, pagNumber)
       $(pagitanionParent).clear().insertHTML('beforeend', htmlPagination)
 
-      this.cardRerender(event, $root, DATA, store, content)
-      this.changingURLBasedOnActivePage(paginationnumber)
+      if (ActiveRout.urLHash.startsWith(catalog)) {
+
+        this.cardRerender(event, $root, DATA, store, content)
+        this.changingURLBasedOnActivePage(pagNumber)
+      }
+
     }
   },
 
-  changingURLBasedOnActivePage(paginationnumber) {
+  changingURLBasedOnActivePage(pagNumber) {
 
     const currentURL = urlParse()
     let hash = ''
 
     if (currentURL.length <= 3) {
-      hash = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${paginationnumber}`
+      hash = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${pagNumber}`
     }
     else {
-      hash = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${paginationnumber}/+/${currentURL[3]}`
+      hash = `${catalog}/+/${currentURL[0]}/+/${currentURL[1]}/+/${pagNumber}/+/${currentURL[3]}`
     }
 
     ActiveRout.hash(hash)

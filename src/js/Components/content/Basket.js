@@ -2,7 +2,6 @@ import {changeURLBasket, changeURLCard} from "../../core/urlHash.fn";
 import {ActiveRout} from "../../Routing/ActiveRouter";
 import {formatNumber, searchItemID} from "../../core/utils";
 import {CARD__DELETE, INCREASE__PRICE} from "../../core/redux/actions";
-import {DELETE__CARD} from "../../core/redux/constans";
 
 export class Basket {
     constructor(Content) {

@@ -245,6 +245,6 @@ function baseSearch(DATA, value) {
         return acc
       }, [])
 
-    }, 1000)
+    }, 600)
   })
 }

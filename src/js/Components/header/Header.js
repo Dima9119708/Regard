@@ -1,8 +1,8 @@
-
 import { ParentComponent } from "../../core/ParentComponent";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import {Basket} from "../content/Basket";
 import {Sidebar} from "../content/Sidebar";
+import {WishList} from "../content/WishList";
 
 export class Header extends ParentComponent {
 
@@ -20,29 +20,33 @@ export class Header extends ParentComponent {
   prepare() {
     this.sideBar = new Sidebar(this)
     this.basket = new Basket(this)
+    this.wishList = new WishList(this)
   }
 
   init() {
     super.init()
 
-    const amount = this.$root.qSelector('[data-sumtotal]')
     const count = this.$root.qSelector('[data-counter]')
+    const wishListCount = this.$root.qSelector('[data-WishList-count]')
 
-    const { sumTotal, counter } = this.store.getState()
+    const { counter, wishListAll } = this.store.getState()
 
-    count.innerHTML = counter + ' товаров'
-    amount.innerHTML = sumTotal + ' р'
+    count.innerHTML = counter
+    wishListCount.innerHTML = wishListAll.length
 
     this.emmiter.subscribe('HEADER__TOP', data => {
 
-      const { sumTotal, counter } = this.store.getState()
+      const { counter, wishListAll } = this.store.getState()
 
-      count.innerHTML = counter + ' товаров'
-      amount.innerHTML = sumTotal + ' р'
+      count.innerHTML = counter
+      wishListCount.innerHTML = wishListAll.length
     })
   }
 
   renderHTML() {
+
+
+
     return `
       <div class="header-content__wrap">
          <a href="#" class="header-content_item" data-logo="logo">
@@ -67,14 +71,23 @@ export class Header extends ParentComponent {
             </div>
          </div>
          <div class="header-content_item">
-            <div class="header-content__basket" data-gotobasket="true">
-               <i class="fas fa-cart-arrow-down" data-gotobasket="true"></i>
-               <div data-gotobasket="true">
-                    В корзине 
-                    <span data-counter data-gotobasket="true">0 товаров</span>
-               </div>
-               На сумму 
-               <span data-sumTotal data-gotobasket="true">0 р</span>
+            <div class="header-content__basket" >
+                
+               <i class="far fa-heart" data-goToWishList="true">
+                    <div 
+                     class="header-content__basket-count" data-goToWishList="true" data-WishList-count>
+                     ${this.store.getState().wishListAll.length || 0}
+                    </div>
+                </i>
+                
+               <i class="fas fa-cart-arrow-down" data-gotobasket="true">
+                   <div 
+                     class="header-content__basket-count" 
+                     data-gotobasket="true" 
+                     data-counter>
+                   </div>
+               </i>
+               
             </div>
          </div>
       </div>
@@ -90,5 +103,6 @@ export class Header extends ParentComponent {
     }
 
     this.basket.openPage(event)
+    this.wishList.openPage(event)
   }
 }

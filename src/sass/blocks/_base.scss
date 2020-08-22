@@ -67,6 +67,15 @@ button {
 
 .content-wrapper {
   overflow: hidden;
+  padding-top: 60px;
+  opacity: 0;
+  min-height: 60vh;
+}
+
+.content-wrapper--active {
+  padding-top: 0;
+  opacity: 1;
+  transition: padding-top .5s linear, opacity .2s linear;
 }
 
 .s-content-foods__wrap {

@@ -16,4 +16,8 @@ export class ActiveRout {
   static reloadPage() {
     location.reload()
   }
+
+  static currentURL() {
+    return decodeURI(location.hash).slice(1)
+  }
 }

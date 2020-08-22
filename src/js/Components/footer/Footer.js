@@ -1,4 +1,3 @@
-
 import { ParentComponent } from "../../core/ParentComponent";
 
 export class Footer extends ParentComponent {

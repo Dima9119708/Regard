@@ -7,8 +7,6 @@ import { LoginBar } from '../Components/loginBar/LoginBar'
 import { InterfacePages } from './InterfacePage'
 import { initialState } from '../core/initialState'
 import { storage } from '../core/utils'
-
-import newBase from './../newBase.json'
 import {DATABASE} from "../core/DATABASE";
 
 export class MainPage extends InterfacePages {
@@ -17,9 +15,7 @@ export class MainPage extends InterfacePages {
 
     this.user = null
 
-    //const DATA = await DATABASE.DATA()
-
-    const DATA = await newBase
+    const DATA = await DATABASE.DATA()
     const user = await DATABASE.whetherTheUserIsSaved()
     const reviews = await DATABASE.reviews()
 

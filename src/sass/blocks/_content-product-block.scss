@@ -47,6 +47,14 @@
   }
 }
 
+.content-block__card-delete {
+  position: absolute;
+  right: -10px;
+  top: -8px;
+  font-size: 22px;
+  color: #d21919;
+}
+
 .content-block__card-content-dist {
   color: rgb(145, 145, 145);
   font-size: 13px;
@@ -67,5 +75,10 @@
       color : rgba(226, 9, 9, 0.986);
       font-size: 20px;
     }
+  }
+
+  & .fa-heart {
+    font-size: 20px;
+    margin-right: 7px;
   }
 }

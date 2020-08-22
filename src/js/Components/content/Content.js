@@ -1,9 +1,9 @@
 import { ParentComponent } from "../../core/ParentComponent";
 import { Sidebar } from "./Sidebar";
 import { Search } from "./Search";
-import { addBasketProducts, reSotingDATA } from "./content.functions";
+import { addBasketProducts} from "./content.functions";
 import { ActiveRout } from "../../Routing/ActiveRouter";
-import {catalog, card, basket} from "../../core/urlHash.fn";
+import {catalog, card, basket, wishList} from "../../core/urlHash.fn";
 import { pagination } from "../../core/pagination";
 import { Filter } from "./filter";
 import 'simplebar';
@@ -11,6 +11,8 @@ import { accardionObjectTrue } from "./renderContent.functions";
 import { dinamic__adapt } from "../../core/dinamic__adapt";
 import { Card } from "./Card";
 import {Basket} from "./Basket";
+import {WishList} from "./WishList";
+import {animate} from "../../core/animate";
 
 export class Content extends ParentComponent {
 
@@ -30,6 +32,7 @@ export class Content extends ParentComponent {
     this.search = new Search(this)
     this.card = new Card(this)
     this.basket = new Basket(this)
+    this.wishList = new WishList(this)
   }
 
   init() {
@@ -40,6 +43,9 @@ export class Content extends ParentComponent {
 
     this.search.DOM
     this.sideBar.DOM
+
+    const divMain = this.$root.qSelector('[data-content-wrapper]')
+    animate(divMain, 'content-wrapper--active', 100)
 
     if (ActiveRout.urLHash.startsWith(catalog)) {
 
@@ -54,6 +60,9 @@ export class Content extends ParentComponent {
     }
     else if (ActiveRout.urLHash.startsWith(basket)) {
       this.basket.DOM
+    }
+    else if (ActiveRout.urLHash.startsWith(wishList)) {
+      this.wishList.DOM
     }
   }
 
@@ -79,30 +88,28 @@ export class Content extends ParentComponent {
       </div>
 
       <! Мобильное Меню >
-      <div class="content__mobile-menu-list" data-header-menu>
-        <div class="content__mobile-links">
-          <a class="content__mobile-link" href="#">Конфигуратор ПК</a>
-        </div>
-      </div>
+      <div class="content__mobile-menu-list" data-header-menu></div>
     `
   }
 
   onClick(event) {
-
     this.sideBar.onClick(event)
     this.search.onClick(event)
 
     this.basket.openPage(event)
+    this.basket.onClick(event)
 
     addBasketProducts(event, this)
+
+    this.wishList.openPage(event)
+    this.wishList.addWishListCard(event)
+    this.wishList.onClick(event)
 
     pagination.onClick(event, this)
     Filter.onClick(event, this)
 
     this.card.openPageCard(event, this)
     this.card.onClick(event)
-
-    this.basket.onClick(event)
   }
 
   onKeydown(event) {

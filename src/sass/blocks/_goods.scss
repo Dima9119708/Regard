@@ -26,10 +26,6 @@
     font-size: 16px;
     font-weight: 400;
 
-    @media(min-width: 768px) {
-
-    }
-
     @media(min-width: 1245px) {
       font-size: 20px;
     }
@@ -44,10 +40,6 @@
 
   @media(min-width: 768px) {
     flex-direction: row;
-  }
-
-  @media(min-width: 1245px) {
-
   }
 }
 
@@ -111,6 +103,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 40px;
+  padding-right: 40px;
 
   & .goods__price-existence {
     padding: 5px 20px;
@@ -139,6 +132,11 @@
   & .goods__price-simile {
     font-size: 13px;
     border-bottom: 1px dashed #000;
+    cursor: pointer;
+  }
+
+  & .fa-heart {
+    font-size: 20px;
     cursor: pointer;
   }
 }
@@ -218,6 +216,7 @@
       }
 
       @media(min-width: 768px) {
+        top: -30px;
         font-size: 13px;
         height: 25px;
       }
@@ -230,10 +229,6 @@
     @media(min-width: 768px) {
       font-size: 13px;
     }
-
-    @media(min-width: 1245px) {
-
-    }
   }
 
   & .goods__in-basket {
@@ -243,10 +238,6 @@
   @media(min-width: 768px) {
     flex-direction: row;
     margin-bottom: 70px;
-  }
-
-  @media(min-width: 1245px) {
-
   }
 }
 

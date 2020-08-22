@@ -858,14 +858,7 @@ export class Filter {
         return
       }
 
-      dataCardsWrapDiv.style.opacity = '0.2'
-      dataCardsWrapDiv.style.transition = 'opacity .4s linear'
-
-      setTimeout(() => {
-        dataCardsWrapDiv.innerHTML = renderProductCards(pagination.showItems(goods), Content)
-        dataCardsWrapDiv.style.opacity = '1'
-        dataCardsWrapDiv.style.transition = 'opacity .4s linear'
-      }, 400)
+      dataCardsWrapDiv.innerHTML = renderProductCards(pagination.showItems(goods), Content)
 
       const pageActive = pagination.pageActive()
       const counterPages = Math.ceil(goods.length / showItems)
@@ -877,14 +870,6 @@ export class Filter {
       paginationWrap.innerHTML = pagination.__INIT__(goods)
       return goods
     }
-
-    dataCardsWrapDiv.style.opacity = '0.2'
-    dataCardsWrapDiv.style.transition = 'opacity .4s linear'
-
-    setTimeout(() => {
-      dataCardsWrapDiv.style.opacity = '1'
-      dataCardsWrapDiv.style.transition = 'opacity .4s linear'
-    }, 400)
 
     return DATA
   }

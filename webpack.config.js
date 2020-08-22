@@ -22,20 +22,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      filename : 'index.html',
-      template : './src/pug/index.pug'
-    }),
-    new HtmlWebpackPlugin({
-      filename : 'products.html',
-      template : './src/pug/products.pug'
-    }),
-    new HtmlWebpackPlugin({
-      filename : 'basket.html',
-      template : './src/pug/basket.pug'
-    }),
-    new HtmlWebpackPlugin({
-      filename : 'product.html',
-      template : './src/pug/product.pug'
+      filename: 'index.html',
+      template: './src/pug/index.pug'
     }),
     new CopyPlugin([
       {

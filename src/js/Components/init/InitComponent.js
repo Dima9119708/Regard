@@ -57,8 +57,6 @@ export class InitComponent {
   storeSubscribe() {
     this.store.subscribe( data => {
 
-      //storage('REGARD', data)
-
       if (!this.userID) {
         storage('REGARD', data)
       }

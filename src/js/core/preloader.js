@@ -30,9 +30,8 @@ export function preloader() {
          </div>
          <div class="header-content_item">
             <div class="header-content__basket">
+               <i class="far fa-heart"></i>
                <i class="fas fa-cart-arrow-down"></i>
-               <div>В корзине <span> Ожидание...</span></div>
-               На сумму<span> Ожидание...</span>
             </div>
          </div>
       </div>

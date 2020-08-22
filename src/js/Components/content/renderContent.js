@@ -1,8 +1,7 @@
 import { reSotingDATA, } from "./content.functions"
-
 import { renderTitle, checkLackOfGoods, renderProductCards, renderRandomContent } from "./renderContent.functions"
 import { pagination } from "../../core/pagination"
-import { Filter } from "./filter"
+import { Filter } from "./Filter"
 
 export function renderMainContent(content) {
   return `
@@ -96,9 +95,7 @@ export function renderCatalogContent(Content) {
 export function renderCard(Card) {
 
   return `
-    <div class="goods">
     ${Card.renderHTML()}
-    </div>
   `
 }
 
@@ -118,5 +115,34 @@ export function renderBasket(Basket) {
                
            </div>
         </div>
+    `
+}
+
+export function renderWishList(WishList) {
+
+    return `
+      <div class="s-content-products">
+           <div class="content__foods">
+               <div class="content-hits__top">
+                <span>Список желаемого </span>
+               </div>
+               <div class="content__create-group">
+               
+                  <div class="content__create-group-input">
+                    <input type="text" value="Новая группа" data-create-group-input>
+                  </div>
+                  <div class="content__create-group-icon" title="Создать группу" data-create-group="group">
+                    <i class="fas fa-folder-plus" data-create-group="group"></i>
+                  </div>
+                  
+               </div>
+
+               <div class="content__groups" data-wishList-group>
+                  
+                 ${WishList.renderHTML()}
+
+               </div>
+           </div>
+      </div>
     `
 }

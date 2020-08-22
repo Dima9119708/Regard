@@ -1,5 +1,7 @@
 import {urlParse, formatNumber, ratingСalc} from "../../core/utils"
 import { $ } from "../../core/Dom"
+import {ActiveRout} from "../../Routing/ActiveRouter";
+import { wishList } from "../../core/urlHash.fn";
 
 export function renderTitle() {
 
@@ -54,12 +56,12 @@ export function renderProductCards(data, Сontent) {
 
   return data.reduce((arr, item) => {
 
+    const basket = Сontent.store.getState().basket || []
+
     let addBasket = true
     let colorIcon = 'red'
     let dataTitleButton = 'Добавить в корзину'
     let goToBasket = 'data-goToBasket="false"'
-
-    const basket = Сontent.store.getState().basket || []
 
     basket.forEach(goods => {
       if (goods.id === item.id) {
@@ -70,16 +72,64 @@ export function renderProductCards(data, Сontent) {
       }
     });
 
+    const wishListAll = Сontent.store.getState().wishListAll || []
+
+    let addWishList = true
+    let colorIconWishList = '#00CED1'
+    let wishListTitle = 'Добавить в список желаемого'
+    let goToWishList = 'data-goToWishList="false"'
+
+    wishListAll.forEach(goods => {
+
+      if (goods.id === item.id) {
+
+        addWishList = false
+        colorIconWishList = '#FFA500'
+        wishListTitle = 'Перейти в список желаемого'
+        goToWishList = 'data-goToWishList="true"'
+      }
+    });
+
     const card = Сontent.reviews[item.id] || {}
     const rating = ratingСalc()(card)
 
-    let strRating = ''
-
-    if (rating === '0.0') {
-      strRating = ''
+    function htmlRatingRender() {
+      if (rating === '0.0') {
+        return ''
+      }
+      else {
+        return `Оценка: <span class="rating"> ${rating} </span>`
+      }
     }
-    else {
-      strRating = `Оценка: <span class="rating"> ${rating} </span>`
+
+    function cardDeleteDisplay() {
+      if (ActiveRout.urLHash.startsWith(wishList)) {
+
+        return `
+          <div class="content-block__card-delete" data-delete-card="card">
+              <i class="fas fa-minus-circle" data-delete-card="card"></i>
+          </div>
+        `
+      }
+
+      return  ''
+    }
+
+    function wishListIconDisplay() {
+      if (ActiveRout.urLHash.startsWith(wishList)) {
+        return ``
+      }
+
+      return `
+          <i 
+            class="fas fa-heart" 
+            data-addwishlist="${addWishList}" 
+            ${goToWishList}
+            title="${wishListTitle}"
+            style="color: ${colorIconWishList}"
+            >
+          </i>
+      `
     }
 
     if (item.id && item.name) {
@@ -94,13 +144,14 @@ export function renderProductCards(data, Сontent) {
                 ID: ${item.id}
               </div>
               <div class="content-block__card-rating">
-                ${strRating}
+                ${htmlRatingRender()}
               </div>
             </div>
             <div class="content-block__card-content">
                 <div class="content-block__card-content-name">${item.name}</div>
                 <div class="content-block__card-content-dist">Описание временно нет</div>
                 <div class="content-block__card-content-price">
+                  ${wishListIconDisplay()}
                   <span data-addBasket="${addBasket}" ${goToBasket} title="${dataTitleButton}">
                       <i class="fas fa-cart-plus" 
                         ${goToBasket} 
@@ -113,7 +164,8 @@ export function renderProductCards(data, Сontent) {
                   </span>
                 </div>
                 </div>
-            </div>
+            ${cardDeleteDisplay()}
+          </div>
         `
       arr.push(elementSTR)
     }
