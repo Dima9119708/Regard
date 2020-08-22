@@ -2,7 +2,6 @@ import { ParentComponent } from "../../core/ParentComponent";
 import { renderUserInterface, renderLoginHTML } from "./header-top.content";
 import { Sidebar } from "../content/Sidebar";
 import { burgerMobileMenu } from "./headerTop.fn";
-import firebase from "firebase";
 import {ActiveRout} from "../../Routing/ActiveRouter";
 import {Modal} from "../../core/Modal";
 import {Basket} from "../content/Basket";

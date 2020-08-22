@@ -1,4 +1,3 @@
-
 import { ParentComponent } from "../../core/ParentComponent";
 import { ActiveRout } from "../../Routing/ActiveRouter";
 import {Basket} from "../content/Basket";

@@ -1,8 +1,7 @@
 import { reSotingDATA, } from "./content.functions"
-
 import { renderTitle, checkLackOfGoods, renderProductCards, renderRandomContent } from "./renderContent.functions"
 import { pagination } from "../../core/pagination"
-import { Filter } from "./filter"
+import { Filter } from "./Filter"
 
 export function renderMainContent(content) {
   return `

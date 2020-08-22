@@ -1,5 +1,4 @@
 import { ActiveRout } from "../Routing/ActiveRouter"
-import { catalog } from "./urlHash.fn"
 
 export function urlParse() {
 

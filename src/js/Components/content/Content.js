@@ -12,6 +12,7 @@ import { dinamic__adapt } from "../../core/dinamic__adapt";
 import { Card } from "./Card";
 import {Basket} from "./Basket";
 import {WishList} from "./WishList";
+import {animate} from "../../core/animate";
 
 export class Content extends ParentComponent {
 
@@ -42,6 +43,9 @@ export class Content extends ParentComponent {
 
     this.search.DOM
     this.sideBar.DOM
+
+    const divMain = this.$root.qSelector('[data-content-wrapper]')
+    animate(divMain, 'content-wrapper--active', 100)
 
     if (ActiveRout.urLHash.startsWith(catalog)) {
 

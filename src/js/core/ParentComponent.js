@@ -11,6 +11,7 @@ import {
 import { accardionObjectTrue } from "../Components/content/renderContent.functions";
 import { Sidebar } from "../Components/content/Sidebar";
 import { dinamic__adapt } from "./dinamic__adapt";
+import {animate} from "./animate";
 
 export class ParentComponent extends DomListener {
 
@@ -62,8 +63,10 @@ export class ParentComponent extends DomListener {
 
     contentWrap.innerHTML = ''
     reRenderSiderBar.innerHTML = ''
-
     contentWrap.innerHTML = this.renderContent()
+
+    contentWrap.classList.remove('content-wrapper--active')
+    animate(contentWrap, 'content-wrapper--active', 100)
 
     if (window.innerWidth < 1245) {
 

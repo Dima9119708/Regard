@@ -52,7 +52,7 @@
 
       &-input {
         height: 25px;
-        width: 75%;
+        width: 50%;
 
         input {
           padding: 0 10px;
@@ -61,10 +61,14 @@
           outline: none;
           border: none;
         }
+
+        @media(min-width: 768px) {
+          width: 75%;
+        }
       }
 
       &-icons {
-        font-size: 22px;
+        font-size: 16px;
         cursor: pointer;
 
         & .fa-scroll {
@@ -97,6 +101,10 @@
           &:hover {
             color: #910a26 !important;
           }
+        }
+
+        @media(min-width: 400px) {
+          font-size: 22px;
         }
       }
     }

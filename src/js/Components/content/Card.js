@@ -10,9 +10,7 @@ import {
   productEvaluation,
   validateFeedBack,
   dataFiling,
-  sendFeedback,
   reRenderCardHTML,
-  sendFeedbackAnswer
 } from "./card.fn"
 import { Modal} from "../../core/Modal"
 import {DATABASE} from "../../core/DATABASE";

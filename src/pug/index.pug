@@ -1,12 +1,10 @@
-extends ./layout/_base.pug
-include ./mixins/_content-top-header.pug
-include ./mixins/_s-content-food__sentence.pug
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="shortcut icon", href="./images/G_icon-G-pink-300.png", type="image/x-icon")
+        title Регард - сеть компьютерных магазинов
+    body
 
-//- block content
-//-   include ./sections/_slider.pug
-//-   section.s-content-products
-//-       section.s-content-foods
-//-             include ./sections/_s-content-hits.pug
-//-             section.s-content-foods__wrap
-//-                 +s-content-food__sentence('Предложение')
-//-                 +s-content-food__sentence('Новинки')
+        #app
