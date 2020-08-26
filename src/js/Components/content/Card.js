@@ -30,10 +30,14 @@ export class Card {
     this.reviews = Content.reviews
     this.review = {}
 
+    // Если мы находимся на странице карточки, получаем ID
     this.#searchElemID()
+
+    // Получение всех отзывов о карточке
     this.#getAllReviews()
   }
 
+  // Открытие страницы
   openPageCard(event, Content) {
 
     const $goToBasket = event.target.closest('[data-gotobasket]')
@@ -57,6 +61,7 @@ export class Card {
     }
   }
 
+  // Получение нужных Dom элементов для дальнейшей работы
   get DOM() {
 
     return {
@@ -67,6 +72,7 @@ export class Card {
     }
   }
 
+  // Вывод в шаблон
   renderHTML() {
     return `
       <div class="goods" data-CardID="${this.renderElem.id}">
@@ -106,6 +112,7 @@ export class Card {
     `
   }
 
+  // Поиск карточки на которую мы перешли
   #searchElemID() {
     const id = urlParse().join('')
     const item = searchItemID(this.DATA, id)
@@ -115,10 +122,12 @@ export class Card {
     }
   }
 
+  // Карточка в объекте
   get renderElem() {
     return this.#searchElemID()
   }
 
+  // Проверка наличие товара
   get #availability() {
     const { availability } = this.#searchElemID()
 
@@ -166,6 +175,7 @@ export class Card {
     }
   }
 
+  // Проверка, добавлен ли товар в список желаемого
   isTheProductOnTheWishlist() {
 
     const { wishListAll } = this.store.getState()
@@ -203,6 +213,7 @@ export class Card {
     return icon
   }
 
+  // Проверка, добавлен ли товар в корзину
   addBasket() {
 
     const basket = !this.store.getState().basket ? [] : this.store.getState().basket
@@ -234,6 +245,7 @@ export class Card {
     }
   }
 
+  // Подсчет общего рейтинга в карточке
   #calcOfTheOverallRating() {
 
     if (!this.addReviews) {
@@ -250,6 +262,7 @@ export class Card {
     return `Общий рейтинг товара: <span> ${rating} </span>`
   }
 
+  // Инизациализация первоначального шаблона в карточке
   #HTML__INIT__() {
     return `
      <div class="goods__tabs-content">
@@ -368,10 +381,12 @@ export class Card {
 
   }
 
+  // Подсчет общего количества отзывов
   #numberOfReviews() {
     return Object.keys(this.addReviews).length
   }
 
+  // Получаем все комментарии, о товаре
   #getAllReviews() {
     this.addReviews = this.reviews[this.id]
                        ? this.reviews[this.id]
@@ -394,14 +409,14 @@ export class Card {
     if (textarea) {
       this.review.dist = event.target.value
     }
-
-
   }
 
+  // Характеристики товара
   specifications() {
     return this.#HTML__INIT__()
   }
 
+  // Вывод отзывов
   reviewsHTML() {
     return `
       <div class="goods__tabs-content">
@@ -413,6 +428,7 @@ export class Card {
     `
   }
 
+  // Подготовка шаблона отзывов
   #renderReviews() {
 
     const addReviews = Object.keys(this.addReviews).reduce((acc, item) => {
@@ -422,8 +438,15 @@ export class Card {
       const answersHTML = Object.keys(answer).reduce((acc,item) => {
         acc.push(`
           <div class="goods__tabs-content-reviews-item-internal-item">
-            <div class="goods__tabs-content-reviews-item-internal-item-user"><i class="fas fa-user"></i> ${answer[item].user}</div>
-            <div class="goods__tabs-content-reviews-item-internal-item-commet">${answer[item].dist}</div>
+            <div 
+              class="goods__tabs-content-reviews-item-internal-item-user">
+              <i class="fas fa-user"></i> 
+              ${answer[item].user}
+            </div>
+            <div 
+              class="goods__tabs-content-reviews-item-internal-item-commet">
+              ${answer[item].dist}
+            </div>
           </div>
         `)
 
@@ -508,6 +531,7 @@ export class Card {
     return addReviews
   }
 
+  // Шаблон 'оставить отзыв'
   giveFeedbackHTML() {
     return `
       <div class="goods__tabs-form-item">
@@ -547,6 +571,7 @@ export class Card {
     `
   }
 
+  // Допустип для оставки отзывов
   #userAuth() {
     if (!this.user) {
       return `
@@ -568,6 +593,7 @@ export class Card {
     }
   }
 
+  // Допустип для оставки комментариев
   #userInternalAuth() {
     if (!this.user) {
       return `
@@ -596,7 +622,8 @@ export class Card {
     }
   }
 
-  AskAQuestionHTML() {
+  // Шаблон задание вопроса
+  askAQuestionHTML() {
     return `
       <div class="error" data-error="error" style="display: none">
         Поля не все заполнены !!!
@@ -611,6 +638,7 @@ export class Card {
     `
   }
 
+  // Увеличение товара и сохранение в Redux
   increaseInGoods(counter) {
     if (Number.isInteger(counter)) {
       this.store.dispath(INCREASE__PRICE(this.renderElem, counter))

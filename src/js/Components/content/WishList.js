@@ -16,12 +16,14 @@ export class WishList {
         this.content = Content
     }
 
+    // Получение Dom элементов для дальнейшей манипуляции
     get DOM() {
         return {
             divGroupWrap : this.content.$root.qSelector('[data-wishList-group]')
         }
     }
 
+    // Переход на страницу Список Желаемого
     openPage(event) {
 
         const { gotowishlist } = event.target.dataset
@@ -32,6 +34,7 @@ export class WishList {
         }
     }
 
+    // Добавление в список желаемого
     addWishListCard(event) {
 
         const { addwishlist } = event.target.dataset
@@ -60,10 +63,12 @@ export class WishList {
         }
     }
 
+    // Вывод всего шаблона
     renderHTML() {
         return this.renderWishListGroups()
     }
 
+    // Вывод групп список желаемого
     renderWishListGroups() {
 
         const wishListGroups = this.content.store.getState().wishListGroups || {}
@@ -156,6 +161,7 @@ export class WishList {
         }, []).join('')
     }
 
+    // Подсчет общей суммы в группе
     renderTotalCost(items) {
         return formatNumber(items.reduce( (acc, item) => acc + +item.price, 0))
     }

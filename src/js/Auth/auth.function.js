@@ -1,10 +1,14 @@
 import { $ } from "../core/Dom";
 
+
+// Валидация Email
 export function isValidEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 }
 
+
+// Валидация формы
 export function validateForm(e, form) {
 
   const value = e.target.value
@@ -73,6 +77,8 @@ export function validateForm(e, form) {
   return form
 }
 
+
+// Сбор всех инпутов для проверки  на валидность.
 export function collectionOfAllInputs(parent, selector) {
   const $parent = $(parent)
   const inputs = $parent.qSelectorAll(selector)

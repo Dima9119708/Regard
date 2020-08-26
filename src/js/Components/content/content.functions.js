@@ -2,6 +2,8 @@ import * as actions from '../../core/redux/actions'
 import { catalogHashPath } from '../../core/urlHash.fn'
 import {searchItemID, urlParse} from '../../core/utils'
 
+
+// Добавление товара в корзину
 export function addBasketProducts(event, content) {
 
   const { DATA, store, emmiter } = content
@@ -37,6 +39,8 @@ export function addBasketProducts(event, content) {
   }
 }
 
+
+// Отсортировка товара, относительно URL
 export function reSotingDATA(data) {
 
   const urlParams = urlParse()

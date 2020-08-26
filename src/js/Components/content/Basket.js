@@ -12,14 +12,15 @@ export class Basket {
         this.emmiter = Content.emmiter
     }
 
+    // Получение Dom элементов на старте,для дальнейшего использования
     get DOM () {
         return {
             $totalAmount : this.$root.qSelector(`[data-totalAmount]`)
         }
-
     }
 
-    openPage(event ) {
+    // Переход на страницу Basket
+    openPage( event ) {
 
         const basket = event.target.dataset.gotobasket
 
@@ -30,12 +31,14 @@ export class Basket {
 
     }
 
+    // Вывод шаблона Basket
     renderHTML() {
         return `
           ${this.#renderCards()}
         `
     }
 
+    // Получение всех товаров из Store и подготовка шаблона
     #getCards() {
         const basket = this.store.getState().basket || []
 
@@ -61,6 +64,7 @@ export class Basket {
         },[])
     }
 
+    // Вывод подготовленых заранее карточек в шаблон.
     #renderCards() {
 
         if (this.#getCards().length) {
@@ -91,10 +95,12 @@ export class Basket {
         }
     }
 
+    // Вывод в шаблон, общую сумму
     #renderTotalAmount() {
         return formatNumber(this.store.getState().sumTotal)
     }
 
+    // События изменения
     onChange(counter, id) {
 
         const item = searchItemID(this.DATA, id)
@@ -112,6 +118,7 @@ export class Basket {
 
     }
 
+    // События клик
     onClick(event) {
 
         const { basketDelete } = event.target.dataset

@@ -36,6 +36,7 @@ export class MainPage extends InterfacePages {
       this.userState = storage('REGARD') || initialState
     }
 
+
     this.initComponent = new InitComponent(
       [HeaderTop, Header, Content, Footer, LoginBar],
       DATA,

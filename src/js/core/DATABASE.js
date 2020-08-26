@@ -4,20 +4,25 @@ import 'firebase/database';
 
 export class DATABASE {
 
+    // Получение базы данных
     static DATA () {
-        return new Promise(resolve => {
+        return new Promise((resolve,reject) => {
 
-            firebase
-                .database()
-                .ref(`base/`)
-                .on('value', function (dataSnapshot) {
-
-                    resolve(dataSnapshot.val())
-                })
-
+            try {
+                firebase
+                    .database()
+                    .ref(`base/`)
+                    .on('value', function (dataSnapshot) {
+                        resolve(dataSnapshot.val())
+                    })
+            }
+            catch (err) {
+                reject(err)
+            }
         })
     }
 
+    // Входил ли юзер
     static whetherTheUserIsSaved() {
 
         return new Promise(resolve => {
@@ -34,6 +39,7 @@ export class DATABASE {
         });
     }
 
+    // Получение данных о юзере если они есть
     static retrievingSpecificUserData(user) {
 
         return new Promise(resolve => {
@@ -47,6 +53,7 @@ export class DATABASE {
 
     }
 
+    // Получение отзывов
     static reviews() {
 
         return new Promise(resolve => {
@@ -62,6 +69,7 @@ export class DATABASE {
 
     }
 
+    // Отправка отзыва о товаре или ответ
     static async sendFeedback(Card, review, id, flag) {
 
         if (flag === 'Отзыв') {

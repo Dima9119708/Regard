@@ -12,6 +12,7 @@ export class Search {
     this.store = content.store
   }
 
+  // Получение Dom элементов для дальнейшей манипуляции
   get DOM() {
     return {
       searchParent: this.$root.qSelector('[data-search-rel]'),
@@ -21,6 +22,7 @@ export class Search {
     }
   }
 
+  // Вывод всего шаблона
   renderHTML() {
     return `
       <section class="s-content__search">
@@ -32,6 +34,7 @@ export class Search {
     `
   }
 
+  // Получение из Redux - истории поиска
   #getHistorySearch() {
 
     const history = this.store.getState().history || []
@@ -61,6 +64,7 @@ export class Search {
     return ''
   }
 
+  // Кнопка поиска
   #productSearchButton() {
 
     const searchList = this.DOM.searchList || this.$root.qSelector('[data-search-list-item]')
@@ -88,6 +92,7 @@ export class Search {
     }
   }
 
+  // Создание и добавление на страницу поискового списка
   #createAndAppendSearchList() {
     const searchList = this.DOM.searchListParent
 
@@ -182,6 +187,7 @@ export class Search {
     }
   }
 
+  // Удаление поискового спивка
   deleteList() {
     const list = this.DOM.searchListParent
     if(list) {
@@ -190,6 +196,7 @@ export class Search {
   }
 }
 
+// Создание поискового списка
 function createSearchList(getHistorySearch) {
   const searchLi = $.create('div', 's-content__search-block')
   searchLi.setAttribute('data-search-list','search-list')
@@ -205,6 +212,7 @@ function createSearchList(getHistorySearch) {
   return searchLi
 }
 
+// Поиск по базе совпадений
 function baseSearch(DATA, value) {
 
   return new Promise(resolve => {

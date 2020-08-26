@@ -75,8 +75,6 @@ export const pagination = {
 
     let activePage = +pagNumber ? +pagNumber : this.pageActive()
 
-    console.log(activePage)
-
     if (countPages > 10) {
 
       // Если мы приближаемся к концу

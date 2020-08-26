@@ -11,6 +11,7 @@ export class Sidebar {
     this.DATA = content.DATA
   }
 
+  // Получение Dom элементов для дальнейшей манипуляции
   get DOM() {
 
     return  {
@@ -20,6 +21,7 @@ export class Sidebar {
     }
   }
 
+  // Вывод всего шаблона
   renderHTML() {
     return `
       <div class="content-product" data-lsideBar>
@@ -28,6 +30,7 @@ export class Sidebar {
     `
   }
 
+  // Подготовка шаблона Типы и Бренды
   #renderContent() {
     return `
       <div class="content-product__type" data-type id="data-type">
@@ -52,6 +55,7 @@ export class Sidebar {
     `
   }
 
+  // Активный тип - даем класс и display = block
   renderContentActiveType() {
 
     const urlParams = urlParse()
@@ -69,6 +73,7 @@ export class Sidebar {
     }
   }
 
+  // Активный класс ТИПА
   #activeClassDom() {
 
     const urlParams = urlParse()
@@ -88,7 +93,6 @@ export class Sidebar {
     else {
       return ''
     }
-
   }
 
   // Рендер SideBar по типам продукта
@@ -207,7 +211,6 @@ export class Sidebar {
   }
 }
 
-
 function reSorting(types, DATA) {
 
   return types.reduce((acc, type) => {
@@ -227,6 +230,7 @@ function reSorting(types, DATA) {
   }, {});
 }
 
+// Подготовка SideBarHTML
 function trainingSidebarHTML(reSort) {
 
   const urlParams = urlParse()
@@ -329,6 +333,7 @@ function trainingSidebarHTML(reSort) {
   })
 }
 
+// фильтрация брендов
 function filterBrands(DATA) {
 
   return DATA.filter(item => {
@@ -346,6 +351,7 @@ function filterBrands(DATA) {
   })
 }
 
+// Подготовка брендов шаблона
 function trainingBrandsHTML(brand) {
 
   const urlParams = urlParse()
@@ -378,6 +384,7 @@ function trainingBrandsHTML(brand) {
   }, []).join('')
 }
 
+// Даем активный класс при переключении ТИПОВ
 function sidebarTABDOMActive(target) {
 
   const $parent = target.closest('[data-type]')

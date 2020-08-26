@@ -1,8 +1,11 @@
 import firebase from 'firebase/app'
+import 'firebase/auth';
+import 'firebase/database';
 import MicroModal from 'micromodal';
 import { ActiveRout } from '../Routing/ActiveRouter';
 import { validateForm, collectionOfAllInputs } from './auth.function';
 
+// Форма. Регистрация
 const form = {
   email: null,
   password: null,
@@ -11,6 +14,8 @@ const form = {
   resetEmail : null
 }
 
+
+// Авторизация пользователя
 export function auth(e) {
 
   validateForm(e, form)
@@ -22,6 +27,7 @@ export function auth(e) {
   resetEmail(target)
 }
 
+// Регистрация
 async function registration(target)  {
 
   if (target.id === 'reg'
@@ -39,13 +45,13 @@ async function registration(target)  {
 
     try {
       const { user } = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(form.email, form.password)
+                              .auth()
+                              .createUserWithEmailAndPassword(form.email, form.password)
 
       await firebase
-        .database()
-        .ref(`users/${user.uid}/personalData/`)
-        .set(form)
+            .database()
+            .ref(`users/${user.uid}/personalData/`)
+            .set(form)
 
       message.innerHTML = 'Регистрация прошла успешно! Теперь вы можете войти в свою учетную запись'
     }
@@ -61,6 +67,7 @@ async function registration(target)  {
   }
 }
 
+// Вход
 async function login(target) {
 
   if (target.id === 'sign'
@@ -99,6 +106,7 @@ async function login(target) {
   }
 }
 
+// Востановление пароля
 async function resetEmail(target) {
 
   if (target.id === 'resetEmail' && form.resetEmail !== null) {

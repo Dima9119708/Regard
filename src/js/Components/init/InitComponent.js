@@ -27,8 +27,10 @@ export class InitComponent {
       reviews: this.reviews
     }
 
+    // Создание главной обертки для компонентов
     const main = $.create('div', 'main')
 
+    // Создание шаблонов компонентов
     this.components = this.components.map(Component => {
 
       const componentDOM = $.create(Component.tagName, Component.className)
@@ -45,15 +47,18 @@ export class InitComponent {
     return main
   }
 
+  // инит обрабочиков событий
   init() {
     this.components.forEach(component => component.init());
   }
 
+  // удаление обработчиков событий
   destroy() {
     this.components.forEach(component => component.destroy());
     document.onclick = null
   }
 
+  // Подписка на Redux
   storeSubscribe() {
     this.store.subscribe( data => {
 
@@ -62,11 +67,11 @@ export class InitComponent {
       }
       else {
         setTimeout(async () =>
-                          await firebase
-                          .database()
-                          .ref(`users/${this.userID.uid}/userDATA/`)
-                          .set(data),
-                        500)
+                            await firebase
+                            .database()
+                            .ref(`users/${this.userID.uid}/userDATA/`)
+                            .set(data),
+                          500)
       }
     })
   }

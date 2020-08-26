@@ -27,6 +27,7 @@ export class Content extends ParentComponent {
     })
   }
 
+  // инициализация классов в конструкторе
   prepare() {
     this.sideBar = new Sidebar(this)
     this.search = new Search(this)
@@ -35,6 +36,7 @@ export class Content extends ParentComponent {
     this.wishList = new WishList(this)
   }
 
+  // Инициализация компонента
   init() {
     super.listener()
 
@@ -66,6 +68,7 @@ export class Content extends ParentComponent {
     }
   }
 
+  // Шаблон всего компонента
   renderHTML() {
     return `
       <div class="content">

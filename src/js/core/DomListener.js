@@ -12,6 +12,7 @@ export class DomListener {
     this.name = name
   }
 
+  // Вешаем прослушку событий на компонент
   listener() {
     this.listener.forEach(listener => {
 
@@ -26,6 +27,7 @@ export class DomListener {
     })
   }
 
+  // Удаляем прослушку событий с компонент
   destroy(){
     this.listener.forEach(listener => {
 
@@ -33,4 +35,5 @@ export class DomListener {
       this.$root.off(listener, this[method])
     })
   }
+
 }

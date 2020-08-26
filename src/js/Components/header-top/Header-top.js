@@ -5,6 +5,9 @@ import { burgerMobileMenu } from "./headerTop.fn";
 import {ActiveRout} from "../../Routing/ActiveRouter";
 import {Modal} from "../../core/Modal";
 import {Basket} from "../content/Basket";
+import firebase from 'firebase/app'
+import 'firebase/auth';
+import 'firebase/database';
 
 
 export class HeaderTop extends ParentComponent {

@@ -3,3 +3,5 @@ package-lock.json
 .vscode
 debug.log
 jsonDataBase
+.idea
+.gitignore

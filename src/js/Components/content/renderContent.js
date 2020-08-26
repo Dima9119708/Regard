@@ -3,6 +3,10 @@ import { renderTitle, checkLackOfGoods, renderProductCards, renderRandomContent 
 import { pagination } from "../../core/pagination"
 import { Filter } from "./Filter"
 
+///////////////////////////////////////////////
+//////   Вывод шаблонов на страницу   ////////
+/////////////////////////////////////////////
+
 export function renderMainContent(content) {
   return `
 

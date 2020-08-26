@@ -1,3 +1,4 @@
+// Реализация бургер меню
 export function burgerMobileMenu(event) {
 
   const $burgerParent = event.target.closest('[data-parentMenuMobile]')

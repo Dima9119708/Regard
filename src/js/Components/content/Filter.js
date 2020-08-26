@@ -79,6 +79,7 @@ export class Filter {
 
   }
 
+  // Шаблон фильтра
   static renderHTML(base) {
     return `
         <div class="content-block__filter unselectable" data-filter data-da="[data-content-block__filter-mobile],0,1245,max">
@@ -92,6 +93,7 @@ export class Filter {
     `
   }
 
+  // Реализация слайдера изменения цены
   static rangeSliderINIT(content, parent) {
 
     const { $root: $elem } = content
@@ -331,6 +333,7 @@ export class Filter {
     }
   }
 
+  // Реализация слайдера изменения цены HTML-шаблон
   static #renderRangeSliderHTML(base) {
 
     const min = searchMaxAndMinNumber(false, base)
@@ -368,6 +371,7 @@ export class Filter {
     `
   }
 
+  // Вывод шаблона,список фильтров, относительно товара в каком находимся
   static #renderFilterContent(base) {
 
     if (base.length) {
@@ -835,6 +839,7 @@ export class Filter {
     return ''
   }
 
+  // Показываем карточки товара относительно фильтра
   static displayСardsBasedOnTheFilter(Content) {
 
     let { filterCards : DATA, $root, store } = Content
@@ -874,6 +879,7 @@ export class Filter {
     return DATA
   }
 
+  // Обновляем DOM если было что-то выбрано в фильтре
   static viewUpdateDom(content) {
 
     const { $root } = content
@@ -904,6 +910,7 @@ export class Filter {
     }
   }
 
+  // Изменяем URL, для фильтрации товара
   static set changeURL($root) {
 
     const sortPrice = $root.qSelectorAll('[data-price]')
@@ -979,7 +986,7 @@ function filteringByPrice(sort, priceSplit) {
   }, [])
 }
 
-// Фильтрация товаров по цене (по убыванию...)
+// Сортировка
 function filterSortPrice(value,base) {
 
   if (value === 'default') {
@@ -994,8 +1001,14 @@ function filterSortPrice(value,base) {
 
 }
 
-// Изменение состояние инпут range Slider
-function rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, $line) {
+// Валидация и расчет изменения состояния rangeSlider
+function rangeSliderInput(
+                       inputMin,
+                       inputMax,
+                       $slider,
+                       $leftRange,
+                       $rightRange,
+                       $line) {
 
   const min = +inputMin.min
   const max = +inputMax.max
@@ -1031,7 +1044,8 @@ function rangeSliderInput(inputMin, inputMax, $slider, $leftRange, $rightRange, 
   $line.style.marginLeft = rangeButtonPX1 + 'px'
 }
 
-// Ищем совпадение базы массива с элементами, отбираем данные
+
+// Ищем совпадение массива фильтрации с товарами, отбираем данные
 function searchForMatches(base, data) {
 
   return base.reduce( (acc,elem) => {
@@ -1054,7 +1068,8 @@ function searchForMatches(base, data) {
 
 }
 
-// Подготавливаем массив HTML
+
+// Подготавливаем массив HTML - checkbox
 function trainingHTMLList(item) {
 
   return `

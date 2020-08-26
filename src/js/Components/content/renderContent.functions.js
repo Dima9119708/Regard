@@ -3,6 +3,7 @@ import { $ } from "../../core/Dom"
 import {ActiveRout} from "../../Routing/ActiveRouter";
 import { wishList } from "../../core/urlHash.fn";
 
+// Вывод в шаблон заголовка страницы
 export function renderTitle() {
 
   const URLParse = urlParse()
@@ -23,6 +24,7 @@ export function renderTitle() {
   return titleSearch
 }
 
+// Если товары не находяться
 export function checkLackOfGoods(base,showItems, renderCardsTEST) {
 
   if (!base.length) {
@@ -38,6 +40,7 @@ export function checkLackOfGoods(base,showItems, renderCardsTEST) {
   return ''
 }
 
+// Поготовка рандомных карточек
 export function renderRandomContent(number, content) {
 
   const { DATA } = content
@@ -52,6 +55,7 @@ export function renderRandomContent(number, content) {
   return renderProductCards(randomElements, content)
 }
 
+// Подготовка шаблона с карточками
 export function renderProductCards(data, Сontent) {
 
   return data.reduce((arr, item) => {
@@ -206,6 +210,7 @@ export function accardion(event, frag) {
   }
 }
 
+// При обновлении страницы те аккардионы которые открыты даем им maxHeight - для анимации.
 export function accardionObjectTrue($root) {
 
   const accardionItems = $root.qSelectorAll('[data-accardion="true"]')

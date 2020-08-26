@@ -8,8 +8,6 @@ import {
   renderBasket,
   renderWishList
 } from "../Components/content/renderContent";
-import { accardionObjectTrue } from "../Components/content/renderContent.functions";
-import { Sidebar } from "../Components/content/Sidebar";
 import { dinamic__adapt } from "./dinamic__adapt";
 import {animate} from "./animate";
 
@@ -34,6 +32,7 @@ export class ParentComponent extends DomListener {
     super.listener()
   }
 
+  // Изменения контента относительно URL
   renderContent() {
 
     if (ActiveRout.urLHash === '') {
@@ -55,6 +54,7 @@ export class ParentComponent extends DomListener {
     return ''
   }
 
+  // Перерисовка главного контента
   reRenderHTML() {
     this.destroy()
 

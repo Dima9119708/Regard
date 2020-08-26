@@ -1,6 +1,10 @@
-import { addBasket, CARD__DELETE } from "../../core/redux/actions"
+import { addBasket,
+        CARD__DELETE
+} from "../../core/redux/actions"
+
 import { formatNumber } from '../../core/utils'
 
+// Валидация отправки отзыва
 export function validateFeedBack(Card, length) {
   const keys = Object.values(Card.review).map(item => item.trim())
 
@@ -14,6 +18,8 @@ export function validateFeedBack(Card, length) {
   return Card.review
 }
 
+
+// Формирование отзыва
 export function dataFiling(Card, params, $target) {
 
   const user = Card.userState.personalData.name || 'Ананим'
@@ -24,7 +30,8 @@ export function dataFiling(Card, params, $target) {
   Card.review.date = date
 
   if (params === 'Оставить отзыв') {
-    Card.review.overallAssessment = (+Card.review.priceAppraisal + +Card.review.qualityAppraisal) / 2
+    Card.review.overallAssessment =
+              (+Card.review.priceAppraisal + +Card.review.qualityAppraisal) / 2
   }
 
   $target.disable = true
@@ -36,17 +43,22 @@ export function dataFiling(Card, params, $target) {
   }
 }
 
+
+// После успешной отравки отзывы, перерисовка блока (Оставить отзыв или Задать вопрос)
 export function reRenderCardHTML(Card, params) {
 
   if (params === 'Оставить отзыв') {
     Card.DOM.formContentBlock.innerHTML = Card.giveFeedbackHTML()
   }
   else {
-    Card.DOM.formContentBlock.innerHTML = Card.AskAQuestionHTML()
+    Card.DOM.formContentBlock.innerHTML = Card.askAQuestionHTML()
   }
 }
 
+
+// Добавление товара в корзину(Redux)
 export function addBasketCard(Card) {
+
   Card.store.dispath(
     addBasket(
       Card.renderElem,
@@ -63,6 +75,8 @@ export function addBasketCard(Card) {
   Card.emmiter.emit('HEADER__TOP', true)
 }
 
+
+// Увеличение цены в карточке товара и сохранение в Redux
 export function priceIncrease(Card, increase) {
 
   const input = Card.DOM.input || Card.$root.qSelector('[data-input-card]')
@@ -95,6 +109,8 @@ export function priceIncrease(Card, increase) {
 
 }
 
+
+// Табы в карточке товара (Характеристики, Отзывы)
 export function cardTABS(Card, $parent) {
 
   const cardTab = event.target.dataset.cardTab
@@ -115,22 +131,24 @@ export function cardTABS(Card, $parent) {
   if (!Card.currentTab) { return }
 
   Card.currentTab.classList.add('goods__tabs-item--active')
-
 }
 
+
+// Табы в карточке товара ( Оставить отзыв или Задать вопрос )
 export function formContentTABS(Card, formContent) {
 
   if (formContent === 'Оставить отзыв') {
-    Card.review = {}
     Card.DOM.formContentBlock.innerHTML = Card.giveFeedbackHTML()
   }
   else if (formContent === 'Задать вопрос') {
-    Card.review = {}
-    Card.DOM.formContentBlock.innerHTML = Card.AskAQuestionHTML()
+    Card.DOM.formContentBlock.innerHTML = Card.askAQuestionHTML()
   }
 
+  Card.review = {}
 }
 
+
+// Сохранение рейтинга в Redux и Отображение в DOM
 export function productEvaluation(Card, cardChecked) {
 
   const $parent = event.target.closest('[data-card-checked-parent]')
